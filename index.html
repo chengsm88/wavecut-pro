@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" class="dark">
+
+<html class="dark" lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WaveCut Pro — 本機多軌影音剪輯合併 (MP4 / MOV / MKV / MP3)</title>
-    <!-- 載入 Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 載入 Inter 與繁體中文字體 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- 載入 lamejs 作為瀏覽器端純本機 MP3 編碼器 -->
-    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WaveCut Pro · CC Fix 2 — 本機多軌影音剪輯合併 (MP4 / MOV / MKV / MP3)</title>
+<!-- 載入 Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- 載入 Inter 與繁體中文字體 -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- 載入 lamejs 作為瀏覽器端純本機 MP3 編碼器 -->
+<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+<script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -33,442 +34,446 @@
             }
         }
     </script>
-</head>
+<style>/* Compact desktop editing workspace; original editing engine is unchanged. */
+:root{color-scheme:dark;--wc-bg:#101215;--wc-panel:#191c20;--wc-line:#30353b;--wc-accent:#38d8cf;--wc-muted:#9ba5ae}*{box-sizing:border-box}body{background:var(--wc-bg)!important;color:#e9edf0}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--wc-accent);outline-offset:2px}.hidden,[hidden]{display:none!important}header>div,main{max-width:none!important}header{background:#181b1f!important}header>div{padding:9px 16px!important}header h1{letter-spacing:.02em}#headerBadge,#emptyStateSection .shadow-2xl{box-shadow:none}main{padding:10px!important;gap:10px!important}#workspaceSection{gap:10px!important}footer{font-size:10px!important;padding:7px!important}#wcEditor{display:grid;grid-template-columns:minmax(265px,29fr) minmax(320px,44fr) minmax(220px,27fr);gap:8px;align-items:stretch;min-width:0}.wc-pane{min-width:0;background:var(--wc-panel);border:1px solid var(--wc-line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}.wc-tools,.wc-inspector,.wc-player{height:clamp(330px,48vh,540px)}.wc-nav{display:flex;align-items:stretch;gap:0;background:#202429;border-bottom:1px solid var(--wc-line);flex:none}.wc-nav button{flex:1;min-width:0;padding:10px 2px 8px;background:transparent;border:0;border-bottom:2px solid transparent;color:#a9b2bc;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;white-space:normal;line-height:1.15}.wc-nav button svg{width:21px;height:21px}.wc-nav button[aria-selected=true]{border-color:var(--wc-accent);color:var(--wc-accent);background:#183034}.wc-nav button:hover{background:#263238}.wc-tool-scroll{flex:1;min-height:0;overflow:auto;padding:12px;scrollbar-width:thin}.wc-pane-content{display:flex;flex-direction:column;gap:12px;min-width:0;font-size:12px;color:#d8e1e7}.wc-pane-content h3,.wc-pane-content h2{font-size:13px!important;color:#e9edf0!important}.wc-pane-content p{line-height:1.5}.wc-pane-content select,.wc-pane-content textarea,.wc-pane-content input:not([type=range]):not([type=checkbox]):not([type=color]){max-width:100%;min-width:0}.wc-pane-content button{font-size:11px}.wc-smart,.wc-fx-grid{display:block}.wc-asset-list{display:flex;flex-direction:column;gap:6px;max-height:none!important;overflow:visible!important}.wc-asset-list>div{min-width:0;flex-wrap:wrap}.wc-import{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;width:100%;min-height:105px;padding:12px;background:#222b30;border:1px dashed #556b71;border-radius:7px;color:#d7f4f2;font-weight:600}.wc-import:hover{background:#273a3b;border-color:var(--wc-accent)}.wc-import-plus{font-size:29px;color:var(--wc-accent);line-height:1}.wc-import small{font-size:10px;color:var(--wc-muted);font-weight:400}.wc-panel-heading{display:flex;justify-content:space-between;align-items:center;min-height:39px;padding:8px 12px;border-bottom:1px solid var(--wc-line);font-size:12px;font-weight:600;color:#dbe2e8;flex:none;background:#202429}.wc-player{background:#141619}.wc-preview{position:relative;flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0b0c0e;cursor:pointer}.wc-preview canvas{display:block;max-height:100%;max-width:100%;width:100%;height:100%;object-fit:contain}.wc-preview-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none}.wc-playbar{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;flex:none;padding:8px;border-top:1px solid var(--wc-line);background:#1b1e22}.wc-inspector{overflow:auto;scrollbar-width:thin;gap:12px}.wc-inspector>div:not(.wc-panel-heading){margin:0 12px}.wc-inspector-tip{border-top:1px solid var(--wc-line);padding:12px 0;display:grid;gap:8px;font-size:11px;color:var(--wc-muted);line-height:1.6}.wc-inspector-tip strong{color:#e9edf0;font-size:12px}.wc-outline{border:1px solid #3e4b52;border-radius:5px;background:#242b30;padding:8px 10px;text-align:left;color:#c9f5f2}.wc-outline:hover{border-color:var(--wc-accent)}.wc-muted{color:#84919b;font-size:10px}.wc-transition-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.wc-transition-tiles button{display:flex;flex-direction:column;gap:5px;min-width:0;padding:4px;border:1px solid #414b54;border-radius:5px;background:#23282d;color:#d5dde2;text-align:center;font-size:10px;line-height:1.2}.wc-transition-tiles svg{width:100%;display:block;border-radius:3px}.wc-transition-tiles button[aria-pressed=true]{border:2px solid var(--wc-accent);padding:3px;color:var(--wc-accent)}.wc-transition-tiles button:not(:disabled):hover{border-color:var(--wc-accent)}.wc-timeline{border-radius:8px!important;box-shadow:none!important}.wc-timeline-heading{display:flex;align-items:center;gap:12px;padding:7px 12px;background:#202429;border-bottom:1px solid var(--wc-line);font-size:12px}.wc-timeline-heading span{font-size:10px;color:var(--wc-muted)}#timelineWrapper>div:nth-child(2){padding:6px 8px!important}#timelineWrapper>div:nth-child(2) button{padding:6px 8px}#timelineCanvasContainer{min-width:0}#trackHeadersCol{width:138px!important}#ccList{max-height:none!important;overflow:visible!important}#ccList>div{max-width:100%;flex-wrap:wrap}#ccList textarea{flex-basis:100%;width:100%}#ccToggle{display:none}#fxBuild,#ccGenerate,#fxCutPreview,#btnPlayPause{background:#087e83!important;color:white!important;box-shadow:none!important}#fxBuild:hover,#ccGenerate:hover,#fxCutPreview:hover,#btnPlayPause:hover{background:#099398!important}.wc-export-btn{display:inline-flex;align-items:center;gap:7px;border:0;background:var(--wc-accent);color:#092b2c;font-weight:700;font-size:12px;padding:9px 15px;border-radius:6px}.wc-export-btn svg{width:16px;height:16px}.wc-export-overlay{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:#06080bba;padding:18px}.wc-export-panel{width:min(620px,100%);max-height:90vh;overflow:auto;background:#20252b;border:1px solid #48545c;border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:18px;box-shadow:0 20px 70px #0008}.wc-export-heading{display:flex;align-items:center;justify-content:space-between;font-size:17px;font-weight:700}.wc-export-heading button{border:0;background:#313b43;color:#dce7ec;font-size:23px;border-radius:6px;width:32px;height:32px;line-height:1}.wc-export-panel>div:nth-child(2){display:flex;flex-direction:column!important;align-items:stretch!important;gap:16px}.wc-export-panel>div:nth-child(2)>div{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wc-export-panel #btnExport{width:100%;background:#087e83!important;box-shadow:none!important}#exportProgressContainer{width:100%}#btnAddFilesTop{background:#29343c!important;box-shadow:none!important}#btnAddFilesTop:hover{background:#35454d!important}input[type=range],input[type=checkbox]{accent-color:var(--wc-accent)!important}
+@media(max-width:1050px){#wcEditor{grid-template-columns:minmax(250px,38%) minmax(0,62%)}.wc-inspector{grid-column:1/-1;height:auto;max-height:none;display:grid;grid-template-columns:1fr 1.5fr 1fr;align-items:start;padding-bottom:10px}.wc-inspector .wc-panel-heading{grid-column:1/-1}.wc-inspector-tip{border-top:0;padding:0}.wc-tools,.wc-player{height:400px}}
+@media(max-width:650px){#wcEditor{display:flex;flex-direction:column}.wc-player{order:-1;height:300px}.wc-tools{height:360px}.wc-inspector{display:flex}.wc-export-panel>div:nth-child(2)>div{grid-template-columns:1fr}#trackHeadersCol{width:112px!important}.wc-timeline-heading{flex-wrap:wrap;gap:3px}.wc-nav button{font-size:11px}}
+</style></head>
 <body class="bg-daw-bg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-sky-500 selection:text-white antialiased overflow-x-hidden">
-
-    <!-- 隱藏的多檔案上傳輸入框 (支援 MP4 / MOV / MKV 影片與 MP3 / M4A / WMA / WAV 音訊) -->
-    <input type="file" id="fileInput" accept=".mp4,.mov,.mkv,.mp3,.m4a,.wma,.wav,.ogg,.aac,.flac,video/mp4,video/quicktime,video/x-matroska,video/*,audio/*" multiple class="hidden">
-
-    <!-- 頂部導覽列 -->
-    <header class="border-b border-daw-border bg-daw-panel/95 backdrop-blur-md sticky top-0 z-30">
-        <div class="max-w-[1480px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-            <!-- 品牌標誌 -->
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+<!-- 隱藏的多檔案上傳輸入框 (支援 MP4 / MOV / MKV 影片與 MP3 / M4A / WMA / WAV 音訊) -->
+<input accept=".mp4,.mov,.mkv,.mp3,.m4a,.wma,.wav,.ogg,.aac,.flac,video/mp4,video/quicktime,video/x-matroska,video/*,audio/*" class="hidden" id="fileInput" multiple="" type="file"/>
+<!-- 頂部導覽列 -->
+<header class="border-b border-daw-border bg-daw-panel/95 backdrop-blur-md sticky top-0 z-30">
+<div class="max-w-[1480px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+<!-- 品牌標誌 -->
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
                         WaveCut Pro
-                        <span data-i18n="headerBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30" data-i18n="headerBadge">
                             本機影音剪輯合併
                         </span>
-                    </h1>
-                    <p data-i18n="headerSubtitle" class="text-[11px] text-slate-400 hidden sm:block">支援 MP4 / MOV / MKV 剪片與 MP3 / M4A / WMA 音訊・100% 瀏覽器本機處理・Ctrl+B 即時分割</p>
-                </div>
-            </div>
-
-            <!-- 右側快速操作 -->
-            <div class="flex items-center gap-2">
-                <!-- 三語切換下拉選單 (繁體中文 / 简体中文 / English) -->
-                <select id="langSelect" aria-label="Language" class="px-3 py-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-200 border border-daw-border text-xs sm:text-sm font-medium focus:outline-none focus:border-sky-500 cursor-pointer transition">
-                    <option value="zh-TW">繁體中文</option>
-                    <option value="zh-CN">简体中文</option>
-                    <option value="en">English</option>
-                </select>
-                <button id="btnAddFilesTop" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-semibold transition active:scale-95 shadow-md shadow-sky-600/20">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <span data-i18n="btnAddFilesTop">加入影片 / 音檔</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- 主要工作區域 -->
-    <main class="flex-1 max-w-[1480px] w-full mx-auto px-3 sm:px-5 py-4 flex flex-col gap-4">
-
-        <!-- 初始空白拖放區 (當尚未有任何片段時顯示) -->
-        <section id="emptyStateSection" class="flex-1 flex flex-col items-center justify-center py-10 sm:py-16">
-            <div id="dropZone" class="w-full max-w-2xl rounded-3xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-daw-panel/70 hover:bg-daw-panel transition-all duration-200 p-8 sm:p-14 text-center cursor-pointer group shadow-2xl">
-                <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-slate-800/90 group-hover:bg-sky-500/20 border border-slate-700 group-hover:border-sky-500/40 flex items-center justify-center transition">
-                    <svg class="w-10 h-10 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                </div>
-                <h2 data-i18n="dropTitle" class="text-xl sm:text-2xl font-bold text-white mb-2">拖放 MP4 / MOV / MKV 影片或音訊檔案到此處</h2>
-                <p data-i18n="dropDesc" class="text-sm text-slate-400 mb-6">支援一次匯入多個 MP4、MOV、MKV 影片與 MP3、M4A、WMA、WAV 音檔，進行時間軸剪片、分割刪除、配樂混音，並於本機直接合併匯出成 MP4 / MOV / MKV 或 MP3。</p>
-
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <button type="button" id="btnSelectFiles" data-i18n="btnSelectFiles" class="px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold shadow-lg shadow-sky-600/25 transition active:scale-95">
+</h1>
+<p class="text-[11px] text-slate-400 hidden sm:block" data-i18n="headerSubtitle">支援 MP4 / MOV / MKV 剪片與 MP3 / M4A / WMA 音訊・100% 瀏覽器本機處理・Ctrl+B 即時分割</p>
+</div>
+</div>
+<!-- 右側快速操作 -->
+<div class="flex items-center gap-2">
+<!-- 三語切換下拉選單 (繁體中文 / 简体中文 / English) -->
+<select aria-label="Language" class="px-3 py-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-200 border border-daw-border text-xs sm:text-sm font-medium focus:outline-none focus:border-sky-500 cursor-pointer transition" id="langSelect">
+<option value="zh-TW">繁體中文</option>
+<option value="zh-CN">简体中文</option>
+<option value="en">English</option>
+</select>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs sm:text-sm font-semibold transition active:scale-95 shadow-md shadow-sky-600/20" id="btnAddFilesTop">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span data-i18n="btnAddFilesTop">加入影片 / 音檔</span>
+</button><button class="wc-export-btn" disabled="" id="wcExportTop" type="button"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5h16v-5"></path></svg><span data-i18n="wcExportTitle">匯出作品</span></button>
+</div>
+</div>
+</header>
+<!-- 主要工作區域 -->
+<main class="flex-1 max-w-[1480px] w-full mx-auto px-3 sm:px-5 py-4 flex flex-col gap-4">
+<!-- 初始空白拖放區 (當尚未有任何片段時顯示) -->
+<section class="flex-1 flex flex-col items-center justify-center py-10 sm:py-16" id="emptyStateSection">
+<div class="w-full max-w-2xl rounded-3xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-daw-panel/70 hover:bg-daw-panel transition-all duration-200 p-8 sm:p-14 text-center cursor-pointer group shadow-2xl" id="dropZone">
+<div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-slate-800/90 group-hover:bg-sky-500/20 border border-slate-700 group-hover:border-sky-500/40 flex items-center justify-center transition">
+<svg class="w-10 h-10 text-sky-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<h2 class="text-xl sm:text-2xl font-bold text-white mb-2" data-i18n="dropTitle">拖放 MP4 / MOV / MKV 影片或音訊檔案到此處</h2>
+<p class="text-sm text-slate-400 mb-6" data-i18n="dropDesc">支援一次匯入多個 MP4、MOV、MKV 影片與 MP3、M4A、WMA、WAV 音檔，進行時間軸剪片、分割刪除、配樂混音，並於本機直接合併匯出成 MP4 / MOV / MKV 或 MP3。</p>
+<div class="flex flex-wrap items-center justify-center gap-3">
+<button class="px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold shadow-lg shadow-sky-600/25 transition active:scale-95" data-i18n="btnSelectFiles" id="btnSelectFiles" type="button">
                         選擇本機影片或音檔
                     </button>
-                </div>
-            </div>
+</div>
+</div>
+<!-- 功能亮點 -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mt-8">
+<div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
+<div class="p-2 rounded-xl bg-indigo-500/15 text-indigo-400 shrink-0">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-white" data-i18n="feat1Title">MP4 / MOV / MKV 剪片</h3>
+<p class="text-xs text-slate-400 mt-0.5" data-i18n="feat1Desc">即時 16:9 畫面預覽、膠捲縮圖時間軸，並支援多軌配樂與原聲混音。</p>
+</div>
+</div>
+<div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
+<div class="p-2 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h2m6-14h2a2 2 0 012 2v10a2 2 0 01-2 2h-2M12 3v18" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-white" data-i18n="feat2Title">快速分割 (Ctrl+B)</h3>
+<p class="text-xs text-slate-400 mt-0.5" data-i18n="feat2Desc">播放頭所到之處一鍵切開影片與音訊片段、修剪邊界、消除空隙。</p>
+</div>
+</div>
+<div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
+<div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-white" data-i18n="feat3Title">100% 瀏覽器本機處理</h3>
+<p class="text-xs text-slate-400 mt-0.5" data-i18n="feat3Desc">無需上傳伺服器，本機直接合併匯出 MP4、MOV、MKV 或 MP3。</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 載入遮罩 -->
+<div class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex-col items-center justify-center gap-4 px-4 text-center" id="loadingOverlay">
+<div class="w-12 h-12 rounded-full border-4 border-slate-700 border-t-sky-400 animate-spin"></div>
+<p class="text-slate-100 font-medium text-sm sm:text-base" data-i18n="loadingDefault" id="loadingText">正在本機解碼影音檔案...</p>
+</div>
+<!-- 主時間軸編輯區 (載入檔案後顯示) -->
+<section class="hidden flex-col gap-4 flex-1" id="workspaceSection">
+<!-- 上半部：素材庫 + 影片預覽視窗 + 選中片段屬性面板 -->
+<div class="wc-editor" id="wcEditor">
+<!-- 左側：已匯入影音素材庫 (4 欄) -->
+<div class="wc-pane wc-tools" id="wcTools"><nav aria-label="Editing tools" class="wc-nav" id="wcToolNav" role="tablist"><button aria-selected="true" data-tool="media" role="tab" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M3 5h7l2 2h9v13H3Z M3 10h18"></path></svg><span data-i18n="wc_media">素材</span></button><button aria-selected="false" data-tool="captions" role="tab" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M4 5h16v14H4Z M7 10h4m2 0h4m-10 4h3m2 0h5"></path></svg><span data-i18n="wc_captions">字幕</span></button><button aria-selected="false" data-tool="transitions" role="tab" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M3 5h7v14H3Z M14 5h7v14h-7Z M8 12h8m-3-3 3 3-3 3"></path></svg><span data-i18n="wc_transitions">轉場</span></button><button aria-selected="false" data-tool="auto" role="tab" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"></path></svg><span data-i18n="wc_auto">自動剪輯</span></button><button aria-selected="false" data-tool="background" role="tab" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M5 21v-2a7 7 0 0 1 14 0v2 M3 3v3m0-3h3m15 0h-3m3 0v3"></path></svg><span data-i18n="wc_background">去背</span></button></nav><div class="wc-tool-scroll" id="wcToolScroll"><div class="wc-pane-content" data-tool-content="media" id="wcMedia">
+<button class="wc-import" id="wcImport" type="button"><span class="wc-import-plus">＋</span><span data-i18n="wcImport">匯入影片／音訊</span><small data-i18n="wcDrop">或直接拖曳檔案到此</small></button><div class="flex items-center justify-between">
+<h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+<span data-i18n="assetsTitle">已匯入影音素材</span>
+<span class="px-1.5 py-0.5 rounded-md bg-slate-800 text-sky-400 font-mono text-[11px]" id="assetCountBadge">0</span>
+</h2>
+<button class="text-xs font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1 transition" id="btnAddMoreAssets">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span data-i18n="btnAddMoreAssets">新增素材</span>
+</button>
+</div>
+<div class="wc-asset-list" id="assetList">
+<!-- 動態產生素材項目 -->
+</div>
+</div><section class="wc-pane-content" data-tool-content="captions" id="captionPanel">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2"><span class="rounded-md bg-violet-500/20 text-violet-300 px-2 py-1 text-xs font-bold">CC</span><h2 class="font-bold text-sm" data-i18n="ccTitle">Auto-Captions 自動字幕</h2><span class="text-xs text-slate-400" id="ccCount"></span></div>
+<button aria-expanded="true" class="text-xs text-violet-300" data-i18n="ccCollapse" id="ccToggle" type="button">收合字幕面板</button>
+</div>
+<div class="flex flex-col gap-3" id="ccBody">
+<p class="text-xs text-slate-400" data-i18n="ccHelp">Whisper AI 辨識目前時間軸混音；首次需連網下載模型，影音不會上傳。字幕使用時間軸絕對時間，剪輯後請檢查或重新生成。</p>
+<div class="flex flex-wrap items-end gap-2">
+<label class="text-xs text-slate-400"><span data-i18n="ccLanguage">辨識語言</span><select class="block mt-1 bg-daw-bg border border-daw-border rounded-lg p-2 text-slate-100" id="ccLanguage"><option data-i18n="ccAuto" value="">自動辨識</option><option value="chinese">中文 / Mandarin</option><option data-i18n="ccCantonese" value="cantonese">廣東話（以中文模型辨識）</option><option value="english">English</option><option value="japanese">日本語</option><option value="korean">한국어</option><option value="french">Français</option><option value="spanish">Español</option></select></label>
+<label class="text-xs text-slate-400"><span data-i18n="ccModel">AI 模型</span><select class="block mt-1 bg-daw-bg border border-daw-border rounded-lg p-2 text-slate-100" id="ccModel"><option data-i18n="ccTiny" selected="" value="tiny">Tiny · 快速</option><option data-i18n="ccBase" value="base">Base · 較準確</option><option data-i18n="ccSmall" value="small">Small · 較慢</option></select></label>
+<button class="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 font-semibold text-xs disabled:opacity-40" data-i18n="ccGenerate" id="ccGenerate" type="button">✦ 生成自動字幕</button>
+<button class="hidden px-3 py-2 rounded-lg bg-rose-500/20 text-rose-300 text-xs" data-i18n="ccCancel" id="ccCancel" type="button">取消辨識</button>
+<button class="px-3 py-2 rounded-lg bg-daw-bg border border-daw-border text-xs disabled:opacity-40" data-i18n="ccAdd" id="ccAdd" type="button">＋ 手動字幕</button>
+<button class="px-3 py-2 rounded-lg bg-daw-bg border border-daw-border text-xs text-rose-300 disabled:opacity-40" data-i18n="ccClear" id="ccClear" type="button">清除全部</button>
+</div>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-300">
+<label class="flex gap-1.5 items-center"><input checked="" class="accent-violet-500" id="ccVisible" type="checkbox"/><span data-i18n="ccVisible">預覽字幕</span></label>
+<label class="flex gap-1.5 items-center"><input checked="" class="accent-violet-500" id="ccBurn" type="checkbox"/><span data-i18n="ccBurn">影片匯出燒錄字幕</span></label>
+<label class="flex gap-1.5 items-center"><span data-i18n="ccSize">字體大小</span><select class="bg-daw-bg border border-daw-border rounded-md p-1" id="ccSize"><option data-i18n="ccSizeSmall" value="0.038">小</option><option data-i18n="ccSizeMedium" selected="" value="0.052">中</option><option data-i18n="ccSizeLarge" value="0.072">大</option></select></label>
+<label class="flex gap-1.5 items-center"><span data-i18n="ccColor">文字顏色</span><input class="w-7 h-6 bg-transparent" id="ccColor" type="color" value="#ffffff"/></label>
+<button class="px-3 py-1.5 rounded-lg bg-daw-bg border border-daw-border text-violet-300 disabled:opacity-40" data-i18n="ccSrt" id="ccSrt" type="button">下載 SRT</button>
+<button class="px-3 py-1.5 rounded-lg bg-daw-bg border border-daw-border text-violet-300 disabled:opacity-40" data-i18n="ccVtt" id="ccVtt" type="button">下載 VTT</button>
+</div>
+<p class="text-[11px] text-slate-500" data-i18n="ccFixHint">首次辨識建議 Tiny；若 Worker 失敗會自動切換相容模式。相容模式無法即時取消。</p>
+<div aria-live="polite" class="text-xs text-violet-300 break-words" data-i18n="ccReady" id="ccStatus" role="status">準備就緒</div>
+<div class="hidden text-xs text-amber-300" data-i18n="ccStale" id="ccWarning">時間軸影音已變更：字幕時間可能不再同步，請檢查或重新生成。</div>
+<div class="max-h-64 overflow-y-auto flex flex-col gap-1.5" id="ccList"></div>
+</div>
+</section><section class="wc-smart" id="smartStudio">
 
-            <!-- 功能亮點 -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mt-8">
-                <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
-                    <div class="p-2 rounded-xl bg-indigo-500/15 text-indigo-400 shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 data-i18n="feat1Title" class="text-sm font-semibold text-white">MP4 / MOV / MKV 剪片</h3>
-                        <p data-i18n="feat1Desc" class="text-xs text-slate-400 mt-0.5">即時 16:9 畫面預覽、膠捲縮圖時間軸，並支援多軌配樂與原聲混音。</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
-                    <div class="p-2 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h2m6-14h2a2 2 0 012 2v10a2 2 0 01-2 2h-2M12 3v18" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 data-i18n="feat2Title" class="text-sm font-semibold text-white">快速分割 (Ctrl+B)</h3>
-                        <p data-i18n="feat2Desc" class="text-xs text-slate-400 mt-0.5">播放頭所到之處一鍵切開影片與音訊片段、修剪邊界、消除空隙。</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
-                    <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 data-i18n="feat3Title" class="text-sm font-semibold text-white">100% 瀏覽器本機處理</h3>
-                        <p data-i18n="feat3Desc" class="text-xs text-slate-400 mt-0.5">無需上傳伺服器，本機直接合併匯出 MP4、MOV、MKV 或 MP3。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="wc-fx-grid">
+<div class="wc-pane-content" data-tool-content="auto"><h3 class="font-bold text-sky-300 text-sm"><span data-i18n="fxAuto">一鍵自動剪輯</span></h3><p class="text-slate-400"><span data-i18n="fxAutoHelp">依素材匯入順序挑選片段，可按音量活動修剪靜音；重建時間軸，可還原。</span></p><div class="flex flex-wrap items-center gap-2"><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxLength">每段最長</span><select class="bg-daw-bg border border-daw-border rounded-lg px-2 py-1.5 text-slate-100" id="fxLength"><option value="3">3 s</option><option selected="" value="5">5 s</option><option value="8">8 s</option><option value="15">15 s</option><option data-i18n="fxFull" value="0">完整片段</option></select></label></div><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxQuiet">修剪靜音／優先有聲片段</span><input checked="" class="accent-sky-400" id="fxQuiet" type="checkbox"/></label><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxMusic">首個音檔作背景音樂</span><input class="accent-sky-400" id="fxMusic" type="checkbox"/></label><div class="flex flex-wrap gap-2"><button class="px-3 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold disabled:opacity-40" data-i18n="fxBuild" id="fxBuild" type="button">✦ 一鍵生成影片</button><button class="px-3 py-2 rounded-lg bg-daw-bg border border-daw-border text-sky-300 font-semibold disabled:opacity-40" data-i18n="fxBuildExport" id="fxBuildExport" type="button">生成並下載影片</button></div><p class="text-sky-300" id="fxAutoStatus" role="status">準備就緒</p></div>
+<div class="wc-pane-content" data-tool-content="background"><h3 class="font-bold text-emerald-300 text-sm"><span data-i18n="fxBg">移除背景</span></h3><p class="text-slate-400"><span data-i18n="fxBgHelp">適用所有影片。AI 僅保留人物；色度去背適用純色背景。匯出填入指定底色，不輸出透明影片。</span></p><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxMode">去背模式</span><select class="bg-daw-bg border border-daw-border rounded-lg px-2 py-1.5 text-slate-100" id="fxMode"><option data-i18n="fxOff" selected="" value="off">關閉</option><option data-i18n="fxAI" value="ai">AI 人像去背</option><option data-i18n="fxChroma" value="chroma">色度去背（免模型）</option></select></label><div class="hidden flex flex-wrap items-center gap-3" id="fxKeyControls"><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxKey">移除顏色</span><input class="w-8 h-7 bg-transparent" id="fxKey" type="color" value="#00ff00"/></label><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxTol">容差</span><input class="w-24 accent-emerald-400" id="fxTol" max="100" min="10" type="range" value="35"/><output id="fxTolValue">35</output></label></div><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxBgColor">替換底色</span><input class="w-8 h-7 bg-transparent" id="fxBgColor" type="color" value="#000000"/></label><p class="text-emerald-300 break-words" id="fxBgStatus" role="status">首次 AI 去背須連網；色度去背不需 AI 模型。</p></div>
+<div class="wc-pane-content" data-tool-content="transitions"><h3 class="font-bold text-violet-300 text-sm"><span data-i18n="fxTrans">遮罩轉場</span></h3><p class="text-slate-400"><span data-i18n="fxTransHelp">選取右側影片片段，即可設定其前方接點的轉場；每個接點獨立設定。</span></p><label class="flex flex-col gap-1"><span data-i18n="fxCutPick">選擇片段／接點</span><select class="w-full min-w-0 bg-daw-bg border border-daw-border rounded-lg px-2 py-1.5 text-slate-100" id="fxCutPick"></select></label><p aria-live="polite" class="text-violet-300" id="fxCutInfo"></p><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxStyle">轉場樣式</span><select class="bg-daw-bg border border-daw-border rounded-lg px-2 py-1.5 text-slate-100" id="fxStyle"><option data-i18n="fxCutOff" selected="" value="off">無轉場（直接切換）</option><option data-i18n="fxWipe" value="wipe">橫向遮罩</option><option data-i18n="fxVertical" value="vertical">垂直遮罩</option><option data-i18n="fxCircle" value="circle">圓形遮罩</option><option data-i18n="fxDiagonal" value="diagonal">斜向遮罩</option><option data-i18n="fxFade" value="fade">淡入淡出</option></select></label><div aria-label="Transition effects" class="wc-transition-tiles" id="wcTransitionTiles"><button aria-pressed="false" data-style="off" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path></svg><span data-i18n="fxCutOff">無轉場（直接切換）</span></button><button aria-pressed="false" data-style="wipe" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path><rect fill="#12171c" height="48" width="42" x="42"></rect></svg><span data-i18n="fxWipe">橫向遮罩</span></button><button aria-pressed="false" data-style="vertical" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path><rect fill="#12171c" height="24" width="84" y="24"></rect></svg><span data-i18n="fxVertical">垂直遮罩</span></button><button aria-pressed="false" data-style="circle" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path><path d="M0 0H84V48H0Z M59 24a17 17 0 1 0 -34 0a17 17 0 1 0 34 0" fill="#12171c" fill-rule="evenodd"></path></svg><span data-i18n="fxCircle">圓形遮罩</span></button><button aria-pressed="false" data-style="diagonal" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path><path d="M84 0V48H20Z" fill="#12171c"></path></svg><span data-i18n="fxDiagonal">斜向遮罩</span></button><button aria-pressed="false" data-style="fade" type="button"><svg aria-hidden="true" viewbox="0 0 84 48"><rect fill="#426b7b" height="48" width="84"></rect><circle cx="64" cy="11" fill="#e8c78c" r="5"></circle><path d="M0 43L23 14 44 38 60 25 84 45V48H0Z" fill="#213d4b"></path><rect fill="#12171c" height="48" opacity=".58" width="84"></rect></svg><span data-i18n="fxFade">淡入淡出</span></button></div><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxDuration">轉場秒數</span><select class="bg-daw-bg border border-daw-border rounded-lg px-2 py-1.5 text-slate-100" id="fxDuration"><option value="0.4">0.4</option><option selected="" value="0.8">0.8</option><option value="1.2">1.2</option><option value="2">2</option></select></label><label class="flex flex-wrap items-center gap-2"><span data-i18n="fxMaskColor">遮罩顏色</span><input class="w-8 h-7 bg-transparent" id="fxMaskColor" type="color" value="#000000"/></label><div class="flex flex-wrap gap-2"><button class="px-3 py-2 rounded-lg bg-violet-600 text-white disabled:opacity-40" data-i18n="fxCutPreview" id="fxCutPreview" type="button">▶ 預覽此接點</button><button class="px-3 py-2 rounded-lg border border-violet-500/40 text-violet-300 disabled:opacity-40" data-i18n="fxCutAll" id="fxCutAll" type="button">套用全部接點</button></div></div>
+</div></section></div></div>
+<!-- 中央：即時 16:9 影片預覽視窗 (4 欄) -->
+<div class="wc-pane wc-player" id="wcPlayer">
+<div class="wc-panel-heading">
+<h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+<span data-i18n="previewTitle">影片畫面預覽</span>
+</h2>
+<span class="text-[11px] font-mono text-slate-400" id="previewMetaBadge">16:9</span>
+</div>
+<div class="wc-preview" id="videoPreviewBox">
+<canvas class="w-full h-full block" id="videoPreviewCanvas"></canvas>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 text-xs pointer-events-none px-4 text-center wc-preview-hint" id="previewEmptyHint">
+<svg class="w-8 h-8 mb-1.5 opacity-40" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span data-i18n="previewNoVideo">尚無影片畫面（加入 MP4 / MOV / MKV 即可預覽）</span>
+</div>
+</div>
+<div class="wc-playbar">
+<button class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition" data-i18n-title="titleGoStart" id="btnGoStart" title="跳至開頭">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24">
+<path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+</svg>
+</button>
+<button class="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-md shadow-sky-600/25 transition active:scale-95 min-w-[84px]" data-i18n-title="titlePlayPause" id="btnPlayPause" title="播放 / 暫停 (Space)">
+<svg class="w-4 h-4" fill="currentColor" id="iconPlay" viewbox="0 0 24 24">
+<path d="M8 5v14l11-7z"></path>
+</svg>
+<svg class="w-4 h-4 hidden" fill="currentColor" id="iconPause" viewbox="0 0 24 24">
+<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+</svg>
+<span id="textPlayPause">播放</span>
+</button>
+<div class="px-3 py-1.5 rounded-xl bg-daw-bg border border-daw-border font-mono text-xs sm:text-sm">
+<span class="text-sky-400 font-semibold" id="currentTimeDisplay">00:00.00</span>
+<span class="text-slate-600 mx-1">/</span>
+<span class="text-slate-300" id="totalTimeDisplay">00:00.00</span>
+</div>
+</div></div>
+<!-- 右側：選中片段精細控制面板 (4 欄) -->
+<div class="wc-pane wc-inspector" id="wcInspector"><div class="wc-panel-heading"><span data-i18n="wcProperties">片段屬性</span><span class="wc-muted">01</span></div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0" id="inspectorDot"></span>
+<h2 class="text-sm font-semibold text-white truncate" id="inspectorTitle">請點選時間軸上的片段以調整屬性</h2>
+</div>
+</div>
+<span class="text-xs font-mono text-slate-400" id="inspectorRange"></span>
+</div>
+<!-- 屬性滑桿列 -->
+<div class="grid grid-cols-1 gap-2.5 opacity-40 pointer-events-none transition-opacity" id="inspectorControls">
+<!-- 音量 -->
+<div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400" data-i18n="labelClipVol">片段音量</span>
+<span class="font-mono text-sky-300" id="clipVolVal">100%</span>
+</div>
+<input class="w-full accent-sky-400 cursor-pointer" id="clipVolSlider" max="200" min="0" type="range" value="100"/>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<!-- 淡入 -->
+<div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400" data-i18n="labelFadeIn">淡入</span>
+<span class="font-mono text-sky-300" id="clipFadeInVal">0.0s</span>
+</div>
+<input class="w-full accent-sky-400 cursor-pointer" id="clipFadeInSlider" max="10" min="0" step="0.1" type="range" value="0"/>
+</div>
+<!-- 淡出 -->
+<div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400" data-i18n="labelFadeOut">淡出</span>
+<span class="font-mono text-sky-300" id="clipFadeOutVal">0.0s</span>
+</div>
+<input class="w-full accent-sky-400 cursor-pointer" id="clipFadeOutSlider" max="10" min="0" step="0.1" type="range" value="0"/>
+</div>
+</div>
+</div>
+<div class="wc-inspector-tip"><strong data-i18n="wcQuick">快速操作</strong><p data-i18n="wcQuickHelp">點選時間軸片段，調整音量、淡入及淡出；點選接點的轉場圖示設定效果。</p><button class="wc-outline" data-i18n="wcOpenTransition" id="wcOpenTransition" type="button">設定片段轉場</button><button class="wc-outline" data-i18n="wcOpenBg" id="wcOpenBg" type="button">移除背景</button></div></div>
+</div>
 
-        <!-- 載入遮罩 -->
-        <div id="loadingOverlay" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex-col items-center justify-center gap-4 px-4 text-center">
-            <div class="w-12 h-12 rounded-full border-4 border-slate-700 border-t-sky-400 animate-spin"></div>
-            <p id="loadingText" data-i18n="loadingDefault" class="text-slate-100 font-medium text-sm sm:text-base">正在本機解碼影音檔案...</p>
-        </div>
+<!-- Auto-Captions -->
 
-        <!-- 主時間軸編輯區 (載入檔案後顯示) -->
-        <section id="workspaceSection" class="hidden flex-col gap-4 flex-1">
+<!-- 中央：剪輯工具列 + 多軌時間軸核心 (仿剪映風格) -->
+<div class="rounded-2xl bg-daw-panel border border-daw-border overflow-hidden flex flex-col shadow-2xl wc-timeline" id="timelineWrapper"><div class="wc-timeline-heading"><strong data-i18n="wcTimeline">時間軸</strong><span data-i18n="wcTimelineHelp">Ctrl+B 分割 · 點接點圖示選轉場 · 拖曳修剪</span></div>
+<!-- 時間軸工具列 -->
+<div class="px-3 py-2.5 border-b border-daw-border bg-[#17171c] flex flex-wrap items-center justify-between gap-2">
+<!-- 左側：還原 / 分割 (Ctrl+B) / 裁剪左右 / 複製 / 刪除 -->
+<div class="flex flex-wrap items-center gap-1.5">
+<!-- 還原與重做 -->
+<div class="flex items-center bg-daw-bg rounded-xl p-0.5 border border-daw-border">
+<button class="p-2 rounded-lg text-slate-300 hover:bg-daw-hover disabled:opacity-30 transition" data-i18n-title="titleUndo" disabled="" id="btnUndo" title="還原 (Ctrl+Z)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button class="p-2 rounded-lg text-slate-300 hover:bg-daw-hover disabled:opacity-30 transition" data-i18n-title="titleRedo" disabled="" id="btnRedo" title="重做 (Ctrl+Y)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- 分割 (Ctrl+B) -->
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-daw-hover hover:bg-sky-600/30 hover:text-sky-300 text-slate-100 border border-daw-border hover:border-sky-500/40 text-xs font-semibold transition active:scale-95" data-i18n-title="titleSplit" id="btnSplit" title="在播放頭位置分割片段 (Ctrl+B)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M7 5h2a1 1 0 011 1v12a1 1 0 01-1 1H7m10-14h-2a1 1 0 00-1 1v12a1 1 0 001 1h2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span data-i18n="btnSplit">分割</span>
+<kbd class="hidden sm:inline text-[10px] px-1 py-0.2 rounded bg-black/40 text-slate-400 font-mono">Ctrl+B</kbd>
+</button>
+<!-- 刪除左側 / 刪除右側 -->
+<button aria-label="刪除左側" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition active:scale-95" data-i18n-title="titleTrimLeft" id="btnTrimLeft" title="刪除播放頭左側內容">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M6 5h2v14H6M14 5h4v14h-4" stroke-dasharray="2 2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M14 5h4v14h-4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button aria-label="刪除右側" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition active:scale-95" data-i18n-title="titleTrimRight" id="btnTrimRight" title="刪除播放頭右側內容">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M6 5h4v14H6" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M16 5h2v14h-2" stroke-dasharray="2 2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- 複製片段 -->
+<button class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border text-xs font-medium transition active:scale-95" data-i18n-title="titleDuplicate" id="btnDuplicate" title="複製選中片段 (Ctrl+D)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden md:inline" data-i18n="btnDuplicate">複製</span>
+</button>
+<!-- 影片分離聲音 -->
+<button class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/35 text-xs font-medium transition active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed" data-i18n-title="titleDetachAudio" disabled="" id="btnDetachAudio" title="將選中影片的聲音分離到獨立音軌">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden md:inline" data-i18n="btnDetachAudio">分離音訊</span>
+</button>
+<!-- 刪除片段 -->
+<button class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-medium transition active:scale-95" data-i18n-title="titleDeleteClip" id="btnDeleteClip" title="刪除選中片段 (Delete)">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden md:inline" data-i18n="btnDeleteClip">刪除</span>
+</button>
+<!-- 一鍵消除空隙 -->
+<button class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium transition active:scale-95" data-i18n-title="titleCloseGaps" id="btnCloseGaps" title="將同軌道的所有片段緊密相連，消除中間空白">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M8 7h8m-8 5h8m-8 5h8M4 12l2-2m-2 2l2 2m14-2l-2-2m2 2l-2 2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden sm:inline" data-i18n="btnCloseGaps">緊密合併</span>
+</button>
+</div>
+<!-- 中央：播放控制與精準時間顯示 -->
 
-            <!-- 上半部：素材庫 + 影片預覽視窗 + 選中片段屬性面板 -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-                <!-- 左側：已匯入影音素材庫 (4 欄) -->
-                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col gap-2.5">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                            <span data-i18n="assetsTitle">已匯入影音素材</span>
-                            <span id="assetCountBadge" class="px-1.5 py-0.5 rounded-md bg-slate-800 text-sky-400 font-mono text-[11px]">0</span>
-                        </h2>
-                        <button id="btnAddMoreAssets" class="text-xs font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1 transition">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span data-i18n="btnAddMoreAssets">新增素材</span>
-                        </button>
-                    </div>
-                    <div id="assetList" class="flex flex-col gap-1.5 max-h-52 overflow-y-auto pr-1">
-                        <!-- 動態產生素材項目 -->
-                    </div>
-                </div>
-
-                <!-- 中央：即時 16:9 影片預覽視窗 (4 欄) -->
-                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3 flex flex-col gap-2">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-                            <span data-i18n="previewTitle">影片畫面預覽</span>
-                        </h2>
-                        <span id="previewMetaBadge" class="text-[11px] font-mono text-slate-400">16:9</span>
-                    </div>
-                    <div id="videoPreviewBox" class="relative w-full aspect-video rounded-xl bg-black border border-daw-border overflow-hidden flex items-center justify-center cursor-pointer group">
-                        <canvas id="videoPreviewCanvas" class="w-full h-full block"></canvas>
-                        <div id="previewEmptyHint" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 text-xs pointer-events-none px-4 text-center">
-                            <svg class="w-8 h-8 mb-1.5 opacity-40" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            <span data-i18n="previewNoVideo">尚無影片畫面（加入 MP4 / MOV / MKV 即可預覽）</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 右側：選中片段精細控制面板 (4 欄) -->
-                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col justify-between gap-3">
-                    <div class="flex flex-col gap-1">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <span id="inspectorDot" class="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0"></span>
-                                <h2 id="inspectorTitle" class="text-sm font-semibold text-white truncate">請點選時間軸上的片段以調整屬性</h2>
-                            </div>
-                        </div>
-                        <span id="inspectorRange" class="text-xs font-mono text-slate-400"></span>
-                    </div>
-
-                    <!-- 屬性滑桿列 -->
-                    <div id="inspectorControls" class="grid grid-cols-1 gap-2.5 opacity-40 pointer-events-none transition-opacity">
-                        <!-- 音量 -->
-                        <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
-                            <div class="flex justify-between text-xs">
-                                <span data-i18n="labelClipVol" class="text-slate-400">片段音量</span>
-                                <span id="clipVolVal" class="font-mono text-sky-300">100%</span>
-                            </div>
-                            <input id="clipVolSlider" type="range" min="0" max="200" value="100" class="w-full accent-sky-400 cursor-pointer">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2.5">
-                            <!-- 淡入 -->
-                            <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
-                                <div class="flex justify-between text-xs">
-                                    <span data-i18n="labelFadeIn" class="text-slate-400">淡入</span>
-                                    <span id="clipFadeInVal" class="font-mono text-sky-300">0.0s</span>
-                                </div>
-                                <input id="clipFadeInSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
-                            </div>
-
-                            <!-- 淡出 -->
-                            <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
-                                <div class="flex justify-between text-xs">
-                                    <span data-i18n="labelFadeOut" class="text-slate-400">淡出</span>
-                                    <span id="clipFadeOutVal" class="font-mono text-sky-300">0.0s</span>
-                                </div>
-                                <input id="clipFadeOutSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 中央：剪輯工具列 + 多軌時間軸核心 (仿剪映風格) -->
-            <div id="timelineWrapper" class="rounded-2xl bg-daw-panel border border-daw-border overflow-hidden flex flex-col shadow-2xl">
-
-                <!-- 時間軸工具列 -->
-                <div class="px-3 py-2.5 border-b border-daw-border bg-[#17171c] flex flex-wrap items-center justify-between gap-2">
-
-                    <!-- 左側：還原 / 分割 (Ctrl+B) / 裁剪左右 / 複製 / 刪除 -->
-                    <div class="flex flex-wrap items-center gap-1.5">
-                        <!-- 還原與重做 -->
-                        <div class="flex items-center bg-daw-bg rounded-xl p-0.5 border border-daw-border">
-                            <button id="btnUndo" disabled data-i18n-title="titleUndo" title="還原 (Ctrl+Z)" class="p-2 rounded-lg text-slate-300 hover:bg-daw-hover disabled:opacity-30 transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                                </svg>
-                            </button>
-                            <button id="btnRedo" disabled data-i18n-title="titleRedo" title="重做 (Ctrl+Y)" class="p-2 rounded-lg text-slate-300 hover:bg-daw-hover disabled:opacity-30 transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- 分割 (Ctrl+B) -->
-                        <button id="btnSplit" data-i18n-title="titleSplit" title="在播放頭位置分割片段 (Ctrl+B)" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-daw-hover hover:bg-sky-600/30 hover:text-sky-300 text-slate-100 border border-daw-border hover:border-sky-500/40 text-xs font-semibold transition active:scale-95">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 5h2a1 1 0 011 1v12a1 1 0 01-1 1H7m10-14h-2a1 1 0 00-1 1v12a1 1 0 001 1h2" />
-                            </svg>
-                            <span data-i18n="btnSplit">分割</span>
-                            <kbd class="hidden sm:inline text-[10px] px-1 py-0.2 rounded bg-black/40 text-slate-400 font-mono">Ctrl+B</kbd>
-                        </button>
-
-                        <!-- 刪除左側 / 刪除右側 -->
-                        <button id="btnTrimLeft" data-i18n-title="titleTrimLeft" title="刪除播放頭左側內容" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition active:scale-95" aria-label="刪除左側">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 5h2v14H6M14 5h4v14h-4" stroke-dasharray="2 2"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5h4v14h-4" />
-                            </svg>
-                        </button>
-                        <button id="btnTrimRight" data-i18n-title="titleTrimRight" title="刪除播放頭右側內容" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition active:scale-95" aria-label="刪除右側">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 5h4v14H6" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 5h2v14h-2" stroke-dasharray="2 2"/>
-                            </svg>
-                        </button>
-
-                        <!-- 複製片段 -->
-                        <button id="btnDuplicate" data-i18n-title="titleDuplicate" title="複製選中片段 (Ctrl+D)" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border text-xs font-medium transition active:scale-95">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            <span data-i18n="btnDuplicate" class="hidden md:inline">複製</span>
-                        </button>
-
-                        <!-- 影片分離聲音 -->
-                        <button id="btnDetachAudio" disabled data-i18n-title="titleDetachAudio" title="將選中影片的聲音分離到獨立音軌" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/35 text-xs font-medium transition active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                            </svg>
-                            <span data-i18n="btnDetachAudio" class="hidden md:inline">分離音訊</span>
-                        </button>
-
-                        <!-- 刪除片段 -->
-                        <button id="btnDeleteClip" data-i18n-title="titleDeleteClip" title="刪除選中片段 (Delete)" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-medium transition active:scale-95">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            <span data-i18n="btnDeleteClip" class="hidden md:inline">刪除</span>
-                        </button>
-
-                        <!-- 一鍵消除空隙 -->
-                        <button id="btnCloseGaps" data-i18n-title="titleCloseGaps" title="將同軌道的所有片段緊密相連，消除中間空白" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium transition active:scale-95">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8m-8 5h8m-8 5h8M4 12l2-2m-2 2l2 2m14-2l-2-2m2 2l-2 2" />
-                            </svg>
-                            <span data-i18n="btnCloseGaps" class="hidden sm:inline">緊密合併</span>
-                        </button>
-                    </div>
-
-                    <!-- 中央：播放控制與精準時間顯示 -->
-                    <div class="flex items-center gap-2">
-                        <button id="btnGoStart" data-i18n-title="titleGoStart" title="跳至開頭" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                            </svg>
-                        </button>
-                        <button id="btnPlayPause" data-i18n-title="titlePlayPause" title="播放 / 暫停 (Space)" class="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-md shadow-sky-600/25 transition active:scale-95 min-w-[84px]">
-                            <svg id="iconPlay" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <svg id="iconPause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                            </svg>
-                            <span id="textPlayPause">播放</span>
-                        </button>
-                        <div class="px-3 py-1.5 rounded-xl bg-daw-bg border border-daw-border font-mono text-xs sm:text-sm">
-                            <span id="currentTimeDisplay" class="text-sky-400 font-semibold">00:00.00</span>
-                            <span class="text-slate-600 mx-1">/</span>
-                            <span id="totalTimeDisplay" class="text-slate-300">00:00.00</span>
-                        </div>
-                    </div>
-
-                    <!-- 右側：磁吸開關 + 縮放控制 -->
-                    <div class="flex items-center gap-2">
-                        <button id="btnSnapToggle" data-i18n-title="titleSnap" title="開啟/關閉自動吸附 (磁吸對齊)" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-500/40 text-xs font-medium transition">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            <span data-i18n="btnSnap" class="hidden xl:inline">吸附</span>
-                        </button>
-
-                        <div class="flex items-center bg-daw-bg rounded-xl p-0.5 border border-daw-border">
-                            <button id="btnZoomOut" data-i18n-title="titleZoomOut" title="縮小時間軸" class="p-1.5 rounded-lg text-slate-300 hover:bg-daw-hover transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
-                                </svg>
-                            </button>
-                            <input id="zoomSlider" type="range" min="1" max="100" value="25" class="w-16 sm:w-24 mx-1 accent-sky-400 cursor-pointer">
-                            <button id="btnZoomIn" data-i18n-title="titleZoomIn" title="放大時間軸" class="p-1.5 rounded-lg text-slate-300 hover:bg-daw-hover transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                                </svg>
-                            </button>
-                            <button id="btnZoomFit" data-i18n="btnZoomFit" data-i18n-title="titleZoomFit" title="檢視全部片段" class="px-2 py-1 text-[11px] font-medium text-slate-300 hover:bg-daw-hover rounded-lg transition">
+<!-- 右側：磁吸開關 + 縮放控制 -->
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-500/40 text-xs font-medium transition" data-i18n-title="titleSnap" id="btnSnapToggle" title="開啟/關閉自動吸附 (磁吸對齊)">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden xl:inline" data-i18n="btnSnap">吸附</span>
+</button>
+<div class="flex items-center bg-daw-bg rounded-xl p-0.5 border border-daw-border">
+<button class="p-1.5 rounded-lg text-slate-300 hover:bg-daw-hover transition" data-i18n-title="titleZoomOut" id="btnZoomOut" title="縮小時間軸">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M20 12H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<input class="w-16 sm:w-24 mx-1 accent-sky-400 cursor-pointer" id="zoomSlider" max="100" min="1" type="range" value="25"/>
+<button class="p-1.5 rounded-lg text-slate-300 hover:bg-daw-hover transition" data-i18n-title="titleZoomIn" id="btnZoomIn" title="放大時間軸">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button class="px-2 py-1 text-[11px] font-medium text-slate-300 hover:bg-daw-hover rounded-lg transition" data-i18n="btnZoomFit" data-i18n-title="titleZoomFit" id="btnZoomFit" title="檢視全部片段">
                                 全部
                             </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 時間軸主體：左側軌道標頭 + 右側高效率 Canvas 時間軸 -->
-                <div class="flex relative min-h-[260px] select-none">
-                    <!-- 左側軌道控制欄 -->
-                    <div id="trackHeadersCol" class="w-32 sm:w-40 shrink-0 bg-[#17171c] border-r border-daw-border flex flex-col z-10">
-                        <!-- 對應頂部時間尺高度的空白區 -->
-                        <div class="h-8 border-b border-daw-border px-2 flex items-center justify-between gap-1">
-                            <button id="btnAddVideoTrack" data-i18n="btnAddVideoTrack" data-i18n-title="titleAddVideoTrack" title="新增一條影片軌" class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 hover:bg-indigo-500/35 text-indigo-300 font-semibold transition">
+</div>
+</div>
+</div>
+<!-- 時間軸主體：左側軌道標頭 + 右側高效率 Canvas 時間軸 -->
+<div class="flex relative min-h-[260px] select-none">
+<!-- 左側軌道控制欄 -->
+<div class="w-32 sm:w-40 shrink-0 bg-[#17171c] border-r border-daw-border flex flex-col z-10" id="trackHeadersCol">
+<!-- 對應頂部時間尺高度的空白區 -->
+<div class="h-8 border-b border-daw-border px-2 flex items-center justify-between gap-1">
+<button class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 hover:bg-indigo-500/35 text-indigo-300 font-semibold transition" data-i18n="btnAddVideoTrack" data-i18n-title="titleAddVideoTrack" id="btnAddVideoTrack" title="新增一條影片軌">
                                 + 影片軌
                             </button>
-                            <button id="btnAddAudioTrack" data-i18n="btnAddAudioTrack" data-i18n-title="titleAddAudioTrack" title="新增一條音軌" class="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 hover:bg-sky-500/35 text-sky-300 font-semibold transition">
+<button class="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 hover:bg-sky-500/35 text-sky-300 font-semibold transition" data-i18n="btnAddAudioTrack" data-i18n-title="titleAddAudioTrack" id="btnAddAudioTrack" title="新增一條音軌">
                                 + 音軌
                             </button>
-                        </div>
-                        <!-- 動態產生的軌道標頭 -->
-                        <div id="trackHeadersList" class="flex flex-col"></div>
-                    </div>
-
-                    <!-- 右側時間軸畫布容器 -->
-                    <div id="timelineCanvasContainer" class="flex-1 relative bg-daw-bg overflow-hidden touch-none">
-                        <canvas id="timelineCanvas" class="block w-full h-full"></canvas>
-                    </div>
-                </div>
-
-                <!-- 時間軸水平捲動條與提示 -->
-                <div class="px-3 py-2 border-t border-daw-border bg-[#17171c] flex items-center gap-3">
-                    <span data-i18n="scrollLabel" class="text-[11px] text-slate-500 hidden sm:inline shrink-0">時間軸捲動</span>
-                    <input id="timelineScrollSlider" type="range" min="0" max="1000" value="0" class="flex-1 accent-slate-500 cursor-pointer h-1.5">
-                    <span data-i18n="timelineHint" class="text-[11px] text-slate-400 hidden md:inline shrink-0">提示：拖曳片段可任意移動或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割</span>
-                </div>
-            </div>
-
-            <!-- 底部：合併匯出設定列 (支援 MP4 / MOV / MKV 影片與 MP3 / WAV 音訊) -->
-            <div class="rounded-2xl bg-gradient-to-r from-daw-panel via-daw-panel to-indigo-950/35 border border-indigo-500/30 p-4 flex flex-col gap-3 shadow-xl">
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
-                        <div>
-                            <label for="exportFilename" data-i18n="labelExportName" class="block text-xs text-slate-400 mb-1 font-medium">合併後輸出檔名</label>
-                            <input id="exportFilename" type="text" value="WaveCut_Export" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                        </div>
-                        <div>
-                            <label for="exportFormat" data-i18n="labelExportFormat" class="block text-xs text-slate-400 mb-1 font-medium">輸出格式</label>
-                            <select id="exportFormat" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                                <option value="mp4" data-i18n="optFormatMp4">MP4 影片 (H.264 + AAC 通用格式)</option>
-                                <option value="mov" data-i18n="optFormatMov">MOV 影片 (QuickTime 格式)</option>
-                                <option value="mkv" data-i18n="optFormatMkv">MKV 影片 (Matroska 格式)</option>
-                                <option value="mp3" data-i18n="optFormatMp3" selected>MP3 純音訊 (本機即時編碼)</option>
-                                <option value="wav" data-i18n="optFormatWav">WAV 純音訊 (無損原始音質)</option>
-                            </select>
-                        </div>
-                        <!-- 音訊位元率選項 (選 MP3 時顯示) -->
-                        <div id="bitrateWrapper">
-                            <label for="exportBitrate" data-i18n="labelExportBitrate" class="block text-xs text-slate-400 mb-1 font-medium">MP3 音質 (Bitrate)</label>
-                            <select id="exportBitrate" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                                <option value="128" data-i18n="optBit128">128 kbps (標準體積)</option>
-                                <option value="192" data-i18n="optBit192" selected>192 kbps (高音質)</option>
-                                <option value="320" data-i18n="optBit320">320 kbps (極致音質)</option>
-                            </select>
-                        </div>
-                        <!-- 影片解析度選項 (選 MP4 / MOV / MKV 時顯示) -->
-                        <div id="videoResWrapper" class="hidden">
-                            <label for="exportVideoRes" data-i18n="labelExportVideoRes" class="block text-xs text-slate-400 mb-1 font-medium">影片輸出解析度</label>
-                            <select id="exportVideoRes" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                                <option value="2160" data-i18n="optRes2160">4K UHD (3840×2160・超清畫質・編碼較耗時)</option>
-                                <option value="1080" data-i18n="optRes1080">1080p Full HD (1920×1080・高畫質)</option>
-                                <option value="720" data-i18n="optRes720" selected>720p HD (1280×720・快速本機編碼)</option>
-                                <option value="480" data-i18n="optRes480">480p SD (854×480・極速小檔)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button id="btnExport" class="w-full md:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-sky-600/25 flex items-center justify-center gap-2 transition active:scale-95 shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        <span>合併並下載 MP3</span>
-                    </button>
-                </div>
-
-                <!-- 匯出進度條 -->
-                <div id="exportProgressContainer" class="hidden flex-col gap-1.5 pt-1">
-                    <div class="flex items-center justify-between gap-2 text-xs">
-                        <span id="exportProgressText" class="text-sky-300 font-medium truncate">正在本機處理與編碼...</span>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <span id="exportProgressPercent" class="font-mono text-emerald-300 font-semibold">0%</span>
-                            <button id="btnCancelExport" type="button" data-i18n="btnCancelExport" class="hidden px-2 py-0.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 border border-rose-500/40 text-[11px] font-semibold transition">
+</div>
+<!-- 動態產生的軌道標頭 -->
+<div class="flex flex-col" id="trackHeadersList"></div>
+</div>
+<!-- 右側時間軸畫布容器 -->
+<div class="flex-1 relative bg-daw-bg overflow-hidden touch-none" id="timelineCanvasContainer">
+<canvas class="block w-full h-full" id="timelineCanvas"></canvas>
+</div>
+</div>
+<!-- 時間軸水平捲動條與提示 -->
+<div class="px-3 py-2 border-t border-daw-border bg-[#17171c] flex items-center gap-3">
+<span class="text-[11px] text-slate-500 hidden sm:inline shrink-0" data-i18n="scrollLabel">時間軸捲動</span>
+<input class="flex-1 accent-slate-500 cursor-pointer h-1.5" id="timelineScrollSlider" max="1000" min="0" type="range" value="0"/>
+<span class="text-[11px] text-slate-400 hidden md:inline shrink-0" data-i18n="timelineHint">提示：拖曳片段可任意移動或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割</span>
+</div>
+</div>
+<!-- 底部：合併匯出設定列 (支援 MP4 / MOV / MKV 影片與 MP3 / WAV 音訊) -->
+<div aria-labelledby="wcExportTitle" aria-modal="true" class="wc-export-overlay" hidden="" id="wcExportOverlay" role="dialog"><div class="wc-export-panel" id="wcExportPanel"><div class="wc-export-heading"><h2 data-i18n="wcExportTitle" id="wcExportTitle">匯出作品</h2><button aria-label="Close" data-i18n-title="wcClose" id="wcCloseExport" type="button">×</button></div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
+<div>
+<label class="block text-xs text-slate-400 mb-1 font-medium" data-i18n="labelExportName" for="exportFilename">合併後輸出檔名</label>
+<input class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500" id="exportFilename" type="text" value="WaveCut_Export"/>
+</div>
+<div>
+<label class="block text-xs text-slate-400 mb-1 font-medium" data-i18n="labelExportFormat" for="exportFormat">輸出格式</label>
+<select class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500" id="exportFormat">
+<option data-i18n="optFormatMp4" value="mp4">MP4 影片 (H.264 + AAC 通用格式)</option>
+<option data-i18n="optFormatMov" value="mov">MOV 影片 (QuickTime 格式)</option>
+<option data-i18n="optFormatMkv" value="mkv">MKV 影片 (Matroska 格式)</option>
+<option data-i18n="optFormatMp3" selected="" value="mp3">MP3 純音訊 (本機即時編碼)</option>
+<option data-i18n="optFormatWav" value="wav">WAV 純音訊 (無損原始音質)</option>
+</select>
+</div>
+<!-- 音訊位元率選項 (選 MP3 時顯示) -->
+<div id="bitrateWrapper">
+<label class="block text-xs text-slate-400 mb-1 font-medium" data-i18n="labelExportBitrate" for="exportBitrate">MP3 音質 (Bitrate)</label>
+<select class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500" id="exportBitrate">
+<option data-i18n="optBit128" value="128">128 kbps (標準體積)</option>
+<option data-i18n="optBit192" selected="" value="192">192 kbps (高音質)</option>
+<option data-i18n="optBit320" value="320">320 kbps (極致音質)</option>
+</select>
+</div>
+<!-- 影片解析度選項 (選 MP4 / MOV / MKV 時顯示) -->
+<div class="hidden" id="videoResWrapper">
+<label class="block text-xs text-slate-400 mb-1 font-medium" data-i18n="labelExportVideoRes" for="exportVideoRes">影片輸出解析度</label>
+<select class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" id="exportVideoRes">
+<option data-i18n="optRes2160" value="2160">4K UHD (3840×2160・超清畫質・編碼較耗時)</option>
+<option data-i18n="optRes1080" value="1080">1080p Full HD (1920×1080・高畫質)</option>
+<option data-i18n="optRes720" selected="" value="720">720p HD (1280×720・快速本機編碼)</option>
+<option data-i18n="optRes480" value="480">480p SD (854×480・極速小檔)</option>
+</select>
+</div>
+</div>
+<button class="w-full md:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-sky-600/25 flex items-center justify-center gap-2 transition active:scale-95 shrink-0" id="btnExport">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>合併並下載 MP3</span>
+</button>
+</div>
+<!-- 匯出進度條 -->
+<div class="hidden flex-col gap-1.5 pt-1" id="exportProgressContainer">
+<div class="flex items-center justify-between gap-2 text-xs">
+<span class="text-sky-300 font-medium truncate" id="exportProgressText">正在本機處理與編碼...</span>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-mono text-emerald-300 font-semibold" id="exportProgressPercent">0%</span>
+<button class="hidden px-2 py-0.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 border border-rose-500/40 text-[11px] font-semibold transition" data-i18n="btnCancelExport" id="btnCancelExport" type="button">
                                 取消匯出
                             </button>
-                        </div>
-                    </div>
-                    <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                        <div id="exportProgressBar" class="h-full bg-gradient-to-r from-sky-500 via-indigo-400 to-emerald-400 transition-all duration-150 rounded-full" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 頁尾 -->
-    <footer data-i18n="footerText" class="border-t border-daw-border py-3 text-center text-xs text-slate-500">
+</div>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-sky-500 via-indigo-400 to-emerald-400 transition-all duration-150 rounded-full" id="exportProgressBar" style="width: 0%"></div>
+</div>
+</div>
+</div></div>
+</section>
+</main>
+<!-- 頁尾 -->
+<footer class="border-t border-daw-border py-3 text-center text-xs text-slate-500" data-i18n="footerText">
         WaveCut Pro • 100% 本機多軌影音剪輯與合併引擎 • 支援 MP4 / MOV / MKV 剪片與 MP3 / WAV 混音
     </footer>
-
-    <!-- 非阻塞式通知 (Toast) -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
-
-    <script>
+<!-- 非阻塞式通知 (Toast) -->
+<div class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none" id="toastContainer"></div>
+<script>
         /**
          * ============================================================================
          * WaveCut Pro v3 — 多軌本機影音剪輯合併引擎 (100% 瀏覽器本機運行)
@@ -897,6 +902,13 @@
             return text;
         }
 
+        const ccTranslations = {
+            'zh-TW': ['Auto-Captions 自動字幕','收合字幕面板','展開字幕面板','Whisper AI 辨識目前時間軸混音；首次需連網下載模型，影音不會上傳。字幕使用時間軸絕對時間，剪輯後請檢查或重新生成。','辨識語言','自動辨識','廣東話（以中文模型辨識）','AI 模型','Tiny · 快速','Base · 較準確','Small · 較慢','✦ 生成自動字幕','取消辨識','＋ 手動字幕','清除全部','預覽字幕','影片匯出燒錄字幕','字體大小','小','中','大','文字顏色','下載 SRT','下載 VTT','準備就緒','時間軸影音已變更：字幕時間可能不再同步，請檢查或重新生成。','字幕軌','尚無字幕，請先生成或手動新增。','開始秒數','結束秒數','字幕文字','跳至此字幕','刪除字幕','正在混音及準備 16 kHz 語音…','正在下載／載入 AI 模型','正在辨識語音（長影片可能需數分鐘以上）…','已生成 {n} 段字幕','未辨識到語音','已取消辨識','字幕辨識失敗','將取代現有字幕，是否繼續？','時間軸沒有可辨識的音訊。','請輸入有效的字幕時間（結束須大於開始且不得超出影片長度）。','字幕可能已不同步，仍要繼續嗎？','新增字幕','字幕','目前正在辨識，請先完成或取消。','字幕需先匯入影音。'],
+            'zh-CN': ['Auto-Captions 自动字幕','收起字幕面板','展开字幕面板','Whisper AI 识别当前时间轴混音；首次需联网下载模型，影音不会上传。字幕使用时间轴绝对时间，剪辑后请检查或重新生成。','识别语言','自动识别','粤语（使用中文模型识别）','AI 模型','Tiny · 快速','Base · 较准确','Small · 较慢','✦ 生成自动字幕','取消识别','＋ 手动字幕','清除全部','预览字幕','视频导出烧录字幕','字体大小','小','中','大','文字颜色','下载 SRT','下载 VTT','准备就绪','时间轴影音已变更：字幕时间可能不再同步，请检查或重新生成。','字幕轨','暂无字幕，请先生成或手动添加。','开始秒数','结束秒数','字幕文字','跳至此字幕','删除字幕','正在混音及准备 16 kHz 语音…','正在下载／加载 AI 模型','正在识别语音（长视频可能需数分钟以上）…','已生成 {n} 段字幕','未识别到语音','已取消识别','字幕识别失败','将替换现有字幕，是否继续？','时间轴没有可识别的音频。','请输入有效字幕时间（结束须大于开始且不得超出视频长度）。','字幕可能已不同步，仍要继续吗？','新增字幕','字幕','当前正在识别，请先完成或取消。','字幕需先导入影音。'],
+            en: ['Auto-Captions','Collapse captions','Expand captions','Whisper AI transcribes the current timeline mix. Internet is needed to download models; media stays on your device. Captions use absolute timeline times: review or regenerate after editing.','Speech language','Auto-detect','Cantonese (Chinese model)','AI model','Tiny · Fast','Base · More accurate','Small · Slower','✦ Generate captions','Cancel recognition','＋ Manual caption','Clear all','Preview captions','Burn captions into video','Font size','Small','Medium','Large','Text color','Download SRT','Download VTT','Ready','Media timeline changed: caption timing may be out of sync. Review or regenerate.','Caption track','No captions yet. Generate or add manually.','Start seconds','End seconds','Caption text','Seek to caption','Delete caption','Mixing audio and preparing 16 kHz speech…','Downloading / loading AI model','Recognizing speech (long videos may take several minutes or more)…','Generated {n} captions','No speech recognized','Recognition cancelled','Caption recognition failed','Replace existing captions?','No recognizable audio on the timeline.','Enter valid caption times (end must exceed start and not exceed the timeline).','Captions may be out of sync. Continue?','New caption','captions','Recognition is running. Finish or cancel first.','Import media before adding captions.']
+        };
+        const ccKeys = 'Title Collapse Expand Help Language Auto Cantonese Model Tiny Base Small Generate Cancel Add Clear Visible Burn Size SizeSmall SizeMedium SizeLarge Color Srt Vtt Ready Stale Track Empty Start End Text Seek Delete Mixing Loading Recognizing Done NoSpeech Cancelled Failed Replace NoAudio Invalid ConfirmStale New Count Busy NeedMedia'.split(' ');
+        Object.entries(ccTranslations).forEach(([lang, values]) => ccKeys.forEach((key, i) => I18N[lang]['cc'+key] = values[i]));
         const RULER_HEIGHT = 32;
         const VIDEO_TRACK_HEIGHT = 90;
         const AUDIO_TRACK_HEIGHT = 76;
@@ -922,6 +934,10 @@
             // { id, assetId, trackId, type: 'video'|'audio', name, startTime, offset, duration, volume, fadeIn, fadeOut }
             clips: [],
             selectedClipId: null,
+            captions: [],
+            captionSignature: null,
+            captionBusy: false,
+            captionSelected: null,
 
             // 還原 / 重做堆疊
             history: [],
@@ -1075,6 +1091,10 @@
             renderAssetList();
             renderTrackHeaders();
             updateInspectorUI();
+            renderCaptions();
+            ccUpdateStatus();
+            ccToggleLabel();
+            fxControls();
         }
 
         function genId(prefix = 'id') {
@@ -1223,6 +1243,8 @@
                 tracks: state.tracks.map(tr => ({ ...tr })),
                 clips: state.clips.map(c => ({ ...c })),
                 selectedClipId: state.selectedClipId,
+                captions: state.captions.map(c => ({...c})),
+                captionSignature: state.captionSignature,
             };
         }
 
@@ -1239,6 +1261,9 @@
             state.tracks = snap.tracks.map(tr => ({ ...tr }));
             state.clips = snap.clips.map(c => ({ ...c }));
             state.selectedClipId = snap.selectedClipId;
+            state.captions = (snap.captions || []).map(c => ({...c}));
+            state.captionSignature = snap.captionSignature || null;
+            state.captionSelected = null;
             if (state.isPlaying) {
                 startPlayback(state.playhead);
             }
@@ -1791,7 +1816,7 @@
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, cw, ch);
 
-            if (!videoEl || videoEl.readyState < 2) return;
+            if (!videoEl || videoEl.readyState < 2) { if (cc$("ccVisible").checked) drawCaptions(ctx, cw, ch, state.playhead); return; }
 
             const vw = videoEl.videoWidth || width || 16;
             const vh = videoEl.videoHeight || height || 9;
@@ -1800,7 +1825,9 @@
             const dh = vh * scale;
             const dx = (cw - dw) / 2;
             const dy = (ch - dh) / 2;
-            ctx.drawImage(videoEl, dx, dy, dw, dh);
+            fxPaintFrame(ctx, videoEl, dx, dy, dw, dh);
+            fxDrawMask(ctx,cw,ch,state.playhead,getActiveVideoClipAt(state.playhead));
+            if (cc$("ccVisible").checked) drawCaptions(ctx, cw, ch, state.playhead);
         }
 
         function clearVideoPreview() {
@@ -1812,6 +1839,7 @@
             const ctx = canvas.getContext('2d');
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (cc$("ccVisible").checked) drawCaptions(ctx, canvas.width, canvas.height, state.playhead);
         }
 
         let lastSeekRequest = 0;
@@ -1819,7 +1847,7 @@
         /** 根據目前 playhead 同步更新影片預覽視窗 (防重複 seek 卡頓與平順微調倍速同步) */
         function syncVideoPreview(isPlayingNow) {
             const hasAnyVideo = state.clips.some(c => c.type === 'video');
-            dom.previewEmptyHint.classList.toggle('hidden', hasAnyVideo);
+            dom.previewEmptyHint.classList.toggle('hidden', hasAnyVideo || (cc$('ccVisible').checked && ccActive(state.playhead).length > 0));
 
             const activeClip = getActiveVideoClipAt(state.playhead);
 
@@ -1898,6 +1926,7 @@
             updateScrollSliderBounds();
             resizeCanvas();
             syncVideoPreview(state.isPlaying);
+            renderCaptions();
         }
 
         function renderAssetList() {
@@ -2029,13 +2058,19 @@
                 dom.trackHeadersList.appendChild(div);
             });
 
-            let totalH = RULER_HEIGHT + 20;
+            const ccHeader = document.createElement('div');
+            ccHeader.className = 'px-2.5 py-2 bg-violet-500/10 text-violet-300 text-xs font-semibold border-b border-daw-border';
+            ccHeader.style.cssText = 'height:46px;margin-top:4px';
+            ccHeader.textContent = 'CC · ' + t('ccTrack');
+            dom.trackHeadersList.appendChild(ccHeader);
+            let totalH = RULER_HEIGHT + 20 + 46;
             for (const tr of state.tracks) totalH += getTrackHeight(tr) + TRACK_GAP;
             dom.timelineCanvasContainer.style.minHeight = `${Math.max(220, totalH)}px`;
         }
 
         function updateInspectorUI() {
             const clip = state.clips.find(c => c.id === state.selectedClipId);
+            fxCutUI();
             if (!clip) {
                 dom.inspectorTitle.textContent = t('inspectorEmpty');
                 dom.inspectorRange.textContent = '';
@@ -2326,6 +2361,11 @@
                     ctx.fillText(clip.name, Math.max(x1 + 6, 4), y + 14);
                 }
 
+                if (clip.type==='video' && w>=24 && fxNeighbor(clip,-1)) {
+                    ctx.fillStyle=fxCutSettings(clip).style==='off'?'#28343d':'#087f83';ctx.fillRect(x1+3,y+19,22,18);
+                    ctx.strokeStyle='#84e8e3';ctx.lineWidth=1;ctx.strokeRect(x1+3.5,y+19.5,21,17);
+                    ctx.fillStyle='#ffffff';ctx.font='bold 10px sans-serif';ctx.fillText(fxCutSettings(clip).style==='off'?'+':'FX',x1+8,y+32);
+                }
                 ctx.restore();
 
                 // 片段外框
@@ -2348,6 +2388,17 @@
                 }
             }
 
+            // Caption track (independent of audio/video clips)
+            const ccY = getTrackY(state.tracks.length);
+            ctx.fillStyle = '#231b32'; ctx.fillRect(0, ccY, width, 46);
+            for (const c of state.captions) {
+                const x = timeToX(c.start), w = (c.end-c.start)*state.pixelsPerSecond;
+                if (x+w<0 || x>width || w<=0) continue;
+                ctx.save(); ctx.beginPath(); ctx.rect(Math.max(0,x),ccY+4,Math.min(width,x+w)-Math.max(0,x),38); ctx.clip();
+                ctx.fillStyle = c.id===state.captionSelected ? '#7c3aed' : '#503179'; ctx.fillRect(x,ccY+4,w,38);
+                ctx.fillStyle='#f5e9ff'; ctx.font='600 11px Inter, Noto Sans TC, sans-serif'; ctx.fillText(c.text.replace(/\n/g,' '),Math.max(x+5,4),ccY+26); ctx.restore();
+            }
+            if (!state.isPlaying) ccCheckStale();
             // 5. 繪製白色播放頭
             const px = timeToX(state.playhead);
             if (px >= -10 && px <= width + 10) {
@@ -2429,7 +2480,13 @@
         function handlePointerDown(e) {
             if (e.cancelable) e.preventDefault();
             const { x, y } = getCanvasCoords(e);
+            if (typeof wcTryCut === 'function' && wcTryCut(x,y)) return;
 
+            if (y >= getTrackY(state.tracks.length)) {
+                const time = xToTime(x);
+                const cue = state.captions.find(c => time >= c.start && time < c.end);
+                if (cue) { ccSeek(cue); return; }
+            }
             if (y <= RULER_HEIGHT) {
                 state.playhead = xToTime(x);
                 state.drag = { type: 'playhead' };
@@ -2593,6 +2650,7 @@
                 offset: clip.offset + splitRel,
                 duration: clip.duration - splitRel,
                 fadeIn: 0,
+                fxInStyle: "off", fxInDuration: 0.8, fxInColor: "#000000",
             };
 
             clip.duration = splitRel;
@@ -2647,6 +2705,7 @@
                 ...clip,
                 id: genId('clip'),
                 startTime: clip.startTime + clip.duration,
+                fxInStyle: "off", fxInDuration: 0.8, fxInColor: "#000000",
             };
             state.clips.push(dup);
             state.selectedClipId = dup.id;
@@ -2935,13 +2994,13 @@
         // 12. 離線混音 & 本機 MP4 / MOV / MKV / MP3 / WAV 匯出引擎
         // -----------------------------
 
-        async function renderTimelineToBuffer(allowSilent = false, targetSampleRate = null) {
+        async function renderTimelineToBuffer(allowSilent = false, targetSampleRate = null, channels = 2) {
             const totalDur = getTotalDuration();
             if (totalDur <= 0.02) throw new Error(t('errNoAudio'));
 
             const sampleRate = targetSampleRate || (state.audioCtx ? state.audioCtx.sampleRate : 44100);
             const totalSamples = Math.ceil(totalDur * sampleRate);
-            const offlineCtx = new OfflineAudioContext(2, totalSamples, sampleRate);
+            const offlineCtx = new OfflineAudioContext(channels, totalSamples, sampleRate);
             const anyAudioSolo = state.tracks.some(tr => tr.type === 'audio' && tr.solo);
             const anyVideoSolo = state.tracks.some(tr => tr.type === 'video' && tr.solo);
 
@@ -3362,11 +3421,13 @@
                                 const scale = Math.min(W / vw, H / vh);
                                 const dw = vw * scale;
                                 const dh = vh * scale;
-                                octx.drawImage(vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
+                                fxPaintFrame(octx, vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
                             }
                         }
                     }
 
+                    fxDrawMask(octx,W,H,tSec,activeClip);
+                    if (cc$('ccBurn').checked) drawCaptions(octx, W, H, tSec);
                     // 佇列背壓等待，確保 GPU/CPU 不超載
                     while (videoEncoder.encodeQueueSize >= maxQueue) {
                         if (state.exportCancelled) throw new Error('CANCELLED');
@@ -3522,7 +3583,7 @@
                 : (format === 'mkv' ? 'mkv' : 'webm');
 
             return new Promise((resolve, reject) => {
-                let rafId = null;
+                let rafId = null, fxRenderError=null;
                 const audioSrc = audioCtx.createBufferSource();
                 audioSrc.buffer = mergedAudioBuf;
                 audioSrc.connect(audioDest);
@@ -3547,6 +3608,7 @@
 
                 recorder.onstop = () => {
                     cleanup();
+                    if(fxRenderError){reject(fxRenderError);return;}
                     if (state.exportCancelled) {
                         reject(new Error('CANCELLED'));
                         return;
@@ -3614,11 +3676,13 @@
                                 const scale = Math.min(W / vw, H / vh);
                                 const dw = vw * scale;
                                 const dh = vh * scale;
-                                octx.drawImage(vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
+                                try{fxPaintFrame(octx, vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);}catch(e){fxRenderError=e;if(recorder.state==='recording')recorder.stop();return;}
                             }
                         }
                     }
 
+                    fxDrawMask(octx,W,H,elapsed,activeClip);
+                    if (cc$('ccBurn').checked) drawCaptions(octx, W, H, elapsed);
                     const pct = Math.min(99, Math.max(5, Math.round((elapsed / totalDur) * 99)));
                     dom.exportProgressPercent.textContent = `${pct}%`;
                     dom.exportProgressBar.style.width = `${pct}%`;
@@ -3644,6 +3708,7 @@
                 return await exportAsVideoWebCodecs(format, resKey, filename);
             } catch (wcErr) {
                 if (wcErr && wcErr.message === 'CANCELLED') throw wcErr;
+                if (fx$('fxMode').value==='ai') throw new Error(t('fxExportAI')+' · '+(wcErr.message||wcErr));
                 console.warn('WebCodecs 離線渲染不可用，改用 MediaRecorder 備援引擎:', wcErr);
                 showToast(t('toastNativeFallback'), 'info');
                 return await exportAsVideoNative(format, resKey, filename);
@@ -3652,8 +3717,13 @@
 
         async function handleExport() {
             if (state.isExporting || state.clips.length === 0) return;
+            if(fxLoading){showToast(t('fxBusy'),'warning');return;}
+            if (state.captionBusy) { showToast(t('ccBusy'),'warning'); return; }
+            if (cc$('ccBurn').checked && ['mp4','mov','mkv'].includes(dom.exportFormat.value) && ccIsStale() && !confirm(t('ccConfirmStale'))) return;
             stopPlayback();
             state.isExporting = true;
+            if(typeof wcOpenExport === "function") wcOpenExport();
+            ccUpdateControls();
             state.exportCancelled = false;
             dom.btnExport.disabled = true;
             dom.btnExport.classList.add('opacity-60', 'cursor-not-allowed');
@@ -3702,6 +3772,7 @@
                 }
             } finally {
                 state.isExporting = false;
+                ccUpdateControls();
                 state.exportCancelled = false;
                 dom.btnExport.disabled = false;
                 dom.btnExport.classList.remove('opacity-60', 'cursor-not-allowed');
@@ -3714,8 +3785,384 @@
         }
 
         // -----------------------------
+        // Auto-Captions — local Whisper worker, editable cues, SRT/VTT, canvas burn-in
         // 13. 事件監聽器綁定
         // -----------------------------
+
+        Object.assign(I18N['zh-TW'],{ccFixHint:'首次辨識建議 Tiny；若 Worker 失敗會自動切換相容模式。相容模式無法即時取消。'});
+        Object.assign(I18N['zh-CN'],{ccFixHint:'首次识别建议 Tiny；若 Worker 失败会自动切换兼容模式。兼容模式无法即时取消。'});
+        Object.assign(I18N.en,{ccFixHint:'Try Tiny first. If the worker fails, compatibility mode starts automatically and cannot be cancelled immediately.'});
+        const cc$ = id => document.getElementById(id);
+        let ccWorker = null, ccWorkerURL = null, ccRun = 0, ccMainActive = false;
+        let ccStatusKey = 'ccReady', ccStatusParams = {}, ccStatusDetail = '';
+        function ccStatus(key, params = {}, detail = '') {
+            ccStatusKey=key; ccStatusParams=params; ccStatusDetail=detail; ccUpdateStatus();
+        }
+        function ccUpdateStatus() {
+            cc$('ccStatus').textContent = t(ccStatusKey, ccStatusParams) + (ccStatusDetail ? ' · '+ccStatusDetail : '');
+        }
+        function ccSignature() {
+            return JSON.stringify([state.tracks.map(({id,type,muted,solo})=>[id,type,muted,solo]), state.clips.map(({assetId,trackId,startTime,offset,duration,volume,fadeIn,fadeOut,audioDetached})=>[assetId,trackId,startTime,offset,duration,volume,fadeIn,fadeOut,!!audioDetached])]);
+        }
+        function ccIsStale() { return state.captions.length > 0 && state.captionSignature !== null && state.captionSignature !== ccSignature(); }
+        function ccCheckStale() { cc$('ccWarning').classList.toggle('hidden',!ccIsStale()); }
+        function ccToggleLabel() {
+            const closed=cc$('ccBody').classList.contains('hidden');
+            cc$('ccToggle').textContent=t(closed?'ccExpand':'ccCollapse');
+            cc$('ccToggle').setAttribute('aria-expanded',String(!closed));
+        }
+        function ccUpdateControls() {
+            const locked=state.captionBusy || state.isExporting || ccMainActive;
+            for (const id of ['ccGenerate','ccAdd','ccModel','ccLanguage','ccBurn','ccSize','ccColor']) cc$(id).disabled=locked;
+            for (const id of ['ccClear','ccSrt','ccVtt']) cc$(id).disabled=locked || !state.captions.length;
+            cc$('ccCancel').classList.toggle('hidden',!state.captionBusy);
+            cc$('ccCancel').disabled=ccMainActive;
+            cc$('ccList').querySelectorAll('input,textarea,button').forEach(el=>el.disabled=locked);
+            fxControls();
+        }
+        function ccActive(time) { return state.captions.filter(c=>time>=c.start && time<c.end && c.text.trim()); }
+        function drawCaptions(ctx,w,h,time) {
+            const active=ccActive(time); if (!active.length) return;
+            const text=active.map(c=>c.text.trim()).join('\n');
+            const size=Math.max(10,Math.round(h*Number(cc$('ccSize').value)));
+            ctx.save(); ctx.font=`600 ${size}px "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif`;
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            const lines=[], maxWidth=w*.86;
+            for (const part of text.split('\n')) {
+                let line='';
+                // Preserve words in Latin text, wrap CJK or very long words by character.
+                for (const token of part.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]|[^\s\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]+|\s+/gu)||[]) {
+                    if (line && ctx.measureText(line+token).width>maxWidth) { lines.push(line.trim()); line=''; }
+                    if(ctx.measureText(token).width>maxWidth) {
+                        for (const ch of token) { if(line && ctx.measureText(line+ch).width>maxWidth){lines.push(line.trim());line='';}line+=ch; }
+                    } else line+=token;
+                }
+                if(line.trim()) lines.push(line.trim());
+            }
+            const lineH=size*1.32, pad=size*.36;
+            const maxLines=Math.max(1,Math.floor((h*.70-pad*2)/lineH));
+            const visible=lines.slice(0,maxLines);
+            if(lines.length>maxLines) visible[maxLines-1]+='…';
+            if(!visible.length){ctx.restore();return;}
+            const bottom=h*.92, top=bottom-visible.length*lineH-2*pad;
+            const boxW=Math.min(w*.96,Math.max(...visible.map(l=>ctx.measureText(l).width))+2*pad);
+            ctx.fillStyle='rgba(0,0,0,.72)';ctx.beginPath();ctx.roundRect((w-boxW)/2,top,boxW,bottom-top,pad*.65);ctx.fill();
+            ctx.fillStyle=cc$('ccColor').value;ctx.strokeStyle='rgba(0,0,0,.8)';ctx.lineWidth=Math.max(1,size*.065);ctx.lineJoin='round';
+            visible.forEach((line,i)=>{const y=top+pad+lineH*(i+.5);ctx.strokeText(line,w/2,y,maxWidth);ctx.fillText(line,w/2,y,maxWidth);});ctx.restore();
+        }
+        function ccSeek(cue) {
+            if(state.captionBusy||state.isExporting)return;
+            stopPlayback(); state.playhead=Math.min(cue.start,getTotalDuration());state.captionSelected=cue.id;state.selectedClipId=null;
+            const width=dom.timelineCanvasContainer.clientWidth||800;
+            if(timeToX(state.playhead)<0||timeToX(state.playhead)>width) state.scrollTime=Math.max(0,state.playhead-width*.2/state.pixelsPerSecond);
+            updateScrollSliderBounds();updateInspectorUI();updateTimeReadouts();drawTimeline();syncVideoPreview(false);
+            for(const row of cc$('ccList').children) row.classList.toggle('ring-1',row.dataset.cueId===cue.id);
+            const row=[...cc$('ccList').children].find(el=>el.dataset.cueId===cue.id); if(row) row.scrollIntoView({block:'nearest'});
+        }
+        function ccRedraw() { drawTimeline();syncVideoPreview(state.isPlaying);ccCheckStale(); }
+        function renderCaptions() {
+            const list=cc$('ccList'); list.replaceChildren();
+            cc$('ccCount').textContent=`${state.captions.length} ${t('ccCount')}`;
+            if(!state.captions.length){const empty=document.createElement('p');empty.className='text-xs text-slate-500 py-2';empty.textContent=t('ccEmpty');list.append(empty);}
+            const makeButton=(text,title,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.title=title;b.setAttribute('aria-label',title);b.className='px-2 py-1 rounded-md bg-daw-bg border border-daw-border text-xs text-violet-300';b.addEventListener('click',fn);return b;};
+            const sorted=[...state.captions].sort((a,b)=>a.start-b.start);
+            sorted.forEach((cue,i)=>{
+                const row=document.createElement('div');row.dataset.cueId=cue.id;row.className='rounded-lg border border-daw-border bg-daw-bg p-2 flex flex-wrap items-center gap-2 ring-violet-400';if(cue.id===state.captionSelected)row.classList.add('ring-1');
+                row.append(makeButton(`${String(i+1).padStart(2,'0')} ▶`,t('ccSeek'),()=>ccSeek(cue)));
+                for(const key of ['start','end']) {
+                    const label=document.createElement('label');label.className='text-[10px] text-slate-400';label.textContent=t(key==='start'?'ccStart':'ccEnd');
+                    const input=document.createElement('input');input.type='number';input.step='0.01';input.min='0';input.max=String(getTotalDuration());input.value=cue[key].toFixed(2);input.className='block w-24 rounded-md bg-daw-panel border border-daw-border px-2 py-1 text-xs text-white';
+                    input.addEventListener('change',()=>{const v=input.valueAsNumber;const a=key==='start'?v:cue.start,b=key==='end'?v:cue.end;if(!Number.isFinite(v)||a<0||b<=a||b>getTotalDuration()+.0001){input.value=cue[key].toFixed(2);showToast(t('ccInvalid'),'warning');return;}saveSnapshot();cue[key]=v;renderCaptions();ccRedraw();});label.append(input);row.append(label);
+                }
+                const area=document.createElement('textarea');area.rows=2;area.value=cue.text;area.setAttribute('aria-label',t('ccText'));area.className='flex-1 min-w-[160px] bg-daw-panel border border-daw-border rounded-lg p-2 text-sm text-white resize-y';
+                // Record one undo step per text edit. Updating preview on change keeps history accurate.
+                area.addEventListener('change',()=>{if(area.value===cue.text)return;saveSnapshot();cue.text=area.value;ccRedraw();});row.append(area);
+                row.append(makeButton('×',t('ccDelete'),()=>{saveSnapshot();state.captions=state.captions.filter(c=>c.id!==cue.id);renderCaptions();ccRedraw();}));list.append(row);
+            });ccUpdateControls();ccCheckStale();
+        }
+        function ccAddManual() {
+            const total=getTotalDuration();if(total<=.01){showToast(t('ccNeedMedia'),'warning');return;}
+            saveSnapshot();if(!state.captions.length)state.captionSignature=ccSignature();
+            const start=Math.max(0,Math.min(state.playhead,total-Math.min(.1,total)));
+            const cue={id:genId('cc'),start,end:Math.min(total,start+3),text:t('ccNew')};state.captions.push(cue);state.captionSelected=cue.id;renderCaptions();ccSeek(cue);cc$('ccList').querySelector(`[data-cue-id="${cue.id}"] textarea`)?.focus();
+        }
+        function ccTimestamp(seconds,vtt=false) {
+            const ms=Math.max(0,Math.round(seconds*1000));const pad=(n,w=2)=>String(n).padStart(w,'0');return `${pad(Math.floor(ms/3600000))}:${pad(Math.floor(ms/60000)%60)}:${pad(Math.floor(ms/1000)%60)}${vtt?'.':','}${pad(ms%1000,3)}`;
+        }
+        function ccSubtitleFile(vtt=false) {
+            const total=getTotalDuration();
+            const cues=state.captions.filter(c=>c.start<total&&c.end>c.start&&c.text.trim()).sort((a,b)=>a.start-b.start);
+            return (vtt?'WEBVTT\n\n':'')+cues.map((c,i)=>`${vtt?'':`${i+1}\n`}${ccTimestamp(c.start,vtt)} --> ${ccTimestamp(Math.min(c.end,total),vtt)}\n${c.text.trim().replace(/\r/g,'').replace(/\n\s*\n/g,'\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}`).join('\n\n')+'\n';
+        }
+        function ccDownload(vtt=false) {
+            if(ccIsStale()&&!confirm(t('ccConfirmStale')))return;
+            const name=(dom.exportFilename.value.trim()||'WaveCut_Export').replace(/[\\/:*?"<>|]/g,'_');
+            triggerBlobDownload(new Blob([ccSubtitleFile(vtt)],{type:vtt?'text/vtt;charset=utf-8':'application/x-subrip;charset=utf-8'}),`${name}.${vtt?'vtt':'srt'}`);
+        }
+        function ccDisposeWorker() { if(ccWorker)ccWorker.terminate();if(ccWorkerURL)URL.revokeObjectURL(ccWorkerURL);ccWorker=null;ccWorkerURL=null; }
+        function ccFinish() {ccDisposeWorker();state.captionBusy=false;ccUpdateControls();}
+        function ccCancelRun() {if(ccMainActive)return;++ccRun;ccFinish();ccStatus('ccCancelled');}
+        function ccNormalizeChunks(chunks,total) {
+            const out=[];for(let i=0;i<chunks.length;i++) {
+                const c=chunks[i]; const a=c.timestamp?.[0], b=c.timestamp?.[1]; if(a==null||!Number.isFinite(Number(a)))continue;
+                const start=Math.max(0,Math.min(total,Number(a)));const next=chunks[i+1]?.timestamp?.[0];
+                const end=Math.min(total,b!=null&&Number.isFinite(Number(b))?Number(b):next!=null&&Number.isFinite(Number(next))?Number(next):total);
+                const text=String(c.text||'').trim();if(end>start&&text)out.push({id:genId('cc'),start,end,text});
+            }return out.sort((a,b)=>a.start-b.start);
+        }
+        // The same inference function runs in a dedicated worker or directly in the page.
+        // No media is sent to a remote service. Only runtime/model files are downloaded.
+        async function ccTranscribeLocal(data, notify) {
+            const sources = [
+                {url:'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1',v:3},
+                {url:'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2',v:2},
+                {url:'https://unpkg.com/@xenova/transformers@2.17.2/dist/transformers.min.js',v:2}
+            ];
+            const errors=[];
+            for (const source of sources) {
+                let stage='import', transcribe=null;
+                try {
+                    notify({type:'loading',file:'Transformers.js v'+source.v+' · '+new URL(source.url).hostname});
+                    const {pipeline,env}=await import(source.url);
+                    stage='runtime/model';
+                    env.allowLocalModels=false;
+                    // file:// and some privacy modes can disallow CacheStorage.
+                    try { if(!globalThis.caches) env.useBrowserCache=false; else await caches.open('wavecut-cc-cache-test'); }
+                    catch { env.useBrowserCache=false; }
+                    env.backends.onnx.wasm.numThreads=1;
+                    env.backends.onnx.wasm.proxy=false;
+                    if(source.v===3) env.backends.onnx.wasm.wasmPaths='https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/';
+                    else env.backends.onnx.wasm.wasmPaths=source.url.includes('unpkg')?'https://unpkg.com/@xenova/transformers@2.17.2/dist/':'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/';
+                    const config=source.v===3?{device:'wasm',dtype:'q8'}:{quantized:true};
+                    transcribe=await pipeline('automatic-speech-recognition','Xenova/whisper-'+data.model,{...config,progress_callback:p=>{if(['progress','download','initiate','done'].includes(p.status))notify({type:'loading',file:p.file||'',progress:p.progress});}});
+                    stage='inference';notify({type:'recognizing'});
+                    const options={return_timestamps:true,chunk_length_s:30,stride_length_s:5,task:'transcribe'};
+                    if(data.language)options.language=data.language==='cantonese'?'chinese':data.language;
+                    const result=await transcribe(data.audio,options);
+                    return result.chunks||[];
+                } catch(e) {
+                    errors.push('v'+source.v+' '+stage+' ('+new URL(source.url).hostname+'): '+String(e?.message||e));
+                    if(stage==='inference') break;
+                } finally { if(transcribe)try{await transcribe.dispose();}catch{} }
+            }
+            throw new Error(errors.join(' | '));
+        }
+        function ccLocalText(tw,cn,en) { return currentLang==='en'?en:currentLang==='zh-CN'?cn:tw; }
+        async function ccGenerate() {
+            if(state.captionBusy||state.isExporting||ccMainActive||fxLoading)return;
+            if(!state.clips.length){showToast(t('ccNeedMedia'),'warning');return;}
+            if(state.captions.length&&!confirm(t('ccReplace')))return;
+            stopPlayback();const run=++ccRun, signature=ccSignature(), total=getTotalDuration();
+            const model=cc$('ccModel').value, language=cc$('ccLanguage').value;
+            state.captionBusy=true;ccUpdateControls();ccStatus('ccMixing');
+            const fail=message=>{if(run!==ccRun)return;ccFinish();ccStatus('ccFailed',{},String(message)+' · '+ccLocalText('請確認 CDN / huggingface.co 可連線，改用 Tiny，或以 localhost 開啟。','请确认 CDN / huggingface.co 可连接，改用 Tiny，或以 localhost 打开。','Check CDN / huggingface.co access, try Tiny, or open via localhost.'));showToast(t('ccFailed'),'error');};
+            const notify=m=>{if(run!==ccRun)return;if(m.type==='loading')ccStatus('ccLoading',{},`${m.file||''}${Number.isFinite(m.progress)?' '+Math.round(m.progress)+'%':''}`);else if(m.type==='recognizing')ccStatus('ccRecognizing');};
+            const complete=chunks=>{if(run!==ccRun)return;const cues=ccNormalizeChunks(chunks,total);ccFinish();if(!cues.length){ccStatus('ccNoSpeech');return;}saveSnapshot();state.captions=cues;state.captionSignature=signature;state.captionSelected=null;renderCaptions();ccRedraw();ccStatus('ccDone',{n:cues.length});};
+            try {
+                const mixed=await renderTimelineToBuffer(true,16000,1);if(run!==ccRun)return;
+                const audio=mixed.getChannelData(0).slice();let peak=0;for(let i=0;i<audio.length;i++)peak=Math.max(peak,Math.abs(audio[i]));
+                if(peak<0.0005){ccFinish();ccStatus('ccNoAudio');return;}
+                const data={audio,model,language};
+                let fallbackStarted=false;
+                const fallback=async reason=>{
+                    if(run!==ccRun||fallbackStarted)return;fallbackStarted=true;ccDisposeWorker();ccMainActive=true;ccUpdateControls();
+                    ccStatus('ccLoading',{},ccLocalText('Worker 失敗，切換相容模式（處理中無法取消）','Worker 失败，切换兼容模式（处理中无法取消）','Worker failed; switching to compatibility mode (cannot cancel while running)'));
+                    try { const chunks=await ccTranscribeLocal(data,notify);ccMainActive=false;complete(chunks); }
+                    catch(e){ccMainActive=false;fail('Worker: '+reason+' | Page: '+String(e?.message||e));}
+                };
+                const code=ccTranscribeLocal.toString()+`\nself.onmessage=async ({data})=>{try{const chunks=await ccTranscribeLocal(data,m=>self.postMessage(m));self.postMessage({type:'result',chunks});}catch(e){self.postMessage({type:'error',message:String(e?.message||e)});}};`;
+                ccStatus('ccLoading');
+                try {
+                    ccWorkerURL=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));ccWorker=new Worker(ccWorkerURL,{type:'module'});
+                    ccWorker.onerror=e=>{e.preventDefault();fallback(e.message||'Worker startup error');};
+                    ccWorker.onmessageerror=()=>fallback('Worker message error');
+                    ccWorker.onmessage=({data:m})=>{if(run!==ccRun||fallbackStarted)return;if(m.type==='error')fallback(m.message);else if(m.type==='result')complete(m.chunks);else notify(m);};
+                    // Keep an intact copy in the page so the fallback can reuse the audio.
+                    ccWorker.postMessage(data);
+                } catch(e){await fallback(String(e?.message||e));}
+            }catch(e){fail(String(e?.message||e));}
+        }
+Object.assign(I18N["zh-TW"], {"fxTitle": "Smart Studio 智慧剪輯", "fxAuto": "一鍵自動剪輯", "fxAutoHelp": "依素材匯入順序挑選片段，可按音量活動修剪靜音；重建時間軸，可還原。", "fxLength": "每段最長", "fxFull": "完整片段", "fxQuiet": "修剪靜音／優先有聲片段", "fxMusic": "首個音檔作背景音樂", "fxBuild": "✦ 一鍵生成影片", "fxBuildExport": "生成並下載影片", "fxBg": "移除背景", "fxBgHelp": "適用所有影片。AI 僅保留人物；色度去背適用純色背景。匯出填入指定底色，不輸出透明影片。", "fxMode": "去背模式", "fxOff": "關閉", "fxAI": "AI 人像去背", "fxChroma": "色度去背（免模型）", "fxKey": "移除顏色", "fxTol": "容差", "fxBgColor": "替換底色", "fxBgLoading": "正在下載 AI 人像模型與 WASM…", "fxBgReady": "AI 人像去背已啟用", "fxBgFail": "AI 去背失敗，請改用色度去背或重試", "fxBgIdle": "首次 AI 去背須連網；色度去背不需 AI 模型。", "fxTrans": "遮罩轉場", "fxTransHelp": "相鄰影片接點自動套用「遮罩閉合→開啟」，不重疊片段、不改動聲音或字幕時間。", "fxStyle": "轉場樣式", "fxWipe": "橫向遮罩", "fxVertical": "垂直遮罩", "fxCircle": "圓形遮罩", "fxDiagonal": "斜向遮罩", "fxFade": "淡入淡出", "fxDuration": "轉場秒數", "fxMaskColor": "遮罩顏色", "fxNoVideo": "請先匯入至少一個影片素材。", "fxConfirm": "將以素材庫影片重新建立時間軸，原剪輯及字幕會清除（可還原）。確定？", "fxDone": "已生成 {n} 個影片片段，總長 {dur}。", "fxBusy": "請等待辨識、模型載入或匯出結束。", "fxExportAI": "AI 去背需要支援 WebCodecs 的瀏覽器及編碼器，請改用 Chrome／Edge 或色度去背。", "fxAutoStatus": "準備就緒"});
+Object.assign(I18N["zh-CN"], {"fxTitle": "Smart Studio 智能剪辑", "fxAuto": "一键自动剪辑", "fxAutoHelp": "按素材导入顺序选择片段，可按音量活动修剪静音；重建时间轴，可撤销。", "fxLength": "每段最长", "fxFull": "完整片段", "fxQuiet": "修剪静音／优先有声片段", "fxMusic": "首个音频作背景音乐", "fxBuild": "✦ 一键生成视频", "fxBuildExport": "生成并下载视频", "fxBg": "移除背景", "fxBgHelp": "适用所有视频。AI 仅保留人物；色度抠像适用纯色背景。导出填入指定底色，不输出透明视频。", "fxMode": "抠像模式", "fxOff": "关闭", "fxAI": "AI 人像抠像", "fxChroma": "色度抠像（免模型）", "fxKey": "移除颜色", "fxTol": "容差", "fxBgColor": "替换底色", "fxBgLoading": "正在下载 AI 人像模型与 WASM…", "fxBgReady": "AI 人像抠像已启用", "fxBgFail": "AI 抠像失败，请改用色度抠像或重试", "fxBgIdle": "首次 AI 抠像须联网；色度抠像无需 AI 模型。", "fxTrans": "遮罩转场", "fxTransHelp": "相邻视频接点自动应用“遮罩闭合→开启”，不重叠片段、不改变音频或字幕时间。", "fxStyle": "转场样式", "fxWipe": "横向遮罩", "fxVertical": "垂直遮罩", "fxCircle": "圆形遮罩", "fxDiagonal": "斜向遮罩", "fxFade": "淡入淡出", "fxDuration": "转场秒数", "fxMaskColor": "遮罩颜色", "fxNoVideo": "请先导入至少一个视频素材。", "fxConfirm": "将以素材库视频重建时间轴，原剪辑及字幕会清除（可撤销）。确定？", "fxDone": "已生成 {n} 个视频片段，总长 {dur}。", "fxBusy": "请等待识别、模型加载或导出结束。", "fxExportAI": "AI 抠像需要支持 WebCodecs 的浏览器及编码器，请改用 Chrome／Edge 或色度抠像。", "fxAutoStatus": "准备就绪"});
+Object.assign(I18N["en"], {"fxTitle": "Smart Studio", "fxAuto": "Auto edit", "fxAutoHelp": "Assemble imported videos in order, optionally trim quiet edges using audio activity. Rebuilds the timeline; undo is available.", "fxLength": "Max shot length", "fxFull": "Full clip", "fxQuiet": "Trim quiet edges / prefer active audio", "fxMusic": "Use first audio asset as music", "fxBuild": "✦ Generate video edit", "fxBuildExport": "Generate & download", "fxBg": "Remove background", "fxBgHelp": "Applies to all video clips. AI keeps people; chroma key removes a solid color. Exports use a replacement color, not alpha.", "fxMode": "Removal mode", "fxOff": "Off", "fxAI": "AI person cutout", "fxChroma": "Chroma key (no model)", "fxKey": "Key color", "fxTol": "Tolerance", "fxBgColor": "Background color", "fxBgLoading": "Loading AI model and WASM…", "fxBgReady": "AI cutout enabled", "fxBgFail": "AI cutout failed; retry or use chroma key", "fxBgIdle": "First AI use needs internet; chroma key needs no AI model.", "fxTrans": "Mask transitions", "fxTransHelp": "Automatically close and reopen a colored mask at adjacent cuts. No overlap or changes to audio/caption timing.", "fxStyle": "Transition style", "fxWipe": "Horizontal wipe", "fxVertical": "Vertical wipe", "fxCircle": "Circle iris", "fxDiagonal": "Diagonal wipe", "fxFade": "Dip / fade", "fxDuration": "Duration (s)", "fxMaskColor": "Mask color", "fxNoVideo": "Import at least one video asset.", "fxConfirm": "Rebuild timeline from the media library? Current edits and captions will be cleared (undo is available).", "fxDone": "Created {n} video shots, total {dur}.", "fxBusy": "Wait for transcription, model loading or export to finish.", "fxExportAI": "AI cutout requires working WebCodecs. Try Chrome/Edge or chroma key.", "fxAutoStatus": "Ready"});
+        Object.assign(I18N['zh-TW'],{fxTransHelp:'點選時間軸右側影片片段，設定它前方的接點；每個接點獨立設定，不改動音訊及字幕時間。',fxCutPick:'選擇片段／接點',fxCutNone:'請選擇影片片段',fxCutInfo:'前方接點：{time} · {name}',fxCutPending:'此片段前方目前沒有相鄰可見影片；設定會保留，接合後生效。',fxCutPreview:'▶ 預覽此接點',fxCutAll:'套用全部接點',fxCutConfirm:'將此轉場樣式、時間及顏色套用所有相鄰影片接點？',fxCutApplied:'已更新 {n} 個接點',fxCutOff:'無轉場（直接切換）'});
+        Object.assign(I18N['zh-CN'],{fxTransHelp:'选择时间轴右侧视频片段，设置它前方的接点；每个接点独立设置，不改变音频及字幕时间。',fxCutPick:'选择片段／接点',fxCutNone:'请选择视频片段',fxCutInfo:'前方接点：{time} · {name}',fxCutPending:'此片段前方目前没有相邻可见视频；设置将保留，接合后生效。',fxCutPreview:'▶ 预览此接点',fxCutAll:'应用全部接点',fxCutConfirm:'将此转场样式、时间及颜色应用所有相邻视频接点？',fxCutApplied:'已更新 {n} 个接点',fxCutOff:'无转场（直接切换）'});
+        Object.assign(I18N.en,{fxTransHelp:'Select the video clip on the right of a cut to edit its incoming transition. Each cut is independent; audio and caption timing stays unchanged.',fxCutPick:'Clip / incoming cut',fxCutNone:'Select a video clip',fxCutInfo:'Incoming cut: {time} · {name}',fxCutPending:'No adjacent visible video before this clip. Settings are retained until joined.',fxCutPreview:'▶ Preview cut',fxCutAll:'Apply to all cuts',fxCutConfirm:'Apply this transition style, duration and color to every adjacent video cut?',fxCutApplied:'Updated {n} cuts',fxCutOff:'None (hard cut)'});
+        // Smart Studio: local montage, background removal and cut masks.
+        const fx$ = id => document.getElementById(id);
+        let fxSegmenter=null, fxLoading=false, fxBgStatusKey='fxBgIdle', fxBgDetail='', fxAutoStatusKey='fxAutoStatus', fxAutoParams={};
+        const fxFrame=document.createElement('canvas'), fxInput=document.createElement('canvas'), fxMask=document.createElement('canvas');
+        function fxLocked(){return state.isExporting||state.captionBusy||ccMainActive||fxLoading;}
+        function fxControls(){
+            for(const el of fx$('smartStudio').querySelectorAll('button,input,select')) el.disabled=fxLocked();
+            fx$('fxKeyControls').classList.toggle('hidden',fx$('fxMode').value!=='chroma');
+            fx$('fxTolValue').textContent=fx$('fxTol').value;
+            fx$('fxBgStatus').textContent=t(fxBgStatusKey)+(fxBgDetail?' · '+fxBgDetail:'');
+            fx$('fxAutoStatus').textContent=t(fxAutoStatusKey,fxAutoParams);
+            fxCutUI();
+        }
+        function fxStatus(key,detail=''){fxBgStatusKey=key;fxBgDetail=detail;fxControls();}
+        // Audio energy heuristic, not semantic AI: select a loud/activity-rich window and trim quiet edges.
+        function fxPickShot(asset,limit,quiet){
+            const duration=asset.duration; const len=limit>0?Math.min(limit,duration):duration;
+            if(!quiet||!asset.buffer||asset.hasAudio===false)return {offset:0,duration:len};
+            const b=asset.buffer, sr=b.sampleRate, data=Array.from({length:Math.min(2,b.numberOfChannels)},(_,i)=>b.getChannelData(i));
+            const step=.1, n=Math.max(1,Math.ceil(Math.min(duration,b.duration)/step)), energy=new Float32Array(n);
+            let max=0;const stride=Math.max(1,Math.floor(sr/1000));
+            for(let i=0;i<n;i++){let sum=0,count=0;for(let j=Math.floor(i*step*sr);j<Math.min(b.length,Math.floor((i+1)*step*sr));j+=stride){for(const ch of data){sum+=ch[j]*ch[j];count++;}}energy[i]=Math.sqrt(sum/Math.max(1,count));max=Math.max(max,energy[i]);}
+            if(max<.006)return {offset:0,duration:len};
+            const gate=Math.max(.006,max*.10);let first=0,last=n-1;while(first<last&&energy[first]<gate)first++;while(last>first&&energy[last]<gate)last--;
+            const a=Math.max(0,first*step-.2), z=Math.min(duration,(last+1)*step+.2);
+            if(z-a<=len)return {offset:a,duration:Math.max(.01,z-a)};
+            const count=Math.max(1,Math.floor(len/step));let sum=0,best=-1,bestI=first;
+            for(let i=first;i<=last;i++){sum+=Math.min(1,energy[i]/gate);if(i-first>=count)sum-=Math.min(1,energy[i-count]/gate);if(i-first+1>=count&&sum>best){best=sum;bestI=i-count+1;}}
+            const offset=Math.max(a,Math.min(z-len,bestI*step-.1));return {offset,duration:Math.min(len,duration-offset)};
+        }
+        function fxBuildEdit(download=false){
+            if(fxLocked()){showToast(t('fxBusy'),'warning');return;}
+            const videos=[...state.assets.values()].filter(a=>a.type==='video'&&Number.isFinite(a.duration)&&a.duration>.02);
+            if(!videos.length){showToast(t('fxNoVideo'),'warning');return;}
+            if((state.clips.length||state.captions.length)&&!confirm(t('fxConfirm')))return;
+            const limit=Number(fx$('fxLength').value), quiet=fx$('fxQuiet').checked;
+            const shots=videos.map(a=>[a,fxPickShot(a,limit,quiet)]);
+            stopPlayback();saveSnapshot();
+            const vt={id:genId('track-v'),type:'video',muted:false,solo:false}, at={id:genId('track-a'),type:'audio',muted:false,solo:false};
+            state.tracks=[vt,at];state.clips=[];state.captions=[];state.captionSignature=null;state.captionSelected=null;
+            let cursor=0;for(const [a,shot] of shots){const d=shot.duration;state.clips.push({id:genId('clip'),assetId:a.id,trackId:vt.id,type:'video',name:a.name,startTime:cursor,offset:shot.offset,duration:d,volume:1,fadeIn:Math.min(.04,d/4),fadeOut:Math.min(.04,d/4)});cursor+=d;}
+            const music=[...state.assets.values()].find(a=>a.type==='audio'&&a.buffer&&a.duration>.02);
+            if(fx$('fxMusic').checked&&music){let pos=0;while(pos<cursor-.001){const d=Math.min(music.duration,cursor-pos);state.clips.push({id:genId('clip'),assetId:music.id,trackId:at.id,type:'audio',name:music.name,startTime:pos,offset:0,duration:d,volume:.22,fadeIn:Math.min(.15,d/4),fadeOut:Math.min(.35,d/4)});pos+=d;}}
+            state.selectedClipId=state.clips[0].id;state.playhead=0;state.scrollTime=0;
+            fxAutoStatusKey='fxDone';fxAutoParams={n:shots.length,dur:formatTime(cursor,false)};
+            dom.exportFormat.value='mp4';syncExportFormatUI();refreshAllUI();fxControls();showToast(t('fxDone',fxAutoParams),'success');
+            if(download)handleExport();
+        }
+        function fxTimeout(p,ms){let timer;return Promise.race([p,new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Model download timeout')),ms);})]).finally(()=>clearTimeout(timer));}
+        async function fxSetMode(){
+            if(fxLocked())return;
+            if(fx$('fxMode').value==='ai'&&!fxSegmenter){
+                stopPlayback();fxLoading=true;fxStatus('fxBgLoading');
+                try{
+                    let lib, root;
+                    for(const host of ['https://cdn.jsdelivr.net/npm/','https://unpkg.com/']){
+                        root=host+'@mediapipe/tasks-vision@0.10.21';
+                        try{lib=await fxTimeout(import(root+'/vision_bundle.mjs'),18000);break;}catch(e){console.warn(e);}
+                    }
+                    if(!lib)throw new Error('MediaPipe CDN unavailable');
+                    const files=await fxTimeout(lib.FilesetResolver.forVisionTasks(root+'/wasm'),25000);
+                    const model=await fxTimeout(fetch('https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite').then(r=>{if(!r.ok)throw new Error('Model HTTP '+r.status);return r.arrayBuffer();}),30000);
+                    const task=lib.ImageSegmenter.createFromOptions(files,{baseOptions:{modelAssetBuffer:new Uint8Array(model),delegate:'CPU'},runningMode:'IMAGE',outputCategoryMask:true,outputConfidenceMasks:false});
+                    try{fxSegmenter=await fxTimeout(task,30000);}catch(e){task.then(x=>x.close()).catch(()=>{});throw e;}
+                    fxStatus('fxBgReady');
+                }catch(e){fx$('fxMode').value='off';fxStatus('fxBgFail',e.message||String(e));showToast(t('fxBgFail'),'error');}
+                finally{fxLoading=false;fxControls();}
+            }else fxStatus(fx$('fxMode').value==='ai'?'fxBgReady':'fxBgIdle');
+            syncVideoPreview(false);
+        }
+        function fxRGB(hex){return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));}
+        function fxKeyAlpha(r,g,b,key,tol){const dist=Math.hypot(r-key[0],g-key[1],b-key[2]);const low=tol*2.4,high=low+42;return Math.round(255*Math.max(0,Math.min(1,(dist-low)/(high-low))));}
+        function fxPaintFrame(ctx,video,x,y,w,h){
+            const mode=fx$('fxMode').value;
+            if(mode==='off'||(mode==='ai'&&!fxSegmenter)){ctx.drawImage(video,x,y,w,h);return;}
+            const maxDim=mode==='chroma'?1280:2048, scale=Math.min(1,maxDim/Math.max(w,h)), fw=Math.max(1,Math.round(w*scale)),fh=Math.max(1,Math.round(h*scale));
+            if(fxFrame.width!==fw||fxFrame.height!==fh){fxFrame.width=fw;fxFrame.height=fh;}
+            const fc=fxFrame.getContext('2d',{willReadFrequently:true});fc.clearRect(0,0,fw,fh);fc.drawImage(video,0,0,fw,fh);
+            try{
+                if(mode==='chroma'){
+                    const pixels=fc.getImageData(0,0,fw,fh),d=pixels.data,key=fxRGB(fx$('fxKey').value),tol=Number(fx$('fxTol').value);
+                    for(let i=0;i<d.length;i+=4)d[i+3]=fxKeyAlpha(d[i],d[i+1],d[i+2],key,tol);
+                    fc.putImageData(pixels,0,0);
+                }else{
+                    const ratio=Math.min(1,384/Math.max(fw,fh)), iw=Math.max(1,Math.round(fw*ratio)),ih=Math.max(1,Math.round(fh*ratio));
+                    if(fxInput.width!==iw||fxInput.height!==ih){fxInput.width=iw;fxInput.height=ih;}
+                    const ic=fxInput.getContext('2d');ic.drawImage(video,0,0,iw,ih);
+                    fxSegmenter.segment(fxInput,result=>{
+                        const mask=result.categoryMask;if(!mask)throw new Error('No person mask returned');
+                        const mw=mask.width,mh=mask.height, values=mask.getAsUint8Array();
+                        if(fxMask.width!==mw||fxMask.height!==mh){fxMask.width=mw;fxMask.height=mh;}
+                        const mc=fxMask.getContext('2d'),img=mc.createImageData(mw,mh);
+                        for(let i=0;i<values.length;i++)img.data[i*4+3]=values[i]===1?255:0;
+                        mc.putImageData(img,0,0);fc.save();try{fc.globalCompositeOperation='destination-in';fc.imageSmoothingEnabled=true;fc.drawImage(fxMask,0,0,fw,fh);}finally{fc.restore();}
+                    });
+                }
+                ctx.fillStyle=fx$('fxBgColor').value;ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);ctx.drawImage(fxFrame,x,y,w,h);
+            }catch(e){if(state.isExporting)throw e;fx$('fxMode').value='off';fxStatus('fxBgFail',e.message||String(e));showToast(t('fxBgFail'),'error');ctx.drawImage(video,x,y,w,h);}
+        }
+        // Incoming cut settings live on the right-hand clip; primitives are copied by history.
+        function fxCutSettings(c){return {style:c?.fxInStyle||'off',duration:c?.fxInDuration||0.8,color:c?.fxInColor||'#000000'};}
+        function fxSelectedVideo(){return state.clips.find(c=>c.id===state.selectedClipId&&c.type==='video')||null;}
+        function fxNeighbor(c,dir){
+            if(!c||c.type!=='video')return null;
+            const edge=dir<0?c.startTime:c.startTime+c.duration;
+            const d=Math.min(.012,c.duration/4);
+            if(d<=.005||edge<d)return null;
+            const own=getActiveVideoClipAt(edge-dir*d),other=getActiveVideoClipAt(edge+dir*d);
+            if(own?.id!==c.id||!other||other.id===c.id)return null;
+            const otherEdge=dir<0?other.startTime+other.duration:other.startTime;
+            return Math.abs(otherEdge-edge)<.006?other:null;
+        }
+        function fxCutUI(){
+            const pick=fx$('fxCutPick'),c=fxSelectedVideo(),locked=fxLocked();
+            const clips=state.clips.filter(c=>c.type==='video').sort((a,b)=>a.startTime-b.startTime||a.id.localeCompare(b.id));
+            pick.replaceChildren(new Option(t('fxCutNone'),''));
+            for(const v of clips){const a=fxCutSettings(v);pick.add(new Option(`${formatTime(v.startTime)} · ${v.name}${a.style!=='off'?' · FX':''}`,v.id));}
+            pick.value=c?.id||'';pick.disabled=locked||!clips.length;
+            const a=fxCutSettings(c),prev=fxNeighbor(c,-1);
+            fx$('fxStyle').value=a.style;fx$('fxDuration').value=String(a.duration);fx$('fxMaskColor').value=a.color;
+            for(const id of ['fxStyle','fxDuration','fxMaskColor'])fx$(id).disabled=locked||!c;
+            fx$('fxCutInfo').textContent=!c?t('fxCutNone'):prev?t('fxCutInfo',{time:formatTime(c.startTime),name:prev.name+' → '+c.name}):t('fxCutPending');
+            fx$('fxCutPreview').disabled=locked||!prev;
+            fx$('fxCutAll').disabled=locked||!c||!clips.some(v=>fxNeighbor(v,-1));
+        }
+        function fxSetCut(c,a){c.fxInStyle=a.style;c.fxInDuration=a.duration;c.fxInColor=a.color;}
+        function fxEditCut(){
+            const c=fxSelectedVideo();if(!c||fxLocked())return;
+            const a={style:fx$('fxStyle').value,duration:Number(fx$('fxDuration').value),color:fx$('fxMaskColor').value},old=fxCutSettings(c);
+            if(a.style===old.style&&a.duration===old.duration&&a.color===old.color)return;
+            saveSnapshot();fxSetCut(c,a);fxCutUI();drawTimeline();syncVideoPreview(state.isPlaying);
+        }
+        function fxCutEffect(clip,time){
+            if(!clip)return null;
+            const start=clip.startTime,end=start+clip.duration;
+            const prev=fxNeighbor(clip,-1),next=fxNeighbor(clip,1);
+            const a=fxCutSettings(clip),b=fxCutSettings(next);
+            let result=null;
+            function consider(settings,other,distance){
+                if(!other||settings.style==='off')return;
+                const d=Math.min(settings.duration/2,clip.duration/2,other.duration/2);
+                if(d<=0)return;
+                const p=Math.max(0,Math.min(1,1-distance/d));
+                if(p>0&&(!result||p>result.p))result={...settings,p};
+            }
+            consider(a,prev,time-start);consider(b,next,end-time);return result;
+        }
+        function fxMaskAmount(clip,time){return fxCutEffect(clip,time)?.p||0;}
+        function fxDrawMask(ctx,w,h,time,clip){
+            const effect=fxCutEffect(clip,time);if(!effect)return;
+            const {p,style,color}=effect;ctx.save();try{ctx.fillStyle=color;
+            if(p>=.999){ctx.fillRect(0,0,w,h);return;}
+            if(style==='fade'){ctx.globalAlpha=p;ctx.fillRect(0,0,w,h);}
+            else if(style==='wipe')ctx.fillRect(w*(1-p),0,w*p,h);
+            else if(style==='vertical')ctx.fillRect(0,h*(1-p),w,h*p);
+            else if(style==='circle'){ctx.beginPath();ctx.rect(0,0,w,h);const radius=Math.hypot(w,h)*.5*(1-p);ctx.moveTo(w/2+radius,h/2);ctx.arc(w/2,h/2,radius,0,Math.PI*2);ctx.fill('evenodd');}
+            else if(style==='diagonal'){const line=(w+h)*(1-p);ctx.beginPath();ctx.rect(0,0,w,h);ctx.moveTo(0,0);ctx.lineTo(Math.min(w,line),0);if(line>w)ctx.lineTo(w,Math.min(h,line-w));if(line>h)ctx.lineTo(Math.min(w,line-h),h);ctx.lineTo(0,Math.min(h,line));ctx.closePath();ctx.fill('evenodd');}
+            }finally{ctx.restore();}
+        }
+        fx$('fxBuild').addEventListener('click',()=>fxBuildEdit(false));fx$('fxBuildExport').addEventListener('click',()=>fxBuildEdit(true));
+        fx$('fxMode').addEventListener('change',fxSetMode);
+        for(const id of ['fxKey','fxTol','fxBgColor'])fx$(id).addEventListener('input',()=>{fxControls();if(!state.isPlaying&&!state.isExporting)syncVideoPreview(false);});
+        for(const id of ['fxStyle','fxDuration','fxMaskColor'])fx$(id).addEventListener('change',fxEditCut);
+        fx$('fxCutPick').addEventListener('change',()=>{if(fxLocked())return;const id=fx$('fxCutPick').value;state.selectedClipId=id||null;updateInspectorUI();drawTimeline();});
+        fx$('fxCutPreview').addEventListener('click',()=>{const c=fxSelectedVideo(),prev=fxNeighbor(c,-1);if(fxLocked()||!prev)return;stopPlayback();const a=fxCutSettings(c);const d=Math.min(a.duration/2,c.duration/2,prev.duration/2);startPlayback(Math.max(0,c.startTime-d-.3));});
+        fx$('fxCutAll').addEventListener('click',()=>{const c=fxSelectedVideo();if(fxLocked()||!c)return;const clips=state.clips.filter(v=>v.type==='video'&&fxNeighbor(v,-1));if(!clips.length||!confirm(t('fxCutConfirm')))return;saveSnapshot();const a=fxCutSettings(c);clips.forEach(v=>fxSetCut(v,a));fxCutUI();drawTimeline();syncVideoPreview(state.isPlaying);showToast(t('fxCutApplied',{n:clips.length}),'success');});
+
+
+        cc$('ccToggle').addEventListener('click',()=>{cc$('ccBody').classList.toggle('hidden');ccToggleLabel();});
+        cc$('ccGenerate').addEventListener('click',ccGenerate);
+        cc$('ccCancel').addEventListener('click',ccCancelRun);
+        cc$('ccAdd').addEventListener('click',ccAddManual);
+        cc$('ccClear').addEventListener('click',()=>{if(!state.captions.length||!confirm(t('ccClear')+'?'))return;saveSnapshot();state.captions=[];state.captionSignature=null;state.captionSelected=null;renderCaptions();ccRedraw();ccStatus('ccReady');});
+        cc$('ccSrt').addEventListener('click',()=>ccDownload(false));cc$('ccVtt').addEventListener('click',()=>ccDownload(true));
+        for(const id of ['ccVisible','ccSize','ccColor'])cc$(id).addEventListener('input',()=>syncVideoPreview(state.isPlaying));
 
         [dom.btnAddFilesTop, dom.btnSelectFiles, dom.btnAddMoreAssets].forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -3929,5 +4376,33 @@
             }
         });
     </script>
-</body>
+<script>// UI adapter: retain all original controls, event handlers and engine IDs.
+const wc$=id=>document.getElementById(id);
+const wcKeys=['media','captions','transitions','auto','background'];
+const wcLabels={
+ 'zh-TW':['素材','字幕','轉場','自動剪輯','去背','匯入影片／音訊','或直接拖曳檔案到此','片段屬性','快速操作','點選時間軸片段調整音量、淡入及淡出；點選接點圖示設定轉場。','設定片段轉場','移除背景','匯出作品','關閉','時間軸','Ctrl+B 分割 · 點接點圖示選轉場 · 拖曳修剪'],
+ 'zh-CN':['素材','字幕','转场','自动剪辑','抠像','导入视频／音频','或直接拖放文件到此','片段属性','快捷操作','点击时间轴片段调整音量、淡入及淡出；点击接点图标设置转场。','设置片段转场','移除背景','导出作品','关闭','时间轴','Ctrl+B 分割 · 点击接点图标选转场 · 拖动修剪'],
+ en:['Media','Captions','Transitions','Auto edit','Cutout','Import video / audio','Or drop files here','Clip properties','Quick actions','Select a timeline clip to adjust audio and fades. Click a cut marker to set its transition.','Set clip transition','Remove background','Export','Close','Timeline','Ctrl+B split · Click cut markers for transitions · Drag to trim']};
+const wcTextKeys=[...wcKeys.map(k=>'wc_'+k),'wcImport','wcDrop','wcProperties','wcQuick','wcQuickHelp','wcOpenTransition','wcOpenBg','wcExportTitle','wcClose','wcTimeline','wcTimelineHelp'];
+for(const [lang,vals] of Object.entries(wcLabels))wcTextKeys.forEach((k,i)=>I18N[lang][k]=vals[i]);
+let wcCurrentTool='media';
+function wcSetTool(key){if(!wcKeys.includes(key))return;wcCurrentTool=key;document.querySelectorAll('[data-tool]').forEach(b=>{const active=b.dataset.tool===key;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});document.querySelectorAll('[data-tool-content]').forEach(el=>el.hidden=el.dataset.toolContent!==key);wc$('smartStudio').hidden=!['auto','background','transitions'].includes(key);wc$('wcToolScroll').scrollTop=0;wcSyncTiles();}
+function wcSyncTiles(){const select=wc$('fxStyle');document.querySelectorAll('[data-style]').forEach(b=>{b.disabled=select.disabled;b.setAttribute('aria-pressed',String(b.dataset.style===select.value));});}
+const wcOldCutUI=fxCutUI;fxCutUI=function(){wcOldCutUI();wcSyncTiles();};
+wc$('wcToolNav').addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b)wcSetTool(b.dataset.tool);});
+wc$('wcToolNav').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const i=wcKeys.indexOf(wcCurrentTool);const n=e.key==='Home'?0:e.key==='End'?wcKeys.length-1:(i+(e.key==='ArrowRight'?1:-1)+wcKeys.length)%wcKeys.length;wcSetTool(wcKeys[n]);wc$('wcToolNav').querySelector('[aria-selected=true]').focus();});
+wc$('wcTransitionTiles').addEventListener('click',e=>{const b=e.target.closest('[data-style]');if(!b||b.disabled||wc$('fxStyle').disabled)return;wc$('fxStyle').value=b.dataset.style;wc$('fxStyle').dispatchEvent(new Event('change',{bubbles:true}));wcSyncTiles();});
+wc$('wcImport').addEventListener('click',()=>dom.fileInput.click());wc$('wcOpenTransition').addEventListener('click',()=>wcSetTool('transitions'));wc$('wcOpenBg').addEventListener('click',()=>wcSetTool('background'));
+function wcTryCut(x,y){if(fxLocked())return false;const c=state.clips.find(c=>{if(c.type!=='video'||!fxNeighbor(c,-1)||c.duration*state.pixelsPerSecond<24)return false;const i=state.tracks.findIndex(t=>t.id===c.trackId);const cy=getTrackY(i)+4,cx=timeToX(c.startTime);return x>=cx+3&&x<=cx+25&&y>=cy+19&&y<=cy+37;});if(!c)return false;state.selectedClipId=c.id;state.drag=null;updateInspectorUI();drawTimeline();wcSetTool('transitions');return true;}
+let wcPrevFocus=null;function wcOpenExport(){const overlay=wc$('wcExportOverlay');if(overlay.hidden){wcPrevFocus=document.activeElement;overlay.hidden=false;wc$('wcCloseExport').focus();}}
+function wcCloseExport(){if(state.isExporting)return;wc$('wcExportOverlay').hidden=true;if(wcPrevFocus?.isConnected)wcPrevFocus.focus();}
+wc$('wcExportTop').addEventListener('click',wcOpenExport);wc$('wcCloseExport').addEventListener('click',wcCloseExport);wc$('wcExportOverlay').addEventListener('click',e=>{if(e.target===wc$('wcExportOverlay'))wcCloseExport();});
+window.addEventListener('keydown',e=>{if(wc$('wcExportOverlay').hidden)return;if(e.key==='Escape'){e.preventDefault();wcCloseExport();}else if(e.key==='Tab'){const els=[...wc$('wcExportOverlay').querySelectorAll('button,input,select')].filter(el=>!el.disabled&&el.getClientRects().length);if(!els.length)return;if(e.shiftKey&&document.activeElement===els[0]){e.preventDefault();els.at(-1).focus();}else if(!e.shiftKey&&document.activeElement===els.at(-1)){e.preventDefault();els[0].focus();}}e.stopImmediatePropagation();},true);
+const wcOldRefresh=refreshAllUI;refreshAllUI=function(){wcOldRefresh();wc$('wcExportTop').disabled=!state.clips.length;};
+// Progress is shown in the same modal even for one-click export; retain cancellation.
+new MutationObserver(()=>{wc$('wcCloseExport').disabled=state.isExporting;}).observe(dom.btnExport,{attributes:true,attributeFilter:['disabled']});
+if(window.ResizeObserver){let raf=0;new ResizeObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{if(!dom.workspaceSection.classList.contains('hidden')){resizeCanvas();if(!state.isPlaying&&!state.isExporting)syncVideoPreview(false);}});}).observe(dom.timelineCanvasContainer);}
+// Caption editor remains expanded in its dedicated tab.
+wc$('ccBody').classList.remove('hidden');wcSetTool('media');applyLanguage(currentLang);wc$('wcExportTop').disabled=!state.clips.length;
+</script></body>
 </html>
