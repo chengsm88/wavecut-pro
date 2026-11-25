@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WaveCut Pro — 多檔本機 MP3 / MP4 / M4A / WMA 時間軸剪輯合併</title>
+    <title>WaveCut Pro — 本機多軌影音剪輯合併 (MP4 / MOV / MKV / MP3)</title>
     <!-- 載入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 載入 Inter 與繁體中文字體 -->
@@ -36,27 +36,27 @@
 </head>
 <body class="bg-daw-bg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-sky-500 selection:text-white antialiased overflow-x-hidden">
 
-    <!-- 隱藏的多檔案上傳輸入框 (支援 MP3、MP4、M4A、WMA 等格式) -->
-    <input type="file" id="fileInput" accept=".mp3,.mp4,.m4a,.wma,.wav,.ogg,.aac,.flac,audio/*,video/mp4" multiple class="hidden">
+    <!-- 隱藏的多檔案上傳輸入框 (支援 MP4 / MOV / MKV 影片與 MP3 / M4A / WMA / WAV 音訊) -->
+    <input type="file" id="fileInput" accept=".mp4,.mov,.mkv,.mp3,.m4a,.wma,.wav,.ogg,.aac,.flac,video/mp4,video/quicktime,video/x-matroska,video/*,audio/*" multiple class="hidden">
 
     <!-- 頂部導覽列 -->
     <header class="border-b border-daw-border bg-daw-panel/95 backdrop-blur-md sticky top-0 z-30">
-        <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="max-w-[1480px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
             <!-- 品牌標誌 -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                 </div>
                 <div>
                     <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
                         WaveCut Pro
-                        <span data-i18n="headerBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                            多檔本機剪輯合併
+                        <span data-i18n="headerBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                            本機影音剪輯合併
                         </span>
                     </h1>
-                    <p data-i18n="headerSubtitle" class="text-[11px] text-slate-400 hidden sm:block">支援 MP3 / MP4 / M4A / WMA・本機用 / 內聯用 100% 瀏覽器本機處理・Ctrl+B 即時分割・合併下載 MP3</p>
+                    <p data-i18n="headerSubtitle" class="text-[11px] text-slate-400 hidden sm:block">支援 MP4 / MOV / MKV 剪片與 MP3 / M4A / WMA 音訊・100% 瀏覽器本機處理・Ctrl+B 即時分割</p>
                 </div>
             </div>
 
@@ -72,16 +72,16 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
-                    <span data-i18n="btnAddFilesTop">加入音檔 / MP4</span>
+                    <span data-i18n="btnAddFilesTop">加入影片 / 音檔</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- 主要工作區域 -->
-    <main class="flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-5 py-4 flex flex-col gap-4">
+    <main class="flex-1 max-w-[1480px] w-full mx-auto px-3 sm:px-5 py-4 flex flex-col gap-4">
 
-        <!-- 初始空白拖放區 (當尚未有任何音訊片段時顯示) -->
+        <!-- 初始空白拖放區 (當尚未有任何片段時顯示) -->
         <section id="emptyStateSection" class="flex-1 flex flex-col items-center justify-center py-10 sm:py-16">
             <div id="dropZone" class="w-full max-w-2xl rounded-3xl border-2 border-dashed border-slate-700 hover:border-sky-500 bg-daw-panel/70 hover:bg-daw-panel transition-all duration-200 p-8 sm:p-14 text-center cursor-pointer group shadow-2xl">
                 <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-slate-800/90 group-hover:bg-sky-500/20 border border-slate-700 group-hover:border-sky-500/40 flex items-center justify-center transition">
@@ -89,12 +89,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                 </div>
-                <h2 data-i18n="dropTitle" class="text-xl sm:text-2xl font-bold text-white mb-2">拖放多個 MP3 / MP4 / M4A / WMA 檔案到此處</h2>
-                <p data-i18n="dropDesc" class="text-sm text-slate-400 mb-6">支援一次匯入 MP3、MP4（自動擷取音軌）、M4A、WMA、WAV 並排剪輯、自由拖曳順序、分割刪除，並在本機即時合併匯出成單一 MP3。</p>
+                <h2 data-i18n="dropTitle" class="text-xl sm:text-2xl font-bold text-white mb-2">拖放 MP4 / MOV / MKV 影片或音訊檔案到此處</h2>
+                <p data-i18n="dropDesc" class="text-sm text-slate-400 mb-6">支援一次匯入多個 MP4、MOV、MKV 影片與 MP3、M4A、WMA、WAV 音檔，進行時間軸剪片、分割刪除、配樂混音，並於本機直接合併匯出成 MP4 / MOV / MKV 或 MP3。</p>
 
                 <div class="flex flex-wrap items-center justify-center gap-3">
                     <button type="button" id="btnSelectFiles" data-i18n="btnSelectFiles" class="px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold shadow-lg shadow-sky-600/25 transition active:scale-95">
-                        選擇多個本機音檔
+                        選擇本機影片或音檔
                     </button>
                 </div>
             </div>
@@ -102,14 +102,14 @@
             <!-- 功能亮點 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mt-8">
                 <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
-                    <div class="p-2 rounded-xl bg-sky-500/10 text-sky-400 shrink-0">
+                    <div class="p-2 rounded-xl bg-indigo-500/15 text-indigo-400 shrink-0">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <div>
-                        <h3 data-i18n="feat1Title" class="text-sm font-semibold text-white">多檔多軌時間軸</h3>
-                        <p data-i18n="feat1Desc" class="text-xs text-slate-400 mt-0.5">同時排列多個 MP3 頭尾拼接，或拖到不同音軌進行混音疊加。</p>
+                        <h3 data-i18n="feat1Title" class="text-sm font-semibold text-white">MP4 / MOV / MKV 剪片</h3>
+                        <p data-i18n="feat1Desc" class="text-xs text-slate-400 mt-0.5">即時 16:9 畫面預覽、膠捲縮圖時間軸，並支援多軌配樂與原聲混音。</p>
                     </div>
                 </div>
                 <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
@@ -120,7 +120,7 @@
                     </div>
                     <div>
                         <h3 data-i18n="feat2Title" class="text-sm font-semibold text-white">快速分割 (Ctrl+B)</h3>
-                        <p data-i18n="feat2Desc" class="text-xs text-slate-400 mt-0.5">播放頭所到之處一鍵切開片段、拖曳修剪邊界、消除空隙。</p>
+                        <p data-i18n="feat2Desc" class="text-xs text-slate-400 mt-0.5">播放頭所到之處一鍵切開影片與音訊片段、修剪邊界、消除空隙。</p>
                     </div>
                 </div>
                 <div class="rounded-2xl bg-daw-panel border border-daw-border p-4 flex items-start gap-3">
@@ -131,55 +131,77 @@
                     </div>
                     <div>
                         <h3 data-i18n="feat3Title" class="text-sm font-semibold text-white">100% 瀏覽器本機處理</h3>
-                        <p data-i18n="feat3Desc" class="text-xs text-slate-400 mt-0.5">本機用 / 內聯用，瀏覽器即時混音並編碼為單一 MP3 下載。</p>
+                        <p data-i18n="feat3Desc" class="text-xs text-slate-400 mt-0.5">無需上傳伺服器，本機直接合併匯出 MP4、MOV、MKV 或 MP3。</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 載入遮罩 -->
-        <div id="loadingOverlay" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex-col items-center justify-center gap-4">
+        <div id="loadingOverlay" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex-col items-center justify-center gap-4 px-4 text-center">
             <div class="w-12 h-12 rounded-full border-4 border-slate-700 border-t-sky-400 animate-spin"></div>
-            <p id="loadingText" data-i18n="loadingDefault" class="text-slate-100 font-medium text-sm sm:text-base">正在本機解碼音訊檔案...</p>
+            <p id="loadingText" data-i18n="loadingDefault" class="text-slate-100 font-medium text-sm sm:text-base">正在本機解碼影音檔案...</p>
         </div>
 
         <!-- 主時間軸編輯區 (載入檔案後顯示) -->
         <section id="workspaceSection" class="hidden flex-col gap-4 flex-1">
 
-            <!-- 上半部：素材庫 + 選中片段屬性面板 -->
+            <!-- 上半部：素材庫 + 影片預覽視窗 + 選中片段屬性面板 -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-                <!-- 左側：已匯入音檔素材庫 (5 欄) -->
-                <div class="lg:col-span-5 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col gap-2.5">
+                <!-- 左側：已匯入影音素材庫 (4 欄) -->
+                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col gap-2.5">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                            <span data-i18n="assetsTitle">已匯入音檔素材</span>
+                            <span data-i18n="assetsTitle">已匯入影音素材</span>
                             <span id="assetCountBadge" class="px-1.5 py-0.5 rounded-md bg-slate-800 text-sky-400 font-mono text-[11px]">0</span>
                         </h2>
                         <button id="btnAddMoreAssets" class="text-xs font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1 transition">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
-                            <span data-i18n="btnAddMoreAssets">新增音檔</span>
+                            <span data-i18n="btnAddMoreAssets">新增素材</span>
                         </button>
                     </div>
-                    <div id="assetList" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
+                    <div id="assetList" class="flex flex-col gap-1.5 max-h-52 overflow-y-auto pr-1">
                         <!-- 動態產生素材項目 -->
                     </div>
                 </div>
 
-                <!-- 右側：選中片段精細控制面板 (7 欄) -->
-                <div class="lg:col-span-7 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col justify-between gap-3">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0"></span>
-                            <h2 id="inspectorTitle" class="text-sm font-semibold text-white truncate">請點選時間軸上的音訊片段以調整屬性</h2>
+                <!-- 中央：即時 16:9 影片預覽視窗 (4 欄) -->
+                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3 flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                            <span data-i18n="previewTitle">影片畫面預覽</span>
+                        </h2>
+                        <span id="previewMetaBadge" class="text-[11px] font-mono text-slate-400">16:9</span>
+                    </div>
+                    <div id="videoPreviewBox" class="relative w-full aspect-video rounded-xl bg-black border border-daw-border overflow-hidden flex items-center justify-center cursor-pointer group">
+                        <canvas id="videoPreviewCanvas" class="w-full h-full block"></canvas>
+                        <div id="previewEmptyHint" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 text-xs pointer-events-none px-4 text-center">
+                            <svg class="w-8 h-8 mb-1.5 opacity-40" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <span data-i18n="previewNoVideo">尚無影片畫面（加入 MP4 / MOV / MKV 即可預覽）</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側：選中片段精細控制面板 (4 欄) -->
+                <div class="lg:col-span-4 rounded-2xl bg-daw-panel border border-daw-border p-3.5 flex flex-col justify-between gap-3">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span id="inspectorDot" class="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0"></span>
+                                <h2 id="inspectorTitle" class="text-sm font-semibold text-white truncate">請點選時間軸上的片段以調整屬性</h2>
+                            </div>
                         </div>
                         <span id="inspectorRange" class="text-xs font-mono text-slate-400"></span>
                     </div>
 
                     <!-- 屬性滑桿列 -->
-                    <div id="inspectorControls" class="grid grid-cols-1 sm:grid-cols-3 gap-3 opacity-40 pointer-events-none transition-opacity">
+                    <div id="inspectorControls" class="grid grid-cols-1 gap-2.5 opacity-40 pointer-events-none transition-opacity">
                         <!-- 音量 -->
                         <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
                             <div class="flex justify-between text-xs">
@@ -189,22 +211,24 @@
                             <input id="clipVolSlider" type="range" min="0" max="200" value="100" class="w-full accent-sky-400 cursor-pointer">
                         </div>
 
-                        <!-- 淡入 -->
-                        <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
-                            <div class="flex justify-between text-xs">
-                                <span data-i18n="labelFadeIn" class="text-slate-400">淡入 (Fade In)</span>
-                                <span id="clipFadeInVal" class="font-mono text-sky-300">0.0s</span>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <!-- 淡入 -->
+                            <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
+                                <div class="flex justify-between text-xs">
+                                    <span data-i18n="labelFadeIn" class="text-slate-400">淡入</span>
+                                    <span id="clipFadeInVal" class="font-mono text-sky-300">0.0s</span>
+                                </div>
+                                <input id="clipFadeInSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
                             </div>
-                            <input id="clipFadeInSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
-                        </div>
 
-                        <!-- 淡出 -->
-                        <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
-                            <div class="flex justify-between text-xs">
-                                <span data-i18n="labelFadeOut" class="text-slate-400">淡出 (Fade Out)</span>
-                                <span id="clipFadeOutVal" class="font-mono text-sky-300">0.0s</span>
+                            <!-- 淡出 -->
+                            <div class="rounded-xl bg-daw-bg border border-daw-border px-3 py-2 flex flex-col gap-1">
+                                <div class="flex justify-between text-xs">
+                                    <span data-i18n="labelFadeOut" class="text-slate-400">淡出</span>
+                                    <span id="clipFadeOutVal" class="font-mono text-sky-300">0.0s</span>
+                                </div>
+                                <input id="clipFadeOutSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
                             </div>
-                            <input id="clipFadeOutSlider" type="range" min="0" max="10" step="0.1" value="0" class="w-full accent-sky-400 cursor-pointer">
                         </div>
                     </div>
                 </div>
@@ -232,7 +256,7 @@
                             </button>
                         </div>
 
-                        <!-- 分割 (Ctrl+B) — 剪映經典圖示 -->
+                        <!-- 分割 (Ctrl+B) -->
                         <button id="btnSplit" data-i18n-title="titleSplit" title="在播放頭位置分割片段 (Ctrl+B)" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-daw-hover hover:bg-sky-600/30 hover:text-sky-300 text-slate-100 border border-daw-border hover:border-sky-500/40 text-xs font-semibold transition active:scale-95">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 5h2a1 1 0 011 1v12a1 1 0 01-1 1H7m10-14h-2a1 1 0 00-1 1v12a1 1 0 001 1h2" />
@@ -241,7 +265,7 @@
                             <kbd class="hidden sm:inline text-[10px] px-1 py-0.2 rounded bg-black/40 text-slate-400 font-mono">Ctrl+B</kbd>
                         </button>
 
-                        <!-- 刪除左側 (Q) / 刪除右側 (W) -->
+                        <!-- 刪除左側 / 刪除右側 -->
                         <button id="btnTrimLeft" data-i18n-title="titleTrimLeft" title="刪除播放頭左側內容" class="p-2 rounded-xl bg-daw-bg hover:bg-daw-hover text-slate-300 border border-daw-border transition active:scale-95" aria-label="刪除左側">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 5h2v14H6M14 5h4v14h-4" stroke-dasharray="2 2"/>
@@ -263,6 +287,14 @@
                             <span data-i18n="btnDuplicate" class="hidden md:inline">複製</span>
                         </button>
 
+                        <!-- 影片分離聲音 -->
+                        <button id="btnDetachAudio" disabled data-i18n-title="titleDetachAudio" title="將選中影片的聲音分離到獨立音軌" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/35 text-xs font-medium transition active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                            </svg>
+                            <span data-i18n="btnDetachAudio" class="hidden md:inline">分離音訊</span>
+                        </button>
+
                         <!-- 刪除片段 -->
                         <button id="btnDeleteClip" data-i18n-title="titleDeleteClip" title="刪除選中片段 (Delete)" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-medium transition active:scale-95">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -271,8 +303,8 @@
                             <span data-i18n="btnDeleteClip" class="hidden md:inline">刪除</span>
                         </button>
 
-                        <!-- 一鍵消除空隙 (無縫銜接所有片段) -->
-                        <button id="btnCloseGaps" data-i18n-title="titleCloseGaps" title="將同音軌的所有片段緊密相連，消除中間空白" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium transition active:scale-95">
+                        <!-- 一鍵消除空隙 -->
+                        <button id="btnCloseGaps" data-i18n-title="titleCloseGaps" title="將同軌道的所有片段緊密相連，消除中間空白" class="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium transition active:scale-95">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8m-8 5h8m-8 5h8M4 12l2-2m-2 2l2 2m14-2l-2-2m2 2l-2 2" />
                             </svg>
@@ -331,18 +363,20 @@
                     </div>
                 </div>
 
-                <!-- 時間軸主體：左側音軌標頭 + 右側高效率 Canvas 時間軸 -->
+                <!-- 時間軸主體：左側軌道標頭 + 右側高效率 Canvas 時間軸 -->
                 <div class="flex relative min-h-[260px] select-none">
-                    <!-- 左側音軌控制欄 -->
-                    <div id="trackHeadersCol" class="w-28 sm:w-36 shrink-0 bg-[#17171c] border-r border-daw-border flex flex-col z-10">
+                    <!-- 左側軌道控制欄 -->
+                    <div id="trackHeadersCol" class="w-32 sm:w-40 shrink-0 bg-[#17171c] border-r border-daw-border flex flex-col z-10">
                         <!-- 對應頂部時間尺高度的空白區 -->
-                        <div class="h-8 border-b border-daw-border px-2.5 flex items-center justify-between">
-                            <span data-i18n="trackListLabel" class="text-[11px] text-slate-500 font-medium">音軌列表</span>
-                            <button id="btnAddTrack" data-i18n="btnAddTrack" data-i18n-title="titleAddTrack" title="新增一條音軌進行混音" class="text-[11px] px-1.5 py-0.5 rounded bg-daw-hover hover:bg-sky-600/30 text-sky-400 transition">
+                        <div class="h-8 border-b border-daw-border px-2 flex items-center justify-between gap-1">
+                            <button id="btnAddVideoTrack" data-i18n="btnAddVideoTrack" data-i18n-title="titleAddVideoTrack" title="新增一條影片軌" class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 hover:bg-indigo-500/35 text-indigo-300 font-semibold transition">
+                                + 影片軌
+                            </button>
+                            <button id="btnAddAudioTrack" data-i18n="btnAddAudioTrack" data-i18n-title="titleAddAudioTrack" title="新增一條音軌" class="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 hover:bg-sky-500/35 text-sky-300 font-semibold transition">
                                 + 音軌
                             </button>
                         </div>
-                        <!-- 動態產生的音軌標頭 -->
+                        <!-- 動態產生的軌道標頭 -->
                         <div id="trackHeadersList" class="flex flex-col"></div>
                     </div>
 
@@ -356,31 +390,44 @@
                 <div class="px-3 py-2 border-t border-daw-border bg-[#17171c] flex items-center gap-3">
                     <span data-i18n="scrollLabel" class="text-[11px] text-slate-500 hidden sm:inline shrink-0">時間軸捲動</span>
                     <input id="timelineScrollSlider" type="range" min="0" max="1000" value="0" class="flex-1 accent-slate-500 cursor-pointer h-1.5">
-                    <span data-i18n="timelineHint" class="text-[11px] text-slate-400 hidden md:inline shrink-0">提示：拖曳片段可任意移動位置或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割</span>
+                    <span data-i18n="timelineHint" class="text-[11px] text-slate-400 hidden md:inline shrink-0">提示：拖曳片段可任意移動或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割</span>
                 </div>
             </div>
 
-            <!-- 底部：合併匯出設定列 -->
-            <div class="rounded-2xl bg-gradient-to-r from-daw-panel via-daw-panel to-sky-950/30 border border-sky-500/30 p-4 flex flex-col gap-3 shadow-xl">
+            <!-- 底部：合併匯出設定列 (支援 MP4 / MOV / MKV 影片與 MP3 / WAV 音訊) -->
+            <div class="rounded-2xl bg-gradient-to-r from-daw-panel via-daw-panel to-indigo-950/35 border border-indigo-500/30 p-4 flex flex-col gap-3 shadow-xl">
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
                         <div>
                             <label for="exportFilename" data-i18n="labelExportName" class="block text-xs text-slate-400 mb-1 font-medium">合併後輸出檔名</label>
-                            <input id="exportFilename" type="text" value="WaveCut_Merged" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input id="exportFilename" type="text" value="WaveCut_Export" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
                         </div>
                         <div>
                             <label for="exportFormat" data-i18n="labelExportFormat" class="block text-xs text-slate-400 mb-1 font-medium">輸出格式</label>
                             <select id="exportFormat" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                                <option value="mp3" data-i18n="optFormatMp3" selected>MP3 (本機即時合併編碼)</option>
-                                <option value="wav" data-i18n="optFormatWav">WAV (無損原始音質)</option>
+                                <option value="mp4" data-i18n="optFormatMp4">MP4 影片 (H.264 + AAC 通用格式)</option>
+                                <option value="mov" data-i18n="optFormatMov">MOV 影片 (QuickTime 格式)</option>
+                                <option value="mkv" data-i18n="optFormatMkv">MKV 影片 (Matroska 格式)</option>
+                                <option value="mp3" data-i18n="optFormatMp3" selected>MP3 純音訊 (本機即時編碼)</option>
+                                <option value="wav" data-i18n="optFormatWav">WAV 純音訊 (無損原始音質)</option>
                             </select>
                         </div>
+                        <!-- 音訊位元率選項 (選 MP3 時顯示) -->
                         <div id="bitrateWrapper">
                             <label for="exportBitrate" data-i18n="labelExportBitrate" class="block text-xs text-slate-400 mb-1 font-medium">MP3 音質 (Bitrate)</label>
                             <select id="exportBitrate" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
                                 <option value="128" data-i18n="optBit128">128 kbps (標準體積)</option>
                                 <option value="192" data-i18n="optBit192" selected>192 kbps (高音質)</option>
                                 <option value="320" data-i18n="optBit320">320 kbps (極致音質)</option>
+                            </select>
+                        </div>
+                        <!-- 影片解析度選項 (選 MP4 / MOV / MKV 時顯示) -->
+                        <div id="videoResWrapper" class="hidden">
+                            <label for="exportVideoRes" data-i18n="labelExportVideoRes" class="block text-xs text-slate-400 mb-1 font-medium">影片輸出解析度</label>
+                            <select id="exportVideoRes" class="w-full rounded-xl bg-daw-bg border border-daw-border px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                <option value="720" data-i18n="optRes720" selected>720p HD (1280×720・快速本機編碼)</option>
+                                <option value="1080" data-i18n="optRes1080">1080p Full HD (1920×1080・高畫質)</option>
+                                <option value="480" data-i18n="optRes480">480p SD (854×480・極速小檔)</option>
                             </select>
                         </div>
                     </div>
@@ -396,11 +443,11 @@
                 <!-- 匯出進度條 -->
                 <div id="exportProgressContainer" class="hidden flex-col gap-1.5 pt-1">
                     <div class="flex justify-between text-xs">
-                        <span id="exportProgressText" class="text-sky-300 font-medium">正在本機混音與編碼...</span>
+                        <span id="exportProgressText" class="text-sky-300 font-medium">正在本機處理與編碼...</span>
                         <span id="exportProgressPercent" class="font-mono text-emerald-300 font-semibold">0%</span>
                     </div>
                     <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                        <div id="exportProgressBar" class="h-full bg-gradient-to-r from-sky-500 to-emerald-400 transition-all duration-100 rounded-full" style="width: 0%"></div>
+                        <div id="exportProgressBar" class="h-full bg-gradient-to-r from-sky-500 via-indigo-400 to-emerald-400 transition-all duration-150 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -409,7 +456,7 @@
 
     <!-- 頁尾 -->
     <footer data-i18n="footerText" class="border-t border-daw-border py-3 text-center text-xs text-slate-500">
-        WaveCut Pro • 100% 本機多軌音頻剪輯與合併引擎 • 本機用 / 內聯用 100% 瀏覽器本機處理
+        WaveCut Pro • 100% 本機多軌影音剪輯與合併引擎 • 支援 MP4 / MOV / MKV 剪片與 MP3 / WAV 混音
     </footer>
 
     <!-- 非阻塞式通知 (Toast) -->
@@ -418,8 +465,9 @@
     <script>
         /**
          * ============================================================================
-         * WaveCut Pro v2 — 多檔多軌時間軸音頻剪輯合併引擎 (100% 本機運行)
-         * 支援：多檔上傳、多軌拖曳、Ctrl+B 分割、邊緣修剪、緊密合併、即時試聽、離線混音匯出 MP3
+         * WaveCut Pro v3 — 多軌本機影音剪輯合併引擎 (100% 瀏覽器本機運行)
+         * 支援：MP4 / MOV / MKV 影片剪輯、MP3 / M4A / WMA / WAV 音訊混音、
+         *      膠捲縮圖與波形時間軸、16:9 即時畫面預覽、Ctrl+B 分割、本機合併匯出
          * ============================================================================
          */
 
@@ -427,28 +475,30 @@
         const I18N = {
             'zh-TW': {
                 htmlLang: 'zh-Hant',
-                pageTitle: 'WaveCut Pro — 多檔本機 MP3 / MP4 / M4A / WMA 時間軸剪輯合併',
-                headerBadge: '多檔本機剪輯合併',
-                headerSubtitle: '支援 MP3 / MP4 / M4A / WMA・本機用 / 內聯用 100% 瀏覽器本機處理・Ctrl+B 即時分割・合併下載 MP3',
-                btnAddFilesTop: '加入音檔 / MP4',
-                dropTitle: '拖放多個 MP3 / MP4 / M4A / WMA 檔案到此處',
-                dropDesc: '支援一次匯入 MP3、MP4（自動擷取音軌）、M4A、WMA、WAV 並排剪輯、自由拖曳順序、分割刪除，並在本機即時合併匯出成單一 MP3。',
-                btnSelectFiles: '選擇多個本機音檔',
-                feat1Title: '多檔多軌時間軸',
-                feat1Desc: '同時排列多個 MP3 頭尾拼接，或拖到不同音軌進行混音疊加。',
+                pageTitle: 'WaveCut Pro — 本機多軌影音剪輯合併 (MP4 / MOV / MKV / MP3)',
+                headerBadge: '本機影音剪輯合併',
+                headerSubtitle: '支援 MP4 / MOV / MKV 剪片與 MP3 / M4A / WMA 音訊・100% 瀏覽器本機處理・Ctrl+B 即時分割',
+                btnAddFilesTop: '加入影片 / 音檔',
+                dropTitle: '拖放 MP4 / MOV / MKV 影片或音訊檔案到此處',
+                dropDesc: '支援一次匯入多個 MP4、MOV、MKV 影片與 MP3、M4A、WMA、WAV 音檔，進行時間軸剪片、分割刪除、配樂混音，並於本機直接合併匯出成 MP4 / MOV / MKV 或 MP3。',
+                btnSelectFiles: '選擇本機影片或音檔',
+                feat1Title: 'MP4 / MOV / MKV 剪片',
+                feat1Desc: '即時 16:9 畫面預覽、膠捲縮圖時間軸，並支援多軌配樂與原聲混音。',
                 feat2Title: '快速分割 (Ctrl+B)',
-                feat2Desc: '播放頭所到之處一鍵切開片段、拖曳修剪邊界、消除空隙。',
+                feat2Desc: '播放頭所到之處一鍵切開影片與音訊片段、修剪邊界、消除空隙。',
                 feat3Title: '100% 瀏覽器本機處理',
-                feat3Desc: '本機用 / 內聯用，瀏覽器即時混音並編碼為單一 MP3 下載。',
-                loadingDefault: '正在本機解碼音訊檔案...',
-                assetsTitle: '已匯入音檔素材',
-                btnAddMoreAssets: '新增音檔',
+                feat3Desc: '無需上傳伺服器，本機直接合併匯出 MP4、MOV、MKV 或 MP3。',
+                loadingDefault: '正在本機解碼影音檔案...',
+                assetsTitle: '已匯入影音素材',
+                btnAddMoreAssets: '新增素材',
                 btnAddToTimeline: '+ 放入時間軸',
-                inspectorEmpty: '請點選時間軸上的音訊片段以調整屬性',
+                previewTitle: '影片畫面預覽',
+                previewNoVideo: '尚無影片畫面（加入 MP4 / MOV / MKV 即可預覽）',
+                inspectorEmpty: '請點選時間軸上的片段以調整屬性',
                 inspectorDur: '長 {dur}',
                 labelClipVol: '片段音量',
-                labelFadeIn: '淡入 (Fade In)',
-                labelFadeOut: '淡出 (Fade Out)',
+                labelFadeIn: '淡入',
+                labelFadeOut: '淡出',
                 titleUndo: '還原 (Ctrl+Z)',
                 titleRedo: '重做 (Ctrl+Y)',
                 titleSplit: '在播放頭位置分割片段 (Ctrl+B)',
@@ -457,9 +507,17 @@
                 titleTrimRight: '刪除播放頭右側內容',
                 titleDuplicate: '複製選中片段 (Ctrl+D)',
                 btnDuplicate: '複製',
+                titleDetachAudio: '將選中影片的聲音分離到獨立音軌',
+                btnDetachAudio: '分離音訊',
+                detachedAudioSuffix: '(分離音訊)',
+                detachedBadge: '已分離音訊',
+                toastDetachSelectVideo: '請先點選時間軸上的影片片段，再使用「分離音訊」。',
+                toastDetachAlready: '此影片片段已經分離過聲音了。',
+                toastDetachNoAudio: '此影片沒有可分離的音軌內容。',
+                toastDetachOk: '已成功將「{name}」的聲音分離至獨立音軌！',
                 titleDeleteClip: '刪除選中片段 (Delete)',
                 btnDeleteClip: '刪除',
-                titleCloseGaps: '將同音軌的所有片段緊密相連，消除中間空白',
+                titleCloseGaps: '將同軌道的所有片段緊密相連，消除中間空白',
                 btnCloseGaps: '緊密合併',
                 titleGoStart: '跳至開頭',
                 titlePlayPause: '播放 / 暫停 (Space)',
@@ -471,40 +529,53 @@
                 titleZoomIn: '放大時間軸',
                 titleZoomFit: '檢視全部片段',
                 btnZoomFit: '全部',
-                trackListLabel: '音軌列表',
-                btnAddTrack: '+ 音軌',
-                titleAddTrack: '新增一條音軌進行混音',
-                trackName: '音軌 {n}',
-                titleRemoveTrack: '移除空音軌',
+                btnAddVideoTrack: '+ 影片軌',
+                titleAddVideoTrack: '新增一條影片軌',
+                btnAddAudioTrack: '+ 音軌',
+                titleAddAudioTrack: '新增一條音軌進行混音',
+                videoTrackName: '影片軌 {n}',
+                audioTrackName: '音軌 {n}',
+                titleRemoveTrack: '移除空軌道',
                 btnMute: 'M 靜音',
-                titleMute: '靜音此音軌',
+                titleMute: '靜音/隱藏此軌道',
                 btnSolo: 'S 獨奏',
-                titleSolo: '獨奏此音軌',
+                titleSolo: '僅顯示/播放此軌道',
                 scrollLabel: '時間軸捲動',
-                timelineHint: '提示：拖曳片段可任意移動位置或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割',
+                timelineHint: '提示：拖曳片段可任意移動或跨軌・拖曳左右白邊可修剪長短・Ctrl+B 分割',
                 labelExportName: '合併後輸出檔名',
                 labelExportFormat: '輸出格式',
-                optFormatMp3: 'MP3 (本機即時合併編碼)',
-                optFormatWav: 'WAV (無損原始音質)',
+                optFormatMp4: 'MP4 影片 (H.264 + AAC 通用格式)',
+                optFormatMov: 'MOV 影片 (QuickTime 格式)',
+                optFormatMkv: 'MKV 影片 (Matroska 格式)',
+                optFormatMp3: 'MP3 純音訊 (本機即時編碼)',
+                optFormatWav: 'WAV 純音訊 (無損原始音質)',
                 labelExportBitrate: 'MP3 音質 (Bitrate)',
                 optBit128: '128 kbps (標準體積)',
                 optBit192: '192 kbps (高音質)',
                 optBit320: '320 kbps (極致音質)',
+                labelExportVideoRes: '影片輸出解析度',
+                optRes720: '720p HD (1280×720・快速本機編碼)',
+                optRes1080: '1080p Full HD (1920×1080・高畫質)',
+                optRes480: '480p SD (854×480・極速小檔)',
+                btnExportMp4: '合併並下載 MP4',
+                btnExportMov: '合併並下載 MOV',
+                btnExportMkv: '合併並下載 MKV',
                 btnExportMp3: '合併並下載 MP3',
                 btnExportWav: '合併並下載 WAV',
-                footerText: 'WaveCut Pro • 100% 本機多軌音頻剪輯與合併引擎 • 本機用 / 內聯用 100% 瀏覽器本機處理',
+                footerText: 'WaveCut Pro • 100% 本機多軌影音剪輯與合併引擎 • 支援 MP4 / MOV / MKV 剪片與 MP3 / WAV 混音',
                 toastUndo: '已還原上一步操作',
                 toastRedo: '已重做操作',
-                toastInvalidFiles: '請選擇有效的音訊或影片檔案 (支援 MP3、MP4、M4A、WMA、WAV)。',
-                loadingFFmpeg: '首次處理 WMA / 特殊格式：正在載入本機轉碼引擎...',
-                loadingConverting: '正在本機轉換音訊格式：{name}...',
-                loadingDecoding: '正在本機解碼 ({idx}/{total})：{name}',
-                errFFmpegDecode: '本機轉碼器無法解析此檔案音軌',
-                toastDecodeFail: '無法解碼「{name}」，請確認檔案未損毀且包含音軌。',
-                toastLoaded: '已成功載入 {count} 個檔案並排列於時間軸！',
+                toastInvalidFiles: '請選擇有效的影片或音訊檔案 (支援 MP4、MOV、MKV、MP3、M4A、WMA、WAV)。',
+                loadingFFmpeg: '正在載入本機影音引擎 (FFmpeg WASM)...',
+                loadingConverting: '正在本機轉檔以供預覽：{name}...',
+                loadingThumbs: '正在擷取影片縮圖：{name}...',
+                loadingDecoding: '正在本機解析 ({idx}/{total})：{name}',
+                errFFmpegDecode: '本機轉碼器無法解析此檔案',
+                toastDecodeFail: '無法解析「{name}」，請確認檔案未損毀。',
+                toastLoaded: '已成功載入 {count} 個影音檔案並排列於時間軸！',
                 toastAddedToTimeline: '已將「{name}」加入時間軸尾端',
-                toastTrackNotEmpty: '請先移走或刪除此音軌上的片段，再移除音軌。',
-                toastSplitWarn: '請將白色播放頭移動到某個音訊片段中間，再按分割 (Ctrl+B)。',
+                toastTrackNotEmpty: '請先移走或刪除此軌道上的片段，再移除軌道。',
+                toastSplitWarn: '請將白色播放頭移動到某個片段中間，再按分割 (Ctrl+B)。',
                 toastSplitOk: '已於 {time} 分割片段',
                 toastTrimLeftWarn: '請將播放頭移到片段中間再使用「刪除左側」。',
                 toastTrimLeftOk: '已切除播放頭左側內容',
@@ -514,42 +585,47 @@
                 toastDupOk: '已複製片段並接續於後方',
                 toastDelWarn: '請先點選要刪除的片段。',
                 toastDelOk: '已刪除選中片段',
-                toastCloseGapsOk: '已將各音軌片段緊密排列並消除空隙！',
+                toastCloseGapsOk: '已將各軌道片段緊密排列並消除空隙！',
                 toastSnapOn: '已開啟自動磁吸對齊',
                 toastSnapOff: '已關閉自動磁吸對齊',
-                errNoAudio: '時間軸上沒有可匯出的音訊內容。',
-                errAllMuted: '所有音軌皆已靜音，無法匯出空白音訊。',
+                errNoAudio: '時間軸上沒有可匯出的影音內容。',
+                errAllMuted: '所有軌道皆已靜音，無法匯出空白檔案。',
                 errNoLame: 'MP3 編碼引擎未能載入，請改選 WAV 格式或重新整理頁面。',
                 progressMix: '步驟 1/2：正在本機混音並合併所有音軌...',
                 progressMp3: '步驟 2/2：正在本機編碼 MP3 ({kbps} kbps)...',
                 progressWav: '步驟 2/2：正在封裝 WAV 無損音檔...',
+                progressVideoPrep: '步驟 1/3：正在準備本機影片引擎與音訊混音...',
+                progressVideoWrite: '步驟 2/3：正在寫入影片素材至本機引擎...',
+                progressVideoEncode: '步驟 3/3：正在本機渲染並合併輸出 {fmt} 影片...',
                 toastExportDone: '合併匯出完成：{file}',
-                toastExportFail: '合併匯出失敗，請重試。',
+                toastExportFail: '合併匯出失敗，請重試或降低輸出解析度。',
             },
             'zh-CN': {
                 htmlLang: 'zh-Hans',
-                pageTitle: 'WaveCut Pro — 多文件本机 MP3 / MP4 / M4A / WMA 时间轴剪辑合并',
-                headerBadge: '多文件本机剪辑合并',
-                headerSubtitle: '支持 MP3 / MP4 / M4A / WMA・本机用 / 内联用 100% 浏览器本机处理・Ctrl+B 即时分割・合并下载 MP3',
-                btnAddFilesTop: '添加音频 / MP4',
-                dropTitle: '拖放多个 MP3 / MP4 / M4A / WMA 文件到此处',
-                dropDesc: '支持一次导入 MP3、MP4（自动提取音轨）、M4A、WMA、WAV 并排剪辑、自由拖拽顺序、分割删除，并在本机即时合并导出为单一 MP3。',
-                btnSelectFiles: '选择多个本机音频',
-                feat1Title: '多文件多轨时间轴',
-                feat1Desc: '同时排列多个 MP3 首尾拼接，或拖到不同音轨进行混音叠加。',
+                pageTitle: 'WaveCut Pro — 本机多轨影音剪辑合并 (MP4 / MOV / MKV / MP3)',
+                headerBadge: '本机影音剪辑合并',
+                headerSubtitle: '支持 MP4 / MOV / MKV 剪片与 MP3 / M4A / WMA 音频・100% 浏览器本机处理・Ctrl+B 即时分割',
+                btnAddFilesTop: '添加视频 / 音频',
+                dropTitle: '拖放 MP4 / MOV / MKV 视频或音频文件到此处',
+                dropDesc: '支持一次导入多个 MP4、MOV、MKV 视频与 MP3、M4A、WMA、WAV 音频，进行时间轴剪片、分割删除、配乐混音，并在本机直接合并导出为 MP4 / MOV / MKV 或 MP3。',
+                btnSelectFiles: '选择本机视频或音频',
+                feat1Title: 'MP4 / MOV / MKV 剪片',
+                feat1Desc: '即时 16:9 画面预览、胶卷缩略图时间轴，并支持多轨配乐与原声混音。',
                 feat2Title: '快速分割 (Ctrl+B)',
-                feat2Desc: '播放头所到之处一键切开片段、拖拽修剪边界、消除空隙。',
+                feat2Desc: '播放头所到之处一键切开视频与音频片段、修剪边界、消除空隙。',
                 feat3Title: '100% 浏览器本机处理',
-                feat3Desc: '本机用 / 内联用，浏览器即时混音并编码为单一 MP3 下载。',
-                loadingDefault: '正在本机解码音频文件...',
-                assetsTitle: '已导入音频素材',
-                btnAddMoreAssets: '新增音频',
+                feat3Desc: '无需上传服务器，本机直接合并导出 MP4、MOV、MKV 或 MP3。',
+                loadingDefault: '正在本机解码影音文件...',
+                assetsTitle: '已导入影音素材',
+                btnAddMoreAssets: '新增素材',
                 btnAddToTimeline: '+ 放入时间轴',
-                inspectorEmpty: '请点选时间轴上的音频片段以调整属性',
+                previewTitle: '视频画面预览',
+                previewNoVideo: '暂无视频画面（添加 MP4 / MOV / MKV 即可预览）',
+                inspectorEmpty: '请点选时间轴上的片段以调整属性',
                 inspectorDur: '长 {dur}',
                 labelClipVol: '片段音量',
-                labelFadeIn: '淡入 (Fade In)',
-                labelFadeOut: '淡出 (Fade Out)',
+                labelFadeIn: '淡入',
+                labelFadeOut: '淡出',
                 titleUndo: '撤销 (Ctrl+Z)',
                 titleRedo: '重做 (Ctrl+Y)',
                 titleSplit: '在播放头位置分割片段 (Ctrl+B)',
@@ -558,9 +634,17 @@
                 titleTrimRight: '删除播放头右侧内容',
                 titleDuplicate: '复制选中片段 (Ctrl+D)',
                 btnDuplicate: '复制',
+                titleDetachAudio: '将选中视频的声音分离到独立音轨',
+                btnDetachAudio: '分离音频',
+                detachedAudioSuffix: '(分离音频)',
+                detachedBadge: '已分离音频',
+                toastDetachSelectVideo: '请先点选时间轴上的视频片段，再使用「分离音频」。',
+                toastDetachAlready: '此视频片段已经分离过声音了。',
+                toastDetachNoAudio: '此视频没有可分离的音轨内容。',
+                toastDetachOk: '已成功将「{name}」的声音分离至独立音轨！',
                 titleDeleteClip: '删除选中片段 (Delete)',
                 btnDeleteClip: '删除',
-                titleCloseGaps: '将同音轨的所有片段紧密相连，消除中间空白',
+                titleCloseGaps: '将同轨道的所有片段紧密相连，消除中间空白',
                 btnCloseGaps: '紧密合并',
                 titleGoStart: '跳至开头',
                 titlePlayPause: '播放 / 暂停 (Space)',
@@ -572,40 +656,53 @@
                 titleZoomIn: '放大时间轴',
                 titleZoomFit: '查看全部片段',
                 btnZoomFit: '全部',
-                trackListLabel: '音轨列表',
-                btnAddTrack: '+ 音轨',
-                titleAddTrack: '新增一条音轨进行混音',
-                trackName: '音轨 {n}',
-                titleRemoveTrack: '移除空音轨',
+                btnAddVideoTrack: '+ 视频轨',
+                titleAddVideoTrack: '新增一条视频轨',
+                btnAddAudioTrack: '+ 音轨',
+                titleAddAudioTrack: '新增一条音轨进行混音',
+                videoTrackName: '视频轨 {n}',
+                audioTrackName: '音轨 {n}',
+                titleRemoveTrack: '移除空轨道',
                 btnMute: 'M 静音',
-                titleMute: '静音此音轨',
+                titleMute: '静音/隐藏此轨道',
                 btnSolo: 'S 独奏',
-                titleSolo: '独奏此音轨',
+                titleSolo: '仅显示/播放此轨道',
                 scrollLabel: '时间轴滚动',
-                timelineHint: '提示：拖拽片段可任意移动位置或跨轨・拖拽左右白边可修剪长短・Ctrl+B 分割',
+                timelineHint: '提示：拖拽片段可任意移动或跨轨・拖拽左右白边可修剪长短・Ctrl+B 分割',
                 labelExportName: '合并后输出文件名',
                 labelExportFormat: '输出格式',
-                optFormatMp3: 'MP3 (本机即时合并编码)',
-                optFormatWav: 'WAV (无损原始音质)',
+                optFormatMp4: 'MP4 视频 (H.264 + AAC 通用格式)',
+                optFormatMov: 'MOV 视频 (QuickTime 格式)',
+                optFormatMkv: 'MKV 视频 (Matroska 格式)',
+                optFormatMp3: 'MP3 纯音频 (本机即时编码)',
+                optFormatWav: 'WAV 纯音频 (无损原始音质)',
                 labelExportBitrate: 'MP3 音质 (Bitrate)',
                 optBit128: '128 kbps (标准体积)',
                 optBit192: '192 kbps (高音质)',
                 optBit320: '320 kbps (极致音质)',
+                labelExportVideoRes: '视频输出分辨率',
+                optRes720: '720p HD (1280×720・快速本机编码)',
+                optRes1080: '1080p Full HD (1920×1080・高画质)',
+                optRes480: '480p SD (854×480・极速小档)',
+                btnExportMp4: '合并并下载 MP4',
+                btnExportMov: '合并并下载 MOV',
+                btnExportMkv: '合并并下载 MKV',
                 btnExportMp3: '合并并下载 MP3',
                 btnExportWav: '合并并下载 WAV',
-                footerText: 'WaveCut Pro • 100% 本机多轨音频剪辑与合并引擎 • 本机用 / 内联用 100% 浏览器本机处理',
+                footerText: 'WaveCut Pro • 100% 本机多轨影音剪辑与合并引擎 • 支持 MP4 / MOV / MKV 剪片与 MP3 / WAV 混音',
                 toastUndo: '已撤销上一步操作',
                 toastRedo: '已重做操作',
-                toastInvalidFiles: '请选择有效的音频或视频文件 (支持 MP3、MP4、M4A、WMA、WAV)。',
-                loadingFFmpeg: '首次处理 WMA / 特殊格式：正在加载本机转码引擎...',
-                loadingConverting: '正在本机转换音频格式：{name}...',
-                loadingDecoding: '正在本机解码 ({idx}/{total})：{name}',
-                errFFmpegDecode: '本机转码器无法解析此文件音轨',
-                toastDecodeFail: '无法解码「{name}」，请确认文件未损坏且包含音轨。',
-                toastLoaded: '已成功加载 {count} 个文件并排列于时间轴！',
+                toastInvalidFiles: '请选择有效的视频或音频文件 (支持 MP4、MOV、MKV、MP3、M4A、WMA、WAV)。',
+                loadingFFmpeg: '正在加载本机影音引擎 (FFmpeg WASM)...',
+                loadingConverting: '正在本机转码以供预览：{name}...',
+                loadingThumbs: '正在提取视频缩略图：{name}...',
+                loadingDecoding: '正在本机解析 ({idx}/{total})：{name}',
+                errFFmpegDecode: '本机转码器无法解析此文件',
+                toastDecodeFail: '无法解析「{name}」，请确认文件未损坏。',
+                toastLoaded: '已成功加载 {count} 个影音文件并排列于时间轴！',
                 toastAddedToTimeline: '已将「{name}」加入时间轴尾端',
-                toastTrackNotEmpty: '请先移走或删除此音轨上的片段，再移除音轨。',
-                toastSplitWarn: '请将白色播放头移动到某个音频片段中间，再按分割 (Ctrl+B)。',
+                toastTrackNotEmpty: '请先移走或删除此轨道上的片段，再移除轨道。',
+                toastSplitWarn: '请将白色播放头移动到某个片段中间，再按分割 (Ctrl+B)。',
                 toastSplitOk: '已于 {time} 分割片段',
                 toastTrimLeftWarn: '请将播放头移到片段中间再使用「删除左侧」。',
                 toastTrimLeftOk: '已切除播放头左侧内容',
@@ -615,38 +712,43 @@
                 toastDupOk: '已复制片段并接续于后方',
                 toastDelWarn: '请先点选要删除的片段。',
                 toastDelOk: '已删除选中片段',
-                toastCloseGapsOk: '已将各音轨片段紧密排列并消除空隙！',
+                toastCloseGapsOk: '已将各轨道片段紧密排列并消除空隙！',
                 toastSnapOn: '已开启自动磁吸对齐',
                 toastSnapOff: '已关闭自动磁吸对齐',
-                errNoAudio: '时间轴上没有可导出的音频内容。',
-                errAllMuted: '所有音轨皆已静音，无法导出空白音频。',
+                errNoAudio: '时间轴上没有可导出的影音内容。',
+                errAllMuted: '所有轨道皆已静音，无法导出空白文件。',
                 errNoLame: 'MP3 编码引擎未能加载，请改选 WAV 格式或刷新页面。',
                 progressMix: '步骤 1/2：正在本机混音并合并所有音轨...',
                 progressMp3: '步骤 2/2：正在本机编码 MP3 ({kbps} kbps)...',
                 progressWav: '步骤 2/2：正在封装 WAV 无损音频...',
+                progressVideoPrep: '步骤 1/3：正在准备本机视频引擎与音频混音...',
+                progressVideoWrite: '步骤 2/3：正在写入视频素材至本机引擎...',
+                progressVideoEncode: '步骤 3/3：正在本机渲染并合并输出 {fmt} 视频...',
                 toastExportDone: '合并导出完成：{file}',
-                toastExportFail: '合并导出失败，请重试。',
+                toastExportFail: '合并导出失败，请重试或降低输出分辨率。',
             },
             'en': {
                 htmlLang: 'en',
-                pageTitle: 'WaveCut Pro — Local Multi-Track MP3 / MP4 / M4A / WMA Audio Editor',
-                headerBadge: 'Local Multi-File Editor',
-                headerSubtitle: 'Supports MP3 / MP4 / M4A / WMA • 100% Local In-Browser Processing • Ctrl+B Split • Merge & Export MP3',
-                btnAddFilesTop: 'Add Audio / MP4',
-                dropTitle: 'Drop Multiple MP3 / MP4 / M4A / WMA Files Here',
-                dropDesc: 'Import multiple MP3, MP4 (auto audio extraction), M4A, WMA, or WAV files to trim, reorder, split, mix, and merge into a single MP3 locally.',
-                btnSelectFiles: 'Select Local Audio Files',
-                feat1Title: 'Multi-Track Timeline',
-                feat1Desc: 'Arrange multiple audio files end-to-end or layer them across tracks for mixing.',
+                pageTitle: 'WaveCut Pro — Local Multi-Track Video & Audio Editor (MP4 / MOV / MKV / MP3)',
+                headerBadge: 'Local Video & Audio Editor',
+                headerSubtitle: 'Supports MP4 / MOV / MKV Video & MP3 / M4A / WMA Audio • 100% Local Processing • Ctrl+B Split',
+                btnAddFilesTop: 'Add Video / Audio',
+                dropTitle: 'Drop MP4 / MOV / MKV Videos or Audio Files Here',
+                dropDesc: 'Import multiple MP4, MOV, MKV videos and MP3, M4A, WMA, WAV audio files to trim, split, mix, preview in real-time, and export locally.',
+                btnSelectFiles: 'Select Local Video or Audio',
+                feat1Title: 'MP4 / MOV / MKV Video Editing',
+                feat1Desc: 'Real-time 16:9 preview monitor, filmstrip timeline, plus multi-track audio mixing.',
                 feat2Title: 'Quick Split (Ctrl+B)',
-                feat2Desc: 'Split clips at the playhead, trim edges smoothly, and close gaps in one click.',
-                feat3Title: '100% Local Browser Processing',
-                feat3Desc: 'Local / Offline-ready engine mixes and encodes directly to MP3 in your browser.',
-                loadingDefault: 'Decoding audio files locally...',
+                feat2Desc: 'Split video & audio clips at the playhead, trim edges smoothly, and close gaps.',
+                feat3Title: '100% Local Browser Engine',
+                feat3Desc: 'Zero server uploads—merge and export MP4, MOV, MKV, or MP3 directly in-browser.',
+                loadingDefault: 'Decoding media files locally...',
                 assetsTitle: 'Imported Media',
-                btnAddMoreAssets: 'Add Files',
+                btnAddMoreAssets: 'Add Media',
                 btnAddToTimeline: '+ Add to Timeline',
-                inspectorEmpty: 'Select an audio clip on the timeline to adjust properties',
+                previewTitle: 'Video Preview',
+                previewNoVideo: 'No video frame (add MP4 / MOV / MKV to preview)',
+                inspectorEmpty: 'Select a clip on the timeline to adjust properties',
                 inspectorDur: 'Dur {dur}',
                 labelClipVol: 'Clip Volume',
                 labelFadeIn: 'Fade In',
@@ -659,6 +761,14 @@
                 titleTrimRight: 'Trim right of playhead',
                 titleDuplicate: 'Duplicate selected clip (Ctrl+D)',
                 btnDuplicate: 'Duplicate',
+                titleDetachAudio: 'Detach audio from selected video clip to an audio track',
+                btnDetachAudio: 'Detach Audio',
+                detachedAudioSuffix: '(Audio)',
+                detachedBadge: 'Audio Detached',
+                toastDetachSelectVideo: 'Please select a video clip on the timeline first.',
+                toastDetachAlready: 'Audio has already been detached from this video clip.',
+                toastDetachNoAudio: 'This video has no audio track to detach.',
+                toastDetachOk: 'Detached audio from "{name}" to an independent audio track!',
                 titleDeleteClip: 'Delete selected clip (Delete)',
                 btnDeleteClip: 'Delete',
                 titleCloseGaps: 'Snap all clips on each track together to remove gaps',
@@ -673,37 +783,50 @@
                 titleZoomIn: 'Zoom In',
                 titleZoomFit: 'Fit All Clips',
                 btnZoomFit: 'Fit',
-                trackListLabel: 'Tracks',
-                btnAddTrack: '+ Track',
-                titleAddTrack: 'Add a new audio track for mixing',
-                trackName: 'Track {n}',
+                btnAddVideoTrack: '+ Video',
+                titleAddVideoTrack: 'Add a new video track',
+                btnAddAudioTrack: '+ Audio',
+                titleAddAudioTrack: 'Add a new audio track',
+                videoTrackName: 'Video {n}',
+                audioTrackName: 'Audio {n}',
                 titleRemoveTrack: 'Remove empty track',
                 btnMute: 'M Mute',
-                titleMute: 'Mute this track',
+                titleMute: 'Mute/hide this track',
                 btnSolo: 'S Solo',
                 titleSolo: 'Solo this track',
                 scrollLabel: 'Timeline Scroll',
                 timelineHint: 'Tip: Drag clips to move or switch tracks • Drag white edges to trim • Ctrl+B to split',
                 labelExportName: 'Merged Filename',
                 labelExportFormat: 'Output Format',
-                optFormatMp3: 'MP3 (Local Real-Time Encoding)',
-                optFormatWav: 'WAV (Lossless Audio)',
+                optFormatMp4: 'MP4 Video (H.264 + AAC Universal)',
+                optFormatMov: 'MOV Video (QuickTime)',
+                optFormatMkv: 'MKV Video (Matroska)',
+                optFormatMp3: 'MP3 Audio (Local Real-Time Encoding)',
+                optFormatWav: 'WAV Audio (Lossless)',
                 labelExportBitrate: 'MP3 Quality (Bitrate)',
                 optBit128: '128 kbps (Standard)',
                 optBit192: '192 kbps (High Quality)',
                 optBit320: '320 kbps (Max Quality)',
+                labelExportVideoRes: 'Video Output Resolution',
+                optRes720: '720p HD (1280×720 • Fast Local Encode)',
+                optRes1080: '1080p Full HD (1920×1080 • High Quality)',
+                optRes480: '480p SD (854×480 • Ultra Fast)',
+                btnExportMp4: 'Merge & Download MP4',
+                btnExportMov: 'Merge & Download MOV',
+                btnExportMkv: 'Merge & Download MKV',
                 btnExportMp3: 'Merge & Download MP3',
                 btnExportWav: 'Merge & Download WAV',
-                footerText: 'WaveCut Pro • 100% Local Multi-Track Audio Editor & Merger • 100% Browser-Based Local Processing',
+                footerText: 'WaveCut Pro • 100% Local Multi-Track Video & Audio Editor • MP4 / MOV / MKV & MP3 / WAV',
                 toastUndo: 'Undid last action',
                 toastRedo: 'Redid action',
-                toastInvalidFiles: 'Please select valid audio or video files (MP3, MP4, M4A, WMA, WAV).',
-                loadingFFmpeg: 'First-time WMA / special format: loading local transcoder...',
-                loadingConverting: 'Converting audio locally: {name}...',
-                loadingDecoding: 'Decoding locally ({idx}/{total}): {name}',
-                errFFmpegDecode: 'Local transcoder could not extract audio track',
-                toastDecodeFail: 'Failed to decode "{name}". Please ensure the file is valid and contains audio.',
-                toastLoaded: 'Loaded {count} file(s) onto the timeline!',
+                toastInvalidFiles: 'Please select valid video or audio files (MP4, MOV, MKV, MP3, M4A, WMA, WAV).',
+                loadingFFmpeg: 'Loading local media engine (FFmpeg WASM)...',
+                loadingConverting: 'Converting for local preview: {name}...',
+                loadingThumbs: 'Extracting filmstrip thumbnails: {name}...',
+                loadingDecoding: 'Parsing locally ({idx}/{total}): {name}',
+                errFFmpegDecode: 'Local transcoder could not decode this file',
+                toastDecodeFail: 'Failed to decode "{name}". Please ensure the file is valid.',
+                toastLoaded: 'Loaded {count} media file(s) onto the timeline!',
                 toastAddedToTimeline: 'Added "{name}" to the end of the timeline',
                 toastTrackNotEmpty: 'Please move or delete clips on this track before removing it.',
                 toastSplitWarn: 'Move the white playhead over a clip before splitting (Ctrl+B).',
@@ -719,14 +842,17 @@
                 toastCloseGapsOk: 'Closed all gaps across tracks!',
                 toastSnapOn: 'Magnetic snapping enabled',
                 toastSnapOff: 'Magnetic snapping disabled',
-                errNoAudio: 'No audio clips on the timeline to export.',
-                errAllMuted: 'All tracks are muted; cannot export silent audio.',
-                errNoLame: 'MP3 encoder failed to load. Please select WAV or refresh the page.',
-                progressMix: 'Step 1/2: Mixing & merging tracks locally...',
+                errNoAudio: 'No media clips on the timeline to export.',
+                errAllMuted: 'All tracks are muted; cannot export empty output.',
+                errNoLame: 'MP3 encoder failed to load. Please select WAV or refresh.',
+                progressMix: 'Step 1/2: Mixing & merging audio tracks locally...',
                 progressMp3: 'Step 2/2: Encoding MP3 locally ({kbps} kbps)...',
                 progressWav: 'Step 2/2: Packaging lossless WAV...',
+                progressVideoPrep: 'Step 1/3: Preparing local video engine & audio mix...',
+                progressVideoWrite: 'Step 2/3: Loading video assets into local engine...',
+                progressVideoEncode: 'Step 3/3: Rendering & merging {fmt} video locally...',
                 toastExportDone: 'Export complete: {file}',
-                toastExportFail: 'Export failed. Please try again.',
+                toastExportFail: 'Export failed. Please try again or try a lower resolution.',
             }
         };
 
@@ -741,54 +867,29 @@
             return text;
         }
 
-        function applyLanguage(lang) {
-            if (!I18N[lang]) lang = 'zh-TW';
-            currentLang = lang;
-            try { localStorage.setItem('wavecut_lang', lang); } catch (_) {}
-
-            document.documentElement.lang = t('htmlLang');
-            document.title = t('pageTitle');
-            if (dom.langSelect) dom.langSelect.value = lang;
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.textContent = t(key);
-            });
-            document.querySelectorAll('[data-i18n-title]').forEach(el => {
-                const key = el.getAttribute('data-i18n-title');
-                el.setAttribute('title', t(key));
-            });
-
-            // 同步動態元件文字
-            const isMp3 = dom.exportFormat.value === 'mp3';
-            dom.btnExport.querySelector('span').textContent = isMp3 ? t('btnExportMp3') : t('btnExportWav');
-            updatePlayButtonUI();
-            renderAssetList();
-            renderTrackHeaders();
-            updateInspectorUI();
-        }
-
-        const RULER_HEIGHT = 32;      // 頂部時間尺高度 (px)
-        const TRACK_HEIGHT = 82;      // 每條音軌高度 (px)
-        const TRACK_GAP = 6;          // 音軌間距 (px)
-        const PEAKS_PER_SEC = 100;    // 每秒波形採樣點數 (兼顧長音檔效能與清晰度)
+        const RULER_HEIGHT = 32;
+        const VIDEO_TRACK_HEIGHT = 90;
+        const AUDIO_TRACK_HEIGHT = 76;
+        const TRACK_GAP = 6;
+        const PEAKS_PER_SEC = 100;
 
         // 全域狀態管理
         const state = {
             audioCtx: null,
             nextId: 1,
 
-            // 已解碼的原始音訊素材庫 (不會重複複製 AudioBuffer，節省記憶體)
-            assets: new Map(), // assetId -> { id, name, buffer, duration, peaks: Float32Array }
+            // 已解析的影音素材庫
+            // assetId -> { id, name, type: 'video'|'audio', ext, file, buffer, duration, peaks, videoEl, videoUrl, width, height, thumbnails: [ImageBitmap|HTMLCanvasElement] }
+            assets: new Map(),
 
-            // 音軌列表
+            // 軌道列表 (支援影片軌與音軌)
             tracks: [
-                { id: 'track-1', name: '音軌 1', muted: false, solo: false },
-                { id: 'track-2', name: '音軌 2', muted: false, solo: false },
+                { id: 'track-v1', type: 'video', muted: false, solo: false },
+                { id: 'track-a1', type: 'audio', muted: false, solo: false },
             ],
 
-            // 時間軸上的音訊片段 (Clips)
-            // { id, assetId, trackId, name, startTime, offset, duration, volume, fadeIn, fadeOut }
+            // 時間軸片段 (Clips)
+            // { id, assetId, trackId, type: 'video'|'audio', name, startTime, offset, duration, volume, fadeIn, fadeOut }
             clips: [],
             selectedClipId: null,
 
@@ -798,9 +899,9 @@
             maxHistory: 40,
 
             // 時間軸檢視控制
-            pixelsPerSecond: 18, // 縮放比例 (px/s)
-            scrollTime: 0,       // 左側起始可見時間 (s)
-            snapEnabled: true,   // 磁吸對齊
+            pixelsPerSecond: 18,
+            scrollTime: 0,
+            snapEnabled: true,
 
             // 播放控制
             playhead: 0,
@@ -811,7 +912,7 @@
             animFrameId: null,
 
             // 互動拖曳狀態
-            drag: null, // { type: 'playhead'|'move'|'trim-left'|'trim-right', clipId, startX, startY, origStart, origOffset, origDur, origTrackId, moved }
+            drag: null,
             isExporting: false,
         };
 
@@ -832,6 +933,12 @@
             assetCountBadge: document.getElementById('assetCountBadge'),
             assetList: document.getElementById('assetList'),
 
+            videoPreviewBox: document.getElementById('videoPreviewBox'),
+            videoPreviewCanvas: document.getElementById('videoPreviewCanvas'),
+            previewEmptyHint: document.getElementById('previewEmptyHint'),
+            previewMetaBadge: document.getElementById('previewMetaBadge'),
+
+            inspectorDot: document.getElementById('inspectorDot'),
             inspectorTitle: document.getElementById('inspectorTitle'),
             inspectorRange: document.getElementById('inspectorRange'),
             inspectorControls: document.getElementById('inspectorControls'),
@@ -848,6 +955,7 @@
             btnTrimLeft: document.getElementById('btnTrimLeft'),
             btnTrimRight: document.getElementById('btnTrimRight'),
             btnDuplicate: document.getElementById('btnDuplicate'),
+            btnDetachAudio: document.getElementById('btnDetachAudio'),
             btnDeleteClip: document.getElementById('btnDeleteClip'),
             btnCloseGaps: document.getElementById('btnCloseGaps'),
 
@@ -865,7 +973,8 @@
             btnZoomFit: document.getElementById('btnZoomFit'),
             zoomSlider: document.getElementById('zoomSlider'),
 
-            btnAddTrack: document.getElementById('btnAddTrack'),
+            btnAddVideoTrack: document.getElementById('btnAddVideoTrack'),
+            btnAddAudioTrack: document.getElementById('btnAddAudioTrack'),
             trackHeadersList: document.getElementById('trackHeadersList'),
             timelineWrapper: document.getElementById('timelineWrapper'),
             timelineCanvasContainer: document.getElementById('timelineCanvasContainer'),
@@ -876,6 +985,8 @@
             exportFormat: document.getElementById('exportFormat'),
             exportBitrate: document.getElementById('exportBitrate'),
             bitrateWrapper: document.getElementById('bitrateWrapper'),
+            videoResWrapper: document.getElementById('videoResWrapper'),
+            exportVideoRes: document.getElementById('exportVideoRes'),
             btnExport: document.getElementById('btnExport'),
             exportProgressContainer: document.getElementById('exportProgressContainer'),
             exportProgressText: document.getElementById('exportProgressText'),
@@ -886,8 +997,53 @@
         };
 
         // -----------------------------
-        // 1. 基礎工具函式與音訊核心初始化
+        // 1. 語言切換與基礎工具函式
         // -----------------------------
+
+        function syncExportFormatUI() {
+            const fmt = dom.exportFormat.value;
+            const isVideo = fmt === 'mp4' || fmt === 'mov' || fmt === 'mkv';
+            const isMp3 = fmt === 'mp3';
+
+            dom.videoResWrapper.classList.toggle('hidden', !isVideo);
+            dom.bitrateWrapper.classList.toggle('hidden', isVideo);
+            dom.bitrateWrapper.classList.toggle('opacity-40', !isMp3);
+            dom.exportBitrate.disabled = !isMp3;
+
+            const btnMap = {
+                mp4: 'btnExportMp4',
+                mov: 'btnExportMov',
+                mkv: 'btnExportMkv',
+                mp3: 'btnExportMp3',
+                wav: 'btnExportWav',
+            };
+            dom.btnExport.querySelector('span').textContent = t(btnMap[fmt] || 'btnExportMp3');
+        }
+
+        function applyLanguage(lang) {
+            if (!I18N[lang]) lang = 'zh-TW';
+            currentLang = lang;
+            try { localStorage.setItem('wavecut_lang', lang); } catch (_) {}
+
+            document.documentElement.lang = t('htmlLang');
+            document.title = t('pageTitle');
+            if (dom.langSelect) dom.langSelect.value = lang;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                el.setAttribute('title', t(key));
+            });
+
+            syncExportFormatUI();
+            updatePlayButtonUI();
+            renderAssetList();
+            renderTrackHeaders();
+            updateInspectorUI();
+        }
 
         function genId(prefix = 'id') {
             return `${prefix}-${state.nextId++}`;
@@ -914,6 +1070,16 @@
             return `${base}.${String(cs).padStart(2, '0')}`;
         }
 
+        function isVideoFile(file) {
+            if (file.type && file.type.startsWith('video/')) return true;
+            return /\.(mp4|mov|mkv)$/i.test(file.name);
+        }
+
+        function isAudioFile(file) {
+            if (file.type && file.type.startsWith('audio/')) return true;
+            return /\.(mp3|m4a|wma|wav|ogg|aac|flac)$/i.test(file.name);
+        }
+
         function getTotalDuration() {
             let maxEnd = 0;
             for (const c of state.clips) {
@@ -934,7 +1100,29 @@
             return maxEnd;
         }
 
-        /** 預先計算音檔波形峰值陣列，確保長音檔也能流暢 60fps 繪製 */
+        function getTrackHeight(track) {
+            return track.type === 'video' ? VIDEO_TRACK_HEIGHT : AUDIO_TRACK_HEIGHT;
+        }
+
+        function getTrackY(trackIndex) {
+            let y = RULER_HEIGHT + 4;
+            for (let i = 0; i < trackIndex; i++) {
+                y += getTrackHeight(state.tracks[i]) + TRACK_GAP;
+            }
+            return y;
+        }
+
+        function yToTrackIndex(y) {
+            let cur = RULER_HEIGHT + 4;
+            for (let i = 0; i < state.tracks.length; i++) {
+                const h = getTrackHeight(state.tracks[i]) + TRACK_GAP;
+                if (y >= cur && y < cur + h) return i;
+                cur += h;
+            }
+            return y < RULER_HEIGHT + 4 ? 0 : state.tracks.length - 1;
+        }
+
+        /** 預先計算音檔波形峰值陣列 */
         function computeWaveformPeaks(audioBuffer) {
             const totalPeaks = Math.max(1, Math.ceil(audioBuffer.duration * PEAKS_PER_SEC));
             const peaks = new Float32Array(totalPeaks);
@@ -946,7 +1134,7 @@
             }
 
             const totalSamples = audioBuffer.length;
-            const stride = Math.max(1, Math.floor(samplesPerPeak / 32)); // 適度跳點採樣加速長音檔解析
+            const stride = Math.max(1, Math.floor(samplesPerPeak / 32));
 
             for (let i = 0; i < totalPeaks; i++) {
                 const start = i * samplesPerPeak;
@@ -962,6 +1150,13 @@
                 peaks[i] = peak;
             }
             return peaks;
+        }
+
+        /** 建立靜音 AudioBuffer (當影片本身無音軌時使用) */
+        function createSilentAudioBuffer(ctx, durationSec) {
+            const sr = ctx.sampleRate || 44100;
+            const len = Math.max(1, Math.ceil(durationSec * sr));
+            return ctx.createBuffer(2, len, sr);
         }
 
         /** 顯示非阻塞式通知 (Toast) */
@@ -984,16 +1179,16 @@
             setTimeout(() => {
                 el.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => el.remove(), 300);
-            }, 3200);
+            }, 3400);
         }
 
         // -----------------------------
-        // 2. 還原 / 重做 (Undo / Redo) 歷史紀錄管理
+        // 2. 還原 / 重做 (Undo / Redo)
         // -----------------------------
 
         function captureSnapshot() {
             return {
-                tracks: state.tracks.map(t => ({ ...t })),
+                tracks: state.tracks.map(tr => ({ ...tr })),
                 clips: state.clips.map(c => ({ ...c })),
                 selectedClipId: state.selectedClipId,
             };
@@ -1009,7 +1204,7 @@
         }
 
         function restoreSnapshot(snap) {
-            state.tracks = snap.tracks.map(t => ({ ...t }));
+            state.tracks = snap.tracks.map(tr => ({ ...tr }));
             state.clips = snap.clips.map(c => ({ ...c }));
             state.selectedClipId = snap.selectedClipId;
             if (state.isPlaying) {
@@ -1034,27 +1229,19 @@
             showToast(t('toastRedo'), 'info');
         }
 
-        function actionRedo() {
-            if (state.redoStack.length === 0) return;
-            state.history.push(captureSnapshot());
-            const next = state.redoStack.pop();
-            restoreSnapshot(next);
-            showToast('已重做操作', 'info');
-        }
-
         function updateHistoryButtons() {
             dom.btnUndo.disabled = state.history.length === 0;
             dom.btnRedo.disabled = state.redoStack.length === 0;
         }
 
         // -----------------------------
-        // 3. 多檔案上傳與本機解碼引擎 (支援 MP3 / MP4 / M4A / WMA)
+        // 3. 本機 FFmpeg WASM 核心引擎 (支援 MP4 / MOV / MKV / WMA)
         // -----------------------------
 
         let ffmpegInstance = null;
         let ffmpegLoadPromise = null;
+        let activeProgressHandler = null;
 
-        /** 動態載入外部腳本工具 */
         function loadExternalScript(src) {
             return new Promise((resolve, reject) => {
                 if (document.querySelector(`script[src="${src}"]`)) return resolve();
@@ -1062,23 +1249,18 @@
                 s.src = src;
                 s.crossOrigin = 'anonymous';
                 s.onload = resolve;
-                s.onerror = () => reject(new Error(`無法載入元件：${src}`));
+                s.onerror = () => reject(new Error(`Failed to load script: ${src}`));
                 document.head.appendChild(s);
             });
         }
 
-        /** 將遠端資源轉為同源 Blob URL，避免跨網域 Worker 限制 */
         async function fetchAsBlobURL(url, mimeType) {
             const resp = await fetch(url);
-            if (!resp.ok) throw new Error(`下載轉碼核心失敗 (${resp.status})`);
+            if (!resp.ok) throw new Error(`Download failed (${resp.status})`);
             const buf = await resp.arrayBuffer();
             return URL.createObjectURL(new Blob([buf], { type: mimeType }));
         }
 
-        /**
-         * 按需初始化純本機單執行緒 FFmpeg WASM 引擎
-         * (僅在瀏覽器原生無法解碼時啟動，例如 WMA 或特殊編碼 MP4)
-         */
         async function getFFmpegEngine() {
             if (ffmpegInstance) return ffmpegInstance;
             if (ffmpegLoadPromise) return ffmpegLoadPromise;
@@ -1089,6 +1271,12 @@
 
                 const { FFmpeg } = window.FFmpegWASM;
                 const ffmpeg = new FFmpeg();
+
+                ffmpeg.on('progress', ({ progress }) => {
+                    if (activeProgressHandler && Number.isFinite(progress)) {
+                        activeProgressHandler(Math.max(0, Math.min(1, progress)));
+                    }
+                });
 
                 const ffmpegBase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd';
                 const coreBase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
@@ -1112,14 +1300,14 @@
             }
         }
 
-        /** 使用本機 FFmpeg WASM 將 WMA / 特殊 MP4 轉為 PCM WAV 再交由 Web Audio 解碼 */
-        async function decodeWithFFmpegFallback(file, arrayBuf, ctx) {
+        /** 使用本機 FFmpeg WASM 將音軌轉為 WAV 供 Web Audio 解碼 */
+        async function decodeAudioWithFFmpeg(file, arrayBuf, ctx) {
             const ffmpeg = await getFFmpegEngine();
             const extMatch = file.name.match(/\.[a-z0-9]+$/i);
             const ext = extMatch ? extMatch[0].toLowerCase() : '.bin';
             const uid = `${Date.now()}_${Math.floor(Math.random() * 10000)}`;
-            const inName = `in_${uid}${ext}`;
-            const outName = `out_${uid}.wav`;
+            const inName = `aud_in_${uid}${ext}`;
+            const outName = `aud_out_${uid}.wav`;
 
             dom.loadingText.textContent = t('loadingConverting', { name: file.name });
             await ffmpeg.writeFile(inName, new Uint8Array(arrayBuf));
@@ -1147,13 +1335,158 @@
             return await ctx.decodeAudioData(wavBuffer);
         }
 
+        /** 嘗試以瀏覽器原生 <video> 載入影片元資料 */
+        function loadVideoElement(url, timeoutMs = 4500) {
+            return new Promise((resolve, reject) => {
+                const video = document.createElement('video');
+                video.muted = true;
+                video.playsInline = true;
+                video.preload = 'auto';
+                video.crossOrigin = 'anonymous';
+
+                let settled = false;
+                const timer = setTimeout(() => {
+                    if (!settled) {
+                        settled = true;
+                        reject(new Error('Video metadata timeout'));
+                    }
+                }, timeoutMs);
+
+                video.onloadedmetadata = () => {
+                    if (settled) return;
+                    if (video.videoWidth > 0 && Number.isFinite(video.duration) && video.duration > 0) {
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve(video);
+                    } else {
+                        settled = true;
+                        clearTimeout(timer);
+                        reject(new Error('Invalid video stream'));
+                    }
+                };
+
+                video.onerror = () => {
+                    if (settled) return;
+                    settled = true;
+                    clearTimeout(timer);
+                    reject(new Error('Native video decode unsupported'));
+                };
+
+                video.src = url;
+                video.load();
+            });
+        }
+
+        /** 若瀏覽器原生無法播放 MKV / MOV，使用本機 FFmpeg 轉為可預覽的 MP4 串流 */
+        async function buildPreviewVideoWithFFmpeg(file, arrayBuf) {
+            const ffmpeg = await getFFmpegEngine();
+            const extMatch = file.name.match(/\.[a-z0-9]+$/i);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.mkv';
+            const uid = `${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+            const inName = `prev_in_${uid}${ext}`;
+            const outName = `prev_out_${uid}.mp4`;
+
+            dom.loadingText.textContent = t('loadingConverting', { name: file.name });
+            await ffmpeg.writeFile(inName, new Uint8Array(arrayBuf));
+
+            // 1. 先嘗試極速無損重新封裝 (Remux)，適合 H.264 的 MKV/MOV
+            let exitCode = await ffmpeg.exec([
+                '-i', inName,
+                '-c:v', 'copy',
+                '-an',
+                '-movflags', '+faststart',
+                outName
+            ]);
+
+            let videoEl = null;
+            let previewUrl = null;
+
+            if (exitCode === 0) {
+                try {
+                    const data = await ffmpeg.readFile(outName);
+                    previewUrl = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+                    videoEl = await loadVideoElement(previewUrl, 4000);
+                } catch (_) {
+                    if (previewUrl) URL.revokeObjectURL(previewUrl);
+                    previewUrl = null;
+                    videoEl = null;
+                }
+            }
+
+            // 2. 若 Remux 仍無法原生播放 (例如 HEVC / ProRes)，快速轉為低負載 H.264 預覽檔
+            if (!videoEl) {
+                try { await ffmpeg.deleteFile(outName); } catch (_) {}
+                exitCode = await ffmpeg.exec([
+                    '-i', inName,
+                    '-vf', "scale='min(960,iw)':-2",
+                    '-c:v', 'libx264',
+                    '-preset', 'ultrafast',
+                    '-crf', '28',
+                    '-pix_fmt', 'yuv420p',
+                    '-an',
+                    '-movflags', '+faststart',
+                    outName
+                ]);
+                if (exitCode !== 0) {
+                    try { await ffmpeg.deleteFile(inName); } catch (_) {}
+                    throw new Error(t('errFFmpegDecode'));
+                }
+                const data = await ffmpeg.readFile(outName);
+                previewUrl = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+                videoEl = await loadVideoElement(previewUrl, 6000);
+            }
+
+            try {
+                await ffmpeg.deleteFile(inName);
+                await ffmpeg.deleteFile(outName);
+            } catch (_) {}
+
+            return { videoEl, previewUrl };
+        }
+
+        /** 從影片擷取多張膠捲縮圖供時間軸繪製 */
+        async function extractVideoThumbnails(videoEl, count = 10) {
+            const thumbs = [];
+            const dur = videoEl.duration;
+            if (!dur || dur <= 0) return thumbs;
+
+            const thumbH = 54;
+            const aspect = (videoEl.videoWidth || 16) / (videoEl.videoHeight || 9);
+            const thumbW = Math.max(40, Math.round(thumbH * aspect));
+
+            for (let i = 0; i < count; i++) {
+                const targetTime = Math.min(dur - 0.05, (i + 0.5) * (dur / count));
+                try {
+                    await new Promise((resolve) => {
+                        const onSeeked = () => {
+                            videoEl.removeEventListener('seeked', onSeeked);
+                            resolve();
+                        };
+                        videoEl.addEventListener('seeked', onSeeked);
+                        videoEl.currentTime = Math.max(0, targetTime);
+                        setTimeout(() => {
+                            videoEl.removeEventListener('seeked', onSeeked);
+                            resolve();
+                        }, 600);
+                    });
+                    const c = document.createElement('canvas');
+                    c.width = thumbW;
+                    c.height = thumbH;
+                    const cctx = c.getContext('2d');
+                    cctx.drawImage(videoEl, 0, 0, thumbW, thumbH);
+                    thumbs.push(c);
+                } catch (_) {}
+            }
+            try { videoEl.currentTime = 0; } catch (_) {}
+            return thumbs;
+        }
+
+        // -----------------------------
+        // 4. 多檔案上傳與影音解析流程
+        // -----------------------------
+
         async function handleFilesUpload(fileList) {
-            const files = Array.from(fileList || []).filter(f =>
-                f.type.startsWith('audio/') ||
-                f.type === 'video/mp4' ||
-                f.type === 'audio/x-ms-wma' ||
-                /\.(mp3|mp4|m4a|wma|wav|ogg|aac|flac)$/i.test(f.name)
-            );
+            const files = Array.from(fileList || []).filter(f => isVideoFile(f) || isAudioFile(f));
             if (files.length === 0) {
                 showToast(t('toastInvalidFiles'), 'warning');
                 return;
@@ -1168,55 +1501,147 @@
             if (!isFirstLoad) saveSnapshot();
 
             let loadedCount = 0;
-            const targetTrackId = state.tracks[0].id;
-            let appendTime = getTrackEndTime(targetTrackId);
+            let loadedAnyVideo = false;
+
+            // 確保至少有一條影片軌與一條音軌
+            let videoTrack = state.tracks.find(tr => tr.type === 'video');
+            let audioTrack = state.tracks.find(tr => tr.type === 'audio');
+            if (!videoTrack) {
+                videoTrack = { id: genId('track-v'), type: 'video', muted: false, solo: false };
+                state.tracks.unshift(videoTrack);
+            }
+            if (!audioTrack) {
+                audioTrack = { id: genId('track-a'), type: 'audio', muted: false, solo: false };
+                state.tracks.push(audioTrack);
+            }
+
+            let videoAppendTime = getTrackEndTime(videoTrack.id);
+            let audioAppendTime = getTrackEndTime(audioTrack.id);
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                const extMatch = file.name.match(/\.([a-z0-9]+)$/i);
+                const ext = extMatch ? extMatch[1].toUpperCase() : 'MEDIA';
+                const isVid = isVideoFile(file);
+
                 dom.loadingText.textContent = t('loadingDecoding', { idx: i + 1, total: files.length, name: file.name });
+
                 try {
                     const arrayBuf = await file.arrayBuffer();
-                    let audioBuffer;
 
-                    // 1. 優先使用瀏覽器原生引擎極速解碼 (MP3 / MP4 / M4A / WAV / OGG)
-                    // 使用 slice(0) 避免原生解碼失敗時原本的 ArrayBuffer 被 detach
-                    try {
-                        audioBuffer = await ctx.decodeAudioData(arrayBuf.slice(0));
-                    } catch (nativeErr) {
-                        // 2. 若原生不支援 (如 WMA 或特殊編碼 MP4)，自動改用本機 FFmpeg WASM 轉碼
-                        audioBuffer = await decodeWithFFmpegFallback(file, arrayBuf, ctx);
+                    if (isVid) {
+                        // 1. 建立可預覽的 <video> 元素 (優先原生，若 MKV/MOV 不支援則自動本機轉預覽流)
+                        let videoUrl = URL.createObjectURL(file);
+                        let videoEl = null;
+                        try {
+                            videoEl = await loadVideoElement(videoUrl, 4000);
+                        } catch (_) {
+                            URL.revokeObjectURL(videoUrl);
+                            const res = await buildPreviewVideoWithFFmpeg(file, arrayBuf);
+                            videoEl = res.videoEl;
+                            videoUrl = res.previewUrl;
+                        }
+
+                        // 2. 擷取膠捲縮圖
+                        dom.loadingText.textContent = t('loadingThumbs', { name: file.name });
+                        const thumbnails = await extractVideoThumbnails(videoEl, 10);
+
+                        // 3. 解碼影片內含音軌 (若原生失敗則用 FFmpeg；若為無聲影片則建立靜音緩衝)
+                        let audioBuffer = null;
+                        let hasAudio = true;
+                        try {
+                            audioBuffer = await ctx.decodeAudioData(arrayBuf.slice(0));
+                        } catch (_) {
+                            try {
+                                audioBuffer = await decodeAudioWithFFmpeg(file, arrayBuf, ctx);
+                            } catch (_) {
+                                audioBuffer = createSilentAudioBuffer(ctx, videoEl.duration);
+                                hasAudio = false;
+                            }
+                        }
+
+                        const duration = videoEl.duration || audioBuffer.duration;
+                        const peaks = computeWaveformPeaks(audioBuffer);
+                        const assetId = genId('asset');
+
+                        state.assets.set(assetId, {
+                            id: assetId,
+                            name: file.name,
+                            type: 'video',
+                            ext,
+                            file,
+                            buffer: audioBuffer,
+                            hasAudio,
+                            duration,
+                            peaks,
+                            videoEl,
+                            videoUrl,
+                            width: videoEl.videoWidth || 1280,
+                            height: videoEl.videoHeight || 720,
+                            thumbnails,
+                        });
+
+                        const clip = {
+                            id: genId('clip'),
+                            assetId,
+                            trackId: videoTrack.id,
+                            type: 'video',
+                            name: file.name,
+                            startTime: videoAppendTime,
+                            offset: 0,
+                            duration,
+                            volume: 1.0,
+                            fadeIn: 0,
+                            fadeOut: 0,
+                        };
+                        state.clips.push(clip);
+                        state.selectedClipId = clip.id;
+                        videoAppendTime += duration;
+                        loadedAnyVideo = true;
+                        loadedCount++;
+                    } else {
+                        // 音訊檔解碼流程
+                        let audioBuffer;
+                        try {
+                            audioBuffer = await ctx.decodeAudioData(arrayBuf.slice(0));
+                        } catch (_) {
+                            audioBuffer = await decodeAudioWithFFmpeg(file, arrayBuf, ctx);
+                        }
+
+                        const peaks = computeWaveformPeaks(audioBuffer);
+                        const assetId = genId('asset');
+
+                        state.assets.set(assetId, {
+                            id: assetId,
+                            name: file.name,
+                            type: 'audio',
+                            ext,
+                            file,
+                            buffer: audioBuffer,
+                            duration: audioBuffer.duration,
+                            peaks,
+                        });
+
+                        const clip = {
+                            id: genId('clip'),
+                            assetId,
+                            trackId: audioTrack.id,
+                            type: 'audio',
+                            name: file.name,
+                            startTime: audioAppendTime,
+                            offset: 0,
+                            duration: audioBuffer.duration,
+                            volume: 1.0,
+                            fadeIn: 0,
+                            fadeOut: 0,
+                        };
+                        state.clips.push(clip);
+                        state.selectedClipId = clip.id;
+                        audioAppendTime += audioBuffer.duration;
+                        loadedCount++;
                     }
-
-                    const peaks = computeWaveformPeaks(audioBuffer);
-                    const assetId = genId('asset');
-
-                    state.assets.set(assetId, {
-                        id: assetId,
-                        name: file.name,
-                        buffer: audioBuffer,
-                        duration: audioBuffer.duration,
-                        peaks,
-                    });
-
-                    // 自動接續排在音軌 1 後方，方便直接合併
-                    const clip = {
-                        id: genId('clip'),
-                        assetId,
-                        trackId: targetTrackId,
-                        name: file.name,
-                        startTime: appendTime,
-                        offset: 0,
-                        duration: audioBuffer.duration,
-                        volume: 1.0,
-                        fadeIn: 0,
-                        fadeOut: 0,
-                    };
-                    state.clips.push(clip);
-                    state.selectedClipId = clip.id;
-                    appendTime += audioBuffer.duration;
-                    loadedCount++;
                 } catch (err) {
-                    console.error(`解碼失敗: ${file.name}`, err);
+                    console.error(`解析失敗: ${file.name}`, err);
                     showToast(t('toastDecodeFail', { name: file.name }), 'error');
                 }
             }
@@ -1225,6 +1650,11 @@
             dom.loadingOverlay.classList.remove('flex');
 
             if (loadedCount > 0) {
+                // 若首次匯入影片，預設將輸出格式切換為 MP4，方便直接剪片匯出
+                if (loadedAnyVideo && isFirstLoad) {
+                    dom.exportFormat.value = 'mp4';
+                    syncExportFormatUI();
+                }
                 showWorkspace();
                 zoomToFit();
                 refreshAllUI();
@@ -1239,7 +1669,123 @@
         }
 
         // -----------------------------
-        // 4. UI 更新 (素材庫、音軌列、屬性檢視器)
+        // 5. 即時 16:9 影片預覽視窗渲染引擎
+        // -----------------------------
+
+        /** 取得目前播放頭位置最上層可見的影片片段 */
+        function getActiveVideoClipAt(time) {
+            const videoTracks = state.tracks.filter(tr => tr.type === 'video');
+            const anyVideoSolo = videoTracks.some(tr => tr.solo);
+
+            for (const track of videoTracks) {
+                if (track.muted || (anyVideoSolo && !track.solo)) continue;
+                const clip = state.clips.find(c =>
+                    c.trackId === track.id &&
+                    c.type === 'video' &&
+                    time >= c.startTime - 0.005 &&
+                    time < c.startTime + c.duration
+                );
+                if (clip) return clip;
+            }
+            return null;
+        }
+
+        function drawVideoFrameToPreview(videoEl, width, height) {
+            const canvas = dom.videoPreviewCanvas;
+            const rect = dom.videoPreviewBox.getBoundingClientRect();
+            const dpr = Math.min(2, window.devicePixelRatio || 1);
+            const cw = Math.max(320, Math.floor((rect.width || 480) * dpr));
+            const ch = Math.max(180, Math.floor((rect.height || 270) * dpr));
+            if (canvas.width !== cw || canvas.height !== ch) {
+                canvas.width = cw;
+                canvas.height = ch;
+            }
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, cw, ch);
+
+            if (!videoEl || videoEl.readyState < 2) return;
+
+            const vw = videoEl.videoWidth || width || 16;
+            const vh = videoEl.videoHeight || height || 9;
+            const scale = Math.min(cw / vw, ch / vh);
+            const dw = vw * scale;
+            const dh = vh * scale;
+            const dx = (cw - dw) / 2;
+            const dy = (ch - dh) / 2;
+            ctx.drawImage(videoEl, dx, dy, dw, dh);
+        }
+
+        function clearVideoPreview() {
+            const canvas = dom.videoPreviewCanvas;
+            if (canvas.width === 0) {
+                canvas.width = 640;
+                canvas.height = 360;
+            }
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        let lastSeekRequest = 0;
+
+        /** 根據目前 playhead 同步更新影片預覽視窗 */
+        function syncVideoPreview(isPlayingNow) {
+            const hasAnyVideo = state.clips.some(c => c.type === 'video');
+            dom.previewEmptyHint.classList.toggle('hidden', hasAnyVideo);
+
+            const activeClip = getActiveVideoClipAt(state.playhead);
+
+            // 暫停所有非作用中的影片元素
+            state.assets.forEach(asset => {
+                if (asset.type === 'video' && asset.videoEl) {
+                    const isCurrent = activeClip && activeClip.assetId === asset.id;
+                    if (!isCurrent || !isPlayingNow) {
+                        if (!asset.videoEl.paused) asset.videoEl.pause();
+                    }
+                }
+            });
+
+            if (!activeClip) {
+                dom.previewMetaBadge.textContent = '16:9';
+                clearVideoPreview();
+                return;
+            }
+
+            const asset = state.assets.get(activeClip.assetId);
+            if (!asset || !asset.videoEl) return;
+
+            dom.previewMetaBadge.textContent = `${asset.width}×${asset.height} • ${asset.ext}`;
+            const videoEl = asset.videoEl;
+            const expectedSrcTime = Math.max(0, Math.min(asset.duration - 0.01, activeClip.offset + (state.playhead - activeClip.startTime)));
+
+            if (isPlayingNow) {
+                if (Math.abs(videoEl.currentTime - expectedSrcTime) > 0.25) {
+                    videoEl.currentTime = expectedSrcTime;
+                }
+                if (videoEl.paused) {
+                    videoEl.play().catch(() => {});
+                }
+                drawVideoFrameToPreview(videoEl, asset.width, asset.height);
+            } else {
+                // 拖曳或暫停時精準跳轉影格並繪製
+                if (Math.abs(videoEl.currentTime - expectedSrcTime) > 0.03) {
+                    const token = ++lastSeekRequest;
+                    const onSeeked = () => {
+                        videoEl.removeEventListener('seeked', onSeeked);
+                        if (token === lastSeekRequest) {
+                            drawVideoFrameToPreview(videoEl, asset.width, asset.height);
+                        }
+                    };
+                    videoEl.addEventListener('seeked', onSeeked);
+                    videoEl.currentTime = expectedSrcTime;
+                }
+                drawVideoFrameToPreview(videoEl, asset.width, asset.height);
+            }
+        }
+
+        // -----------------------------
+        // 6. UI 更新 (素材庫、軌道列、屬性檢視器)
         // -----------------------------
 
         function refreshAllUI() {
@@ -1250,6 +1796,7 @@
             updateTimeReadouts();
             updateScrollSliderBounds();
             resizeCanvas();
+            syncVideoPreview(state.isPlaying);
         }
 
         function renderAssetList() {
@@ -1257,13 +1804,16 @@
             dom.assetList.innerHTML = '';
 
             state.assets.forEach((asset) => {
-                const extMatch = asset.name.match(/\.([a-z0-9]+)$/i);
-                const extBadge = extMatch ? extMatch[1].toUpperCase() : 'AUDIO';
+                const isVid = asset.type === 'video';
+                const badgeColor = isVid
+                    ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
+                    : 'bg-sky-500/15 border-sky-500/30 text-sky-400';
+
                 const row = document.createElement('div');
                 row.className = 'flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl bg-daw-bg border border-daw-border hover:border-slate-600 transition';
                 row.innerHTML = `
                     <div class="flex items-center gap-2 min-w-0">
-                        <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono font-semibold text-sky-400 shrink-0">${extBadge}</span>
+                        <span class="px-1.5 py-0.5 rounded border text-[10px] font-mono font-semibold shrink-0 ${badgeColor}">${asset.ext}</span>
                         <span class="text-xs text-slate-200 truncate" title="${asset.name}">${asset.name}</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
@@ -1284,12 +1834,20 @@
             const asset = state.assets.get(assetId);
             if (!asset) return;
             saveSnapshot();
-            const trackId = state.tracks[0].id;
-            const startTime = getTrackEndTime(trackId);
+
+            let targetTrack = state.tracks.find(tr => tr.type === asset.type);
+            if (!targetTrack) {
+                targetTrack = { id: genId(`track-${asset.type[0]}`), type: asset.type, muted: false, solo: false };
+                if (asset.type === 'video') state.tracks.unshift(targetTrack);
+                else state.tracks.push(targetTrack);
+            }
+
+            const startTime = getTrackEndTime(targetTrack.id);
             const clip = {
                 id: genId('clip'),
                 assetId: asset.id,
-                trackId,
+                trackId: targetTrack.id,
+                type: asset.type,
                 name: asset.name,
                 startTime,
                 offset: 0,
@@ -1306,15 +1864,25 @@
 
         function renderTrackHeaders() {
             dom.trackHeadersList.innerHTML = '';
-            state.tracks.forEach((track, idx) => {
+            let vIdx = 0;
+            let aIdx = 0;
+
+            state.tracks.forEach((track) => {
+                const isVid = track.type === 'video';
+                const label = isVid ? t('videoTrackName', { n: ++vIdx }) : t('audioTrackName', { n: ++aIdx });
+                const h = getTrackHeight(track);
+
                 const div = document.createElement('div');
-                div.style.height = `${TRACK_HEIGHT}px`;
+                div.style.height = `${h}px`;
                 div.style.marginBottom = `${TRACK_GAP}px`;
-                div.className = 'px-2.5 py-2 border-b border-daw-border/60 flex flex-col justify-between bg-[#1a1a20]';
+                div.className = `px-2.5 py-2 border-b border-daw-border/60 flex flex-col justify-between ${isVid ? 'bg-[#1c1a26]' : 'bg-[#1a1a20]'}`;
 
                 div.innerHTML = `
                     <div class="flex items-center justify-between gap-1">
-                        <span class="text-xs font-semibold text-slate-300 truncate">${t('trackName', { n: idx + 1 })}</span>
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="w-1.5 h-4 rounded-full shrink-0 ${isVid ? 'bg-indigo-400' : 'bg-sky-400'}"></span>
+                            <span class="text-xs font-semibold text-slate-200 truncate">${label}</span>
+                        </div>
                         ${state.tracks.length > 1 ? `<button type="button" title="${t('titleRemoveTrack')}" class="text-slate-500 hover:text-rose-400 text-xs px-1" data-del-track="${track.id}">×</button>` : ''}
                     </div>
                     <div class="flex items-center gap-1.5">
@@ -1332,6 +1900,7 @@
                     if (state.isPlaying) startPlayback(state.playhead);
                     renderTrackHeaders();
                     drawTimeline();
+                    syncVideoPreview(state.isPlaying);
                 });
 
                 div.querySelector('[data-solo]').addEventListener('click', () => {
@@ -1339,6 +1908,7 @@
                     if (state.isPlaying) startPlayback(state.playhead);
                     renderTrackHeaders();
                     drawTimeline();
+                    syncVideoPreview(state.isPlaying);
                 });
 
                 const delBtn = div.querySelector('[data-del-track]');
@@ -1350,7 +1920,7 @@
                             return;
                         }
                         saveSnapshot();
-                        state.tracks = state.tracks.filter(t => t.id !== track.id);
+                        state.tracks = state.tracks.filter(tr => tr.id !== track.id);
                         refreshAllUI();
                     });
                 }
@@ -1358,8 +1928,8 @@
                 dom.trackHeadersList.appendChild(div);
             });
 
-            // 動態調整時間軸容器高度以完整容納所有音軌
-            const totalH = RULER_HEIGHT + state.tracks.length * (TRACK_HEIGHT + TRACK_GAP) + 20;
+            let totalH = RULER_HEIGHT + 20;
+            for (const tr of state.tracks) totalH += getTrackHeight(tr) + TRACK_GAP;
             dom.timelineCanvasContainer.style.minHeight = `${Math.max(220, totalH)}px`;
         }
 
@@ -1368,12 +1938,23 @@
             if (!clip) {
                 dom.inspectorTitle.textContent = t('inspectorEmpty');
                 dom.inspectorRange.textContent = '';
+                dom.inspectorDot.className = 'w-2.5 h-2.5 rounded-full bg-slate-500 shrink-0';
                 dom.inspectorControls.classList.add('opacity-40', 'pointer-events-none');
+                dom.btnDetachAudio.disabled = true;
                 return;
             }
+            const isDetached = clip.type === 'video' && !!clip.audioDetached;
+            dom.btnDetachAudio.disabled = clip.type !== 'video' || isDetached;
+
+            dom.inspectorDot.className = `w-2.5 h-2.5 rounded-full shrink-0 ${clip.type === 'video' ? 'bg-indigo-400' : 'bg-sky-400'}`;
             dom.inspectorTitle.textContent = clip.name;
-            dom.inspectorRange.textContent = `${formatTime(clip.startTime)} → ${formatTime(clip.startTime + clip.duration)} (${t('inspectorDur', { dur: formatTime(clip.duration) })})`;
-            dom.inspectorControls.classList.remove('opacity-40', 'pointer-events-none');
+            dom.inspectorRange.textContent = `${formatTime(clip.startTime)} → ${formatTime(clip.startTime + clip.duration)} (${t('inspectorDur', { dur: formatTime(clip.duration) })})${isDetached ? ` • ${t('detachedBadge')}` : ''}`;
+
+            if (isDetached) {
+                dom.inspectorControls.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                dom.inspectorControls.classList.remove('opacity-40', 'pointer-events-none');
+            }
 
             dom.clipVolSlider.value = Math.round(clip.volume * 100);
             dom.clipVolVal.textContent = `${Math.round(clip.volume * 100)}%`;
@@ -1393,7 +1974,7 @@
         }
 
         // -----------------------------
-        // 5. 時間軸 Canvas 繪製引擎 (剪映高質感波形)
+        // 7. 時間軸 Canvas 繪製引擎 (支援影片膠捲縮圖 + 音訊波形)
         // -----------------------------
 
         function resizeCanvas() {
@@ -1413,15 +1994,6 @@
             return Math.max(0, state.scrollTime + x / state.pixelsPerSecond);
         }
 
-        function getTrackY(trackIndex) {
-            return RULER_HEIGHT + 4 + trackIndex * (TRACK_HEIGHT + TRACK_GAP);
-        }
-
-        function yToTrackIndex(y) {
-            const idx = Math.floor((y - RULER_HEIGHT - 4) / (TRACK_HEIGHT + TRACK_GAP));
-            return Math.max(0, Math.min(state.tracks.length - 1, idx));
-        }
-
         function drawTimeline() {
             const canvas = dom.timelineCanvas;
             const ctx = canvas.getContext('2d');
@@ -1437,21 +2009,24 @@
             ctx.fillStyle = '#121215';
             ctx.fillRect(0, 0, width, height);
 
-            // 2. 繪製音軌底槽
-            const anySolo = state.tracks.some(t => t.solo);
+            // 2. 繪製軌道底槽
+            const anyAudioSolo = state.tracks.some(tr => tr.type === 'audio' && tr.solo);
+            const anyVideoSolo = state.tracks.some(tr => tr.type === 'video' && tr.solo);
+
             state.tracks.forEach((track, idx) => {
                 const ty = getTrackY(idx);
-                ctx.fillStyle = '#1a1a20';
-                ctx.fillRect(0, ty, width, TRACK_HEIGHT);
+                const th = getTrackHeight(track);
+                ctx.fillStyle = track.type === 'video' ? '#191822' : '#1a1a20';
+                ctx.fillRect(0, ty, width, th);
                 ctx.strokeStyle = '#25252e';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(0, ty + TRACK_HEIGHT);
-                ctx.lineTo(width, ty + TRACK_HEIGHT);
+                ctx.moveTo(0, ty + th);
+                ctx.lineTo(width, ty + th);
                 ctx.stroke();
             });
 
-            // 3. 繪製頂部時間尺 (Time Ruler)
+            // 3. 繪製頂部時間尺
             ctx.fillStyle = '#17171c';
             ctx.fillRect(0, 0, width, RULER_HEIGHT);
             ctx.strokeStyle = '#2c2c35';
@@ -1470,10 +2045,10 @@
             const endT = state.scrollTime + visibleSeconds + majorStep;
 
             ctx.font = '11px Inter, monospace';
-            for (let t = startT; t <= endT; t += minorStep) {
-                const x = timeToX(t);
+            for (let tt = startT; tt <= endT; tt += minorStep) {
+                const x = timeToX(tt);
                 if (x < -20 || x > width + 20) continue;
-                const isMajor = Math.abs((t % majorStep)) < 0.001 || Math.abs((t % majorStep) - majorStep) < 0.001;
+                const isMajor = Math.abs((tt % majorStep)) < 0.001 || Math.abs((tt % majorStep) - majorStep) < 0.001;
                 ctx.strokeStyle = isMajor ? '#52525e' : '#2e2e38';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -1483,17 +2058,18 @@
 
                 if (isMajor) {
                     ctx.fillStyle = '#94a3b8';
-                    ctx.fillText(formatTime(t, false), x + 4, 13);
+                    ctx.fillText(formatTime(tt, false), x + 4, 13);
                 }
             }
 
-            // 4. 繪製每個音訊片段 (Clip) — 仿剪映深藍底 + 藍橘峰值波形 + 選中白框
+            // 4. 繪製每個片段 (影片膠捲縮圖 + 底部迷你波形 / 音訊高質感波形)
             const sortedClips = [...state.clips].sort((a, b) => (a.id === state.selectedClipId ? 1 : -1));
 
             for (const clip of sortedClips) {
-                const trackIdx = state.tracks.findIndex(t => t.id === clip.trackId);
+                const trackIdx = state.tracks.findIndex(tr => tr.id === clip.trackId);
                 if (trackIdx === -1) continue;
                 const track = state.tracks[trackIdx];
+                const anySolo = track.type === 'video' ? anyVideoSolo : anyAudioSolo;
                 const isMuted = track.muted || (anySolo && !track.solo);
 
                 const x1 = timeToX(clip.startTime);
@@ -1501,77 +2077,123 @@
                 const w = x2 - x1;
                 if (x2 < 0 || x1 > width || w < 1) continue;
 
+                const th = getTrackHeight(track);
                 const y = getTrackY(trackIdx) + 4;
-                const h = TRACK_HEIGHT - 8;
+                const h = th - 8;
                 const drawX = Math.max(0, x1);
                 const drawRight = Math.min(width, x2);
                 const drawW = drawRight - drawX;
                 const isSelected = clip.id === state.selectedClipId;
+                const asset = state.assets.get(clip.assetId);
 
                 ctx.save();
-                // 裁剪繪製範圍在片段方框內
                 ctx.beginPath();
-                ctx.roundRect(x1, y, w, h, 5);
+                ctx.roundRect(x1, y, w, h, 6);
                 ctx.clip();
 
-                // 片段深藍背景
-                ctx.fillStyle = isMuted ? '#1e2430' : '#102e4a';
-                ctx.fillRect(drawX, y, drawW, h);
+                if (clip.type === 'video') {
+                    // 影片片段背景
+                    ctx.fillStyle = isMuted ? '#1e202b' : '#1e1b3a';
+                    ctx.fillRect(drawX, y, drawW, h);
 
-                // 頂部標籤條微亮背景
-                ctx.fillStyle = isMuted ? 'rgba(255,255,255,0.03)' : 'rgba(56, 189, 248, 0.12)';
-                ctx.fillRect(drawX, y, drawW, 20);
+                    // 繪製影片膠捲縮圖
+                    if (asset && asset.thumbnails && asset.thumbnails.length > 0) {
+                        const thumbH = h - 18;
+                        const thumbW = Math.max(48, Math.round(thumbH * (asset.width / asset.height)));
+                        const firstTileX = x1 + Math.floor(Math.max(0, drawX - x1) / thumbW) * thumbW;
 
-                // 繪製波形柱 (底部往上長，仿截圖樣式，高音量頂端帶橘紅色峰值)
-                const asset = state.assets.get(clip.assetId);
-                if (asset && asset.peaks) {
-                    const waveBottom = y + h - 3;
-                    const maxWaveH = h - 24;
-                    const barStep = 3; // 每 3px 一根波形柱
-                    const firstBarX = Math.floor(drawX / barStep) * barStep;
-
-                    for (let bx = firstBarX; bx < drawRight; bx += barStep) {
-                        const relTime = (bx - x1) / state.pixelsPerSecond;
-                        if (relTime < 0 || relTime > clip.duration) continue;
-
-                        const srcTime = clip.offset + relTime;
-                        const pIdx = Math.floor(srcTime * PEAKS_PER_SEC);
-                        const pNext = Math.max(pIdx + 1, Math.floor((srcTime + barStep / state.pixelsPerSecond) * PEAKS_PER_SEC));
-
-                        let amp = 0;
-                        for (let p = pIdx; p < Math.min(asset.peaks.length, pNext); p++) {
-                            if (asset.peaks[p] > amp) amp = asset.peaks[p];
+                        ctx.save();
+                        if (isMuted) ctx.globalAlpha = 0.35;
+                        for (let tx = firstTileX; tx < drawRight; tx += thumbW) {
+                            const relTime = (tx - x1) / state.pixelsPerSecond;
+                            const srcTime = clip.offset + Math.max(0, relTime);
+                            const ratio = Math.max(0, Math.min(0.999, srcTime / Math.max(0.01, asset.duration)));
+                            const tIdx = Math.floor(ratio * asset.thumbnails.length);
+                            const thumb = asset.thumbnails[tIdx];
+                            if (thumb) {
+                                ctx.drawImage(thumb, tx, y, thumbW, thumbH);
+                            }
                         }
+                        ctx.restore();
 
-                        // 套用音量與淡入淡出視覺預覽
-                        let gain = clip.volume;
-                        if (clip.fadeIn > 0 && relTime < clip.fadeIn) {
-                            gain *= (relTime / clip.fadeIn);
-                        }
-                        if (clip.fadeOut > 0 && (clip.duration - relTime) < clip.fadeOut) {
-                            gain *= ((clip.duration - relTime) / clip.fadeOut);
-                        }
-                        const scaledAmp = Math.min(1, amp * gain);
-                        const barH = Math.max(1.5, scaledAmp * maxWaveH);
+                        // 縮圖底部半透明遮罩與迷你波形區
+                        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+                        ctx.fillRect(drawX, y + thumbH, drawW, 18);
 
-                        ctx.fillStyle = isMuted ? '#475569' : '#0ea5e9';
-                        ctx.fillRect(bx, waveBottom - barH, 2, barH);
-
-                        // 仿截圖：高振幅頂端顯示亮橘色峰值點
-                        if (!isMuted && scaledAmp > 0.72) {
-                            ctx.fillStyle = '#f97316';
-                            ctx.fillRect(bx, waveBottom - barH, 2, Math.min(3, barH));
-                        }
+                        // 頂部檔名漸層條
+                        const grad = ctx.createLinearGradient(0, y, 0, y + 22);
+                        grad.addColorStop(0, 'rgba(0,0,0,0.68)');
+                        grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = grad;
+                        ctx.fillRect(drawX, y, drawW, 22);
                     }
 
-                    // 音量水平參考線
-                    const volY = waveBottom - Math.min(1, clip.volume * 0.5) * maxWaveH;
-                    ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(drawX, volY);
-                    ctx.lineTo(drawRight, volY);
-                    ctx.stroke();
+                    // 底部迷你音訊波形 (若已分離聲音則顯示已分離提示)
+                    if (clip.audioDetached) {
+                        if (w > 48) {
+                            ctx.fillStyle = '#94a3b8';
+                            ctx.font = '500 10px Inter, Noto Sans TC, sans-serif';
+                            ctx.fillText(`🔇 ${t('detachedBadge')}`, Math.max(x1 + 6, 4), y + h - 5);
+                        }
+                    } else if (asset && asset.peaks) {
+                        const waveBottom = y + h - 2;
+                        const maxWaveH = 14;
+                        const barStep = 3;
+                        const firstBarX = Math.floor(drawX / barStep) * barStep;
+                        ctx.fillStyle = isMuted ? '#475569' : '#818cf8';
+                        for (let bx = firstBarX; bx < drawRight; bx += barStep) {
+                            const relTime = (bx - x1) / state.pixelsPerSecond;
+                            if (relTime < 0 || relTime > clip.duration) continue;
+                            const srcTime = clip.offset + relTime;
+                            const pIdx = Math.floor(srcTime * PEAKS_PER_SEC);
+                            const amp = asset.peaks[pIdx] || 0;
+                            const barH = Math.max(1, Math.min(1, amp * clip.volume) * maxWaveH);
+                            ctx.fillRect(bx, waveBottom - barH, 2, barH);
+                        }
+                    }
+                } else {
+                    // 音訊片段：深藍底 + 藍橘峰值波形
+                    ctx.fillStyle = isMuted ? '#1e2430' : '#102e4a';
+                    ctx.fillRect(drawX, y, drawW, h);
+
+                    ctx.fillStyle = isMuted ? 'rgba(255,255,255,0.03)' : 'rgba(56, 189, 248, 0.12)';
+                    ctx.fillRect(drawX, y, drawW, 20);
+
+                    if (asset && asset.peaks) {
+                        const waveBottom = y + h - 3;
+                        const maxWaveH = h - 24;
+                        const barStep = 3;
+                        const firstBarX = Math.floor(drawX / barStep) * barStep;
+
+                        for (let bx = firstBarX; bx < drawRight; bx += barStep) {
+                            const relTime = (bx - x1) / state.pixelsPerSecond;
+                            if (relTime < 0 || relTime > clip.duration) continue;
+
+                            const srcTime = clip.offset + relTime;
+                            const pIdx = Math.floor(srcTime * PEAKS_PER_SEC);
+                            const pNext = Math.max(pIdx + 1, Math.floor((srcTime + barStep / state.pixelsPerSecond) * PEAKS_PER_SEC));
+
+                            let amp = 0;
+                            for (let p = pIdx; p < Math.min(asset.peaks.length, pNext); p++) {
+                                if (asset.peaks[p] > amp) amp = asset.peaks[p];
+                            }
+
+                            let gain = clip.volume;
+                            if (clip.fadeIn > 0 && relTime < clip.fadeIn) gain *= (relTime / clip.fadeIn);
+                            if (clip.fadeOut > 0 && (clip.duration - relTime) < clip.fadeOut) gain *= ((clip.duration - relTime) / clip.fadeOut);
+
+                            const scaledAmp = Math.min(1, amp * gain);
+                            const barH = Math.max(1.5, scaledAmp * maxWaveH);
+
+                            ctx.fillStyle = isMuted ? '#475569' : '#0ea5e9';
+                            ctx.fillRect(bx, waveBottom - barH, 2, barH);
+
+                            if (!isMuted && scaledAmp > 0.72) {
+                                ctx.fillStyle = '#f97316';
+                                ctx.fillRect(bx, waveBottom - barH, 2, Math.min(3, barH));
+                            }
+                        }
+                    }
                 }
 
                 // 繪製淡入淡出斜線遮罩提示
@@ -1598,35 +2220,34 @@
 
                 // 繪製檔名文字
                 if (w > 28) {
-                    ctx.fillStyle = isMuted ? '#94a3b8' : '#e0f2fe';
-                    ctx.font = '500 11px Inter, Noto Sans TC, sans-serif';
+                    ctx.fillStyle = isMuted ? '#94a3b8' : '#f1f5f9';
+                    ctx.font = '600 11px Inter, Noto Sans TC, sans-serif';
                     ctx.fillText(clip.name, Math.max(x1 + 6, 4), y + 14);
                 }
 
                 ctx.restore();
 
-                // 片段外框 (選中時為醒目白色邊框，完全呼應截圖)
+                // 片段外框
                 ctx.beginPath();
-                ctx.roundRect(x1, y, w, h, 5);
+                ctx.roundRect(x1, y, w, h, 6);
                 if (isSelected) {
                     ctx.strokeStyle = '#ffffff';
                     ctx.lineWidth = 2;
                     ctx.stroke();
 
-                    // 左右白色修剪拉桿提示
                     if (w > 20) {
                         ctx.fillStyle = '#ffffff';
                         ctx.fillRect(x1 + 1, y + h / 2 - 10, 3, 20);
                         ctx.fillRect(x2 - 4, y + h / 2 - 10, 3, 20);
                     }
                 } else {
-                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+                    ctx.strokeStyle = clip.type === 'video' ? 'rgba(129, 140, 248, 0.45)' : 'rgba(56, 189, 248, 0.35)';
                     ctx.lineWidth = 1;
                     ctx.stroke();
                 }
             }
 
-            // 5. 繪製白色播放頭 (Playhead)
+            // 5. 繪製白色播放頭
             const px = timeToX(state.playhead);
             if (px >= -10 && px <= width + 10) {
                 ctx.strokeStyle = '#ffffff';
@@ -1636,7 +2257,6 @@
                 ctx.lineTo(px, height);
                 ctx.stroke();
 
-                // 頂部白色圓角把柄
                 ctx.fillStyle = '#ffffff';
                 ctx.beginPath();
                 ctx.roundRect(px - 6, 0, 12, 16, [0, 0, 5, 5]);
@@ -1647,7 +2267,7 @@
         }
 
         // -----------------------------
-        // 6. 時間軸滑鼠 / 觸控互動 (拖曳、修剪、移動播放頭)
+        // 8. 時間軸滑鼠 / 觸控互動
         // -----------------------------
 
         function getCanvasCoords(e) {
@@ -1656,7 +2276,6 @@
             return { x: pt.clientX - rect.left, y: pt.clientY - rect.top };
         }
 
-        /** 碰撞偵測：找出游標所在的片段與區域 (主體 / 左邊界 / 右邊界) */
         function hitTestClip(x, y) {
             if (y < RULER_HEIGHT) return null;
             const trackIdx = yToTrackIndex(y);
@@ -1664,9 +2283,9 @@
             if (!track) return null;
 
             const ty = getTrackY(trackIdx) + 4;
-            if (y < ty || y > ty + TRACK_HEIGHT - 8) return null;
+            const th = getTrackHeight(track) - 8;
+            if (y < ty || y > ty + th) return null;
 
-            // 優先檢查已選取的片段
             const candidates = state.clips
                 .filter(c => c.trackId === track.id)
                 .sort((a, b) => (a.id === state.selectedClipId ? -1 : 1));
@@ -1684,10 +2303,9 @@
             return null;
         }
 
-        /** 磁吸對齊計算：自動貼近播放頭、0 秒與其他片段邊緣 */
         function applySnap(targetTime, ignoreClipId) {
             if (!state.snapEnabled) return Math.max(0, targetTime);
-            const thresholdSec = 10 / state.pixelsPerSecond; // 10px 內自動吸附
+            const thresholdSec = 10 / state.pixelsPerSecond;
             const snapPoints = [0, state.playhead];
 
             for (const c of state.clips) {
@@ -1711,13 +2329,13 @@
             if (e.cancelable) e.preventDefault();
             const { x, y } = getCanvasCoords(e);
 
-            // 點擊時間尺 → 拖曳播放頭
             if (y <= RULER_HEIGHT) {
                 state.playhead = xToTime(x);
                 state.drag = { type: 'playhead' };
                 if (state.isPlaying) startPlayback(state.playhead);
                 updateTimeReadouts();
                 drawTimeline();
+                syncVideoPreview(state.isPlaying);
                 return;
             }
 
@@ -1738,7 +2356,6 @@
                 updateInspectorUI();
                 drawTimeline();
             } else {
-                // 點擊空白軌道處 → 取消選取並將播放頭移至該位置
                 state.selectedClipId = null;
                 state.playhead = xToTime(x);
                 state.drag = { type: 'playhead' };
@@ -1746,13 +2363,13 @@
                 updateInspectorUI();
                 updateTimeReadouts();
                 drawTimeline();
+                syncVideoPreview(state.isPlaying);
             }
         }
 
         function handlePointerMove(e) {
             const { x, y } = getCanvasCoords(e);
 
-            // 未拖曳時更新滑鼠游標樣式
             if (!state.drag) {
                 if (!e.touches) {
                     if (y <= RULER_HEIGHT) {
@@ -1774,6 +2391,7 @@
                 if (state.isPlaying) startPlayback(state.playhead);
                 updateTimeReadouts();
                 drawTimeline();
+                syncVideoPreview(state.isPlaying);
                 return;
             }
 
@@ -1790,7 +2408,6 @@
             if (state.drag.type === 'move') {
                 dom.timelineCanvasContainer.style.cursor = 'grabbing';
                 let newStart = Math.max(0, state.drag.origStart + deltaSec);
-                // 嘗試吸附開頭或結尾
                 const snappedStart = applySnap(newStart, clip.id);
                 if (snappedStart !== newStart) {
                     newStart = snappedStart;
@@ -1802,10 +2419,11 @@
                 }
                 clip.startTime = newStart;
 
-                // 支援上下跨音軌拖曳
+                // 允許同類型軌道跨軌拖曳 (影片只在影片軌、音訊只在音軌)
                 const targetTrackIdx = yToTrackIndex(y);
-                if (state.tracks[targetTrackIdx]) {
-                    clip.trackId = state.tracks[targetTrackIdx].id;
+                const targetTrack = state.tracks[targetTrackIdx];
+                if (targetTrack && targetTrack.type === clip.type) {
+                    clip.trackId = targetTrack.id;
                 }
             } else if (state.drag.type === 'trim-left') {
                 const minDur = 0.08;
@@ -1833,6 +2451,7 @@
             updateTimeReadouts();
             updateScrollSliderBounds();
             drawTimeline();
+            syncVideoPreview(state.isPlaying);
         }
 
         function handlePointerUp() {
@@ -1843,10 +2462,9 @@
         }
 
         // -----------------------------
-        // 7. 核心剪輯操作 (分割 Ctrl+B、修剪左右、複製、刪除、緊密合併)
+        // 9. 核心剪輯操作 (分割 Ctrl+B、修剪左右、複製、刪除、緊密合併)
         // -----------------------------
 
-        /** 取得要套用分割的目標片段：優先選中的片段，否則找播放頭覆蓋到的第一個片段 */
         function getTargetClipAtPlayhead() {
             const p = state.playhead;
             if (state.selectedClipId) {
@@ -1858,7 +2476,6 @@
             return state.clips.find(c => p > c.startTime + 0.04 && p < c.startTime + c.duration - 0.04) || null;
         }
 
-        /** 分割 (Ctrl+B) */
         function actionSplit() {
             const clip = getTargetClipAtPlayhead();
             if (!clip) {
@@ -1887,7 +2504,6 @@
             showToast(t('toastSplitOk', { time: formatTime(state.playhead) }), 'success');
         }
 
-        /** 刪除播放頭左側內容 */
         function actionTrimLeft() {
             const clip = getTargetClipAtPlayhead();
             if (!clip) {
@@ -1905,7 +2521,6 @@
             showToast(t('toastTrimLeftOk'), 'success');
         }
 
-        /** 刪除播放頭右側內容 */
         function actionTrimRight() {
             const clip = getTargetClipAtPlayhead();
             if (!clip) {
@@ -1920,7 +2535,6 @@
             showToast(t('toastTrimRightOk'), 'success');
         }
 
-        /** 複製選中片段 (Ctrl+D) */
         function actionDuplicateClip() {
             const clip = state.clips.find(c => c.id === state.selectedClipId);
             if (!clip) {
@@ -1939,7 +2553,70 @@
             showToast(t('toastDupOk'), 'success');
         }
 
-        /** 刪除選中片段 (Delete / Backspace) */
+        /** 將選中影片片段的聲音分離到獨立音軌 */
+        function actionDetachAudio() {
+            const clip = state.clips.find(c => c.id === state.selectedClipId);
+            if (!clip || clip.type !== 'video') {
+                showToast(t('toastDetachSelectVideo'), 'warning');
+                return;
+            }
+            if (clip.audioDetached) {
+                showToast(t('toastDetachAlready'), 'info');
+                return;
+            }
+            const asset = state.assets.get(clip.assetId);
+            if (!asset || !asset.buffer || asset.hasAudio === false) {
+                showToast(t('toastDetachNoAudio'), 'warning');
+                return;
+            }
+
+            saveSnapshot();
+
+            // 尋找在該時間區間內無重疊片段的現有音軌，若皆重疊則自動新增一條音軌
+            const cStart = clip.startTime;
+            const cEnd = clip.startTime + clip.duration;
+            let targetAudioTrack = state.tracks.find(tr => {
+                if (tr.type !== 'audio') return false;
+                return !state.clips.some(other =>
+                    other.trackId === tr.id &&
+                    other.startTime < cEnd - 0.01 &&
+                    (other.startTime + other.duration) > cStart + 0.01
+                );
+            });
+
+            if (!targetAudioTrack) {
+                targetAudioTrack = { id: genId('track-a'), type: 'audio', muted: false, solo: false };
+                state.tracks.push(targetAudioTrack);
+            }
+
+            const audioClip = {
+                id: genId('clip'),
+                assetId: clip.assetId,
+                trackId: targetAudioTrack.id,
+                type: 'audio',
+                name: `${clip.name} ${t('detachedAudioSuffix')}`,
+                startTime: clip.startTime,
+                offset: clip.offset,
+                duration: clip.duration,
+                volume: clip.volume,
+                fadeIn: clip.fadeIn,
+                fadeOut: clip.fadeOut,
+            };
+
+            // 關閉原影片片段的內建聲音，保留完整畫面
+            clip.audioDetached = true;
+            clip.volume = 0;
+            clip.fadeIn = 0;
+            clip.fadeOut = 0;
+
+            state.clips.push(audioClip);
+            state.selectedClipId = audioClip.id;
+
+            if (state.isPlaying) startPlayback(state.playhead);
+            refreshAllUI();
+            showToast(t('toastDetachOk', { name: clip.name }), 'success');
+        }
+
         function actionDeleteClip() {
             if (!state.selectedClipId) {
                 showToast(t('toastDelWarn'), 'warning');
@@ -1953,7 +2630,6 @@
             showToast(t('toastDelOk'), 'info');
         }
 
-        /** 緊密合併：將每條音軌上的片段依順序頭尾無縫相接，消除中間空隙 */
         function actionCloseGaps() {
             if (state.clips.length === 0) return;
             saveSnapshot();
@@ -1972,93 +2648,8 @@
             showToast(t('toastCloseGapsOk'), 'success');
         }
 
-        /** 刪除播放頭左側內容 */
-        function actionTrimLeft() {
-            const clip = getTargetClipAtPlayhead();
-            if (!clip) {
-                showToast('請將播放頭移到片段中間再使用「刪除左側」。', 'warning');
-                return;
-            }
-            saveSnapshot();
-            const cutAmt = state.playhead - clip.startTime;
-            clip.startTime = state.playhead;
-            clip.offset += cutAmt;
-            clip.duration -= cutAmt;
-            clip.fadeIn = 0;
-            if (state.isPlaying) startPlayback(state.playhead);
-            refreshAllUI();
-            showToast('已切除播放頭左側內容', 'success');
-        }
-
-        /** 刪除播放頭右側內容 */
-        function actionTrimRight() {
-            const clip = getTargetClipAtPlayhead();
-            if (!clip) {
-                showToast('請將播放頭移到片段中間再使用「刪除右側」。', 'warning');
-                return;
-            }
-            saveSnapshot();
-            clip.duration = state.playhead - clip.startTime;
-            clip.fadeOut = 0;
-            if (state.isPlaying) startPlayback(state.playhead);
-            refreshAllUI();
-            showToast('已切除播放頭右側內容', 'success');
-        }
-
-        /** 複製選中片段 (Ctrl+D) */
-        function actionDuplicateClip() {
-            const clip = state.clips.find(c => c.id === state.selectedClipId);
-            if (!clip) {
-                showToast('請先點選要複製的片段。', 'warning');
-                return;
-            }
-            saveSnapshot();
-            const dup = {
-                ...clip,
-                id: genId('clip'),
-                startTime: clip.startTime + clip.duration,
-            };
-            state.clips.push(dup);
-            state.selectedClipId = dup.id;
-            refreshAllUI();
-            showToast('已複製片段並接續於後方', 'success');
-        }
-
-        /** 刪除選中片段 (Delete / Backspace) */
-        function actionDeleteClip() {
-            if (!state.selectedClipId) {
-                showToast('請先點選要刪除的片段。', 'warning');
-                return;
-            }
-            saveSnapshot();
-            state.clips = state.clips.filter(c => c.id !== state.selectedClipId);
-            state.selectedClipId = null;
-            if (state.isPlaying) startPlayback(state.playhead);
-            refreshAllUI();
-            showToast('已刪除選中片段', 'info');
-        }
-
-        /** 緊密合併：將每條音軌上的片段依順序頭尾無縫相接，消除中間空隙 */
-        function actionCloseGaps() {
-            if (state.clips.length === 0) return;
-            saveSnapshot();
-            for (const track of state.tracks) {
-                const tClips = state.clips
-                    .filter(c => c.trackId === track.id)
-                    .sort((a, b) => a.startTime - b.startTime);
-                let cursor = 0;
-                for (const c of tClips) {
-                    c.startTime = cursor;
-                    cursor += c.duration;
-                }
-            }
-            if (state.isPlaying) startPlayback(state.playhead);
-            refreshAllUI();
-            showToast('已將各音軌片段緊密排列並消除空隙！', 'success');
-        }
-
         // -----------------------------
-        // 8. 縮放與水平捲動
+        // 10. 縮放與水平捲動
         // -----------------------------
 
         function setZoom(newPps, anchorRatio = 0.5) {
@@ -2069,7 +2660,6 @@
             state.pixelsPerSecond = clamped;
             state.scrollTime = Math.max(0, anchorTime - (width * anchorRatio) / clamped);
 
-            // 同步縮放滑桿 (對數曲線手感更佳)
             const sliderVal = Math.round((Math.log(clamped / 0.5) / Math.log(200 / 0.5)) * 100);
             dom.zoomSlider.value = Math.max(1, Math.min(100, sliderVal));
 
@@ -2101,7 +2691,7 @@
         }
 
         // -----------------------------
-        // 9. 即時多軌混音播放引擎
+        // 11. 即時多軌影音同步播放引擎
         // -----------------------------
 
         function startPlayback(fromTime) {
@@ -2111,8 +2701,9 @@
 
             const startPos = fromTime >= totalDur - 0.02 ? 0 : Math.max(0, fromTime);
             const ctx = getAudioContext();
-            const now = ctx.currentTime + 0.03; // 30ms 緩衝確保多軌精準同步
-            const anySolo = state.tracks.some(t => t.solo);
+            const now = ctx.currentTime + 0.03;
+            const anyAudioSolo = state.tracks.some(tr => tr.type === 'audio' && tr.solo);
+            const anyVideoSolo = state.tracks.some(tr => tr.type === 'video' && tr.solo);
 
             state.playhead = startPos;
             state.playStartCtxTime = now;
@@ -2121,14 +2712,17 @@
             state.activeSources = [];
 
             for (const clip of state.clips) {
-                const track = state.tracks.find(t => t.id === clip.trackId);
-                if (!track || track.muted || (anySolo && !track.solo)) continue;
+                if (clip.audioDetached) continue;
+                const track = state.tracks.find(tr => tr.id === clip.trackId);
+                if (!track) continue;
+                const anySolo = track.type === 'video' ? anyVideoSolo : anyAudioSolo;
+                if (track.muted || (anySolo && !track.solo)) continue;
 
                 const clipEnd = clip.startTime + clip.duration;
                 if (clipEnd <= startPos) continue;
 
                 const asset = state.assets.get(clip.assetId);
-                if (!asset) continue;
+                if (!asset || !asset.buffer) continue;
 
                 const src = ctx.createBufferSource();
                 src.buffer = asset.buffer;
@@ -2137,7 +2731,6 @@
                 src.connect(gainNode);
                 gainNode.connect(ctx.destination);
 
-                // 計算此片段應在何時啟動與偏移
                 const delay = Math.max(0, clip.startTime - startPos);
                 const skipInClip = Math.max(0, startPos - clip.startTime);
                 const playDur = clip.duration - skipInClip;
@@ -2146,7 +2739,6 @@
                 const startAt = now + delay;
                 const endAt = startAt + playDur;
 
-                // 套用音量與淡入淡出自動化包絡
                 const vol = Math.max(0.0001, clip.volume);
                 gainNode.gain.setValueAtTime(vol, startAt);
 
@@ -2160,9 +2752,7 @@
                 if (clip.fadeOut > 0 && playDur > 0.01) {
                     const foStartRel = Math.max(0, playDur - clip.fadeOut);
                     const foStartTime = startAt + foStartRel;
-                    if (foStartRel > 0) {
-                        gainNode.gain.setValueAtTime(vol, foStartTime);
-                    }
+                    if (foStartRel > 0) gainNode.gain.setValueAtTime(vol, foStartTime);
                     gainNode.gain.linearRampToValueAtTime(0.0001, endAt);
                 }
 
@@ -2179,7 +2769,7 @@
                 try {
                     src.stop();
                     src.disconnect();
-                } catch (e) {}
+                } catch (_) {}
             }
             state.activeSources = [];
             state.isPlaying = false;
@@ -2187,9 +2777,16 @@
                 cancelAnimationFrame(state.animFrameId);
                 state.animFrameId = null;
             }
+            // 暫停所有背景預覽影片元素
+            state.assets.forEach(asset => {
+                if (asset.type === 'video' && asset.videoEl && !asset.videoEl.paused) {
+                    asset.videoEl.pause();
+                }
+            });
             if (updateUI) {
                 updatePlayButtonUI();
                 drawTimeline();
+                syncVideoPreview(false);
             }
         }
 
@@ -2208,7 +2805,6 @@
 
             state.playhead = current;
 
-            // 若播放頭超出右側視窗，自動跟隨捲動
             const width = dom.timelineCanvasContainer.clientWidth || 800;
             const px = timeToX(state.playhead);
             if (px > width - 30) {
@@ -2218,6 +2814,7 @@
 
             updateTimeReadouts();
             drawTimeline();
+            syncVideoPreview(true);
             state.animFrameId = requestAnimationFrame(animatePlayhead);
         }
 
@@ -2234,28 +2831,30 @@
         }
 
         // -----------------------------
-        // 10. 離線混音合併 & 本機 MP3 / WAV 編碼下載
+        // 12. 離線混音 & 本機 MP4 / MOV / MKV / MP3 / WAV 匯出引擎
         // -----------------------------
 
-        /** 使用 OfflineAudioContext 將時間軸上所有有效音軌與片段合併成單一立體聲 AudioBuffer */
         async function renderTimelineToBuffer() {
             const totalDur = getTotalDuration();
-            if (totalDur <= 0.02) {
-                throw new Error(t('errNoAudio'));
-            }
+            if (totalDur <= 0.02) throw new Error(t('errNoAudio'));
 
             const sampleRate = state.audioCtx ? state.audioCtx.sampleRate : 44100;
             const totalSamples = Math.ceil(totalDur * sampleRate);
             const offlineCtx = new OfflineAudioContext(2, totalSamples, sampleRate);
-            const anySolo = state.tracks.some(t => t.solo);
+            const anyAudioSolo = state.tracks.some(tr => tr.type === 'audio' && tr.solo);
+            const anyVideoSolo = state.tracks.some(tr => tr.type === 'video' && tr.solo);
 
             let renderedClipCount = 0;
 
             for (const clip of state.clips) {
-                const track = state.tracks.find(t => t.id === clip.trackId);
-                if (!track || track.muted || (anySolo && !track.solo)) continue;
+                if (clip.audioDetached) continue;
+                const track = state.tracks.find(tr => tr.id === clip.trackId);
+                if (!track) continue;
+                const anySolo = track.type === 'video' ? anyVideoSolo : anyAudioSolo;
+                if (track.muted || (anySolo && !track.solo)) continue;
+
                 const asset = state.assets.get(clip.assetId);
-                if (!asset) continue;
+                if (!asset || !asset.buffer) continue;
 
                 const src = offlineCtx.createBufferSource();
                 src.buffer = asset.buffer;
@@ -2283,11 +2882,44 @@
                 renderedClipCount++;
             }
 
-            if (renderedClipCount === 0) {
-                throw new Error(t('errAllMuted'));
-            }
-
+            if (renderedClipCount === 0) throw new Error(t('errAllMuted'));
             return await offlineCtx.startRendering();
+        }
+
+        function audioBufferToWavBytes(audioBuffer) {
+            const numCh = audioBuffer.numberOfChannels;
+            const sr = audioBuffer.sampleRate;
+            const numSamples = audioBuffer.length;
+            const blockAlign = numCh * 2;
+            const dataSize = numSamples * blockAlign;
+            const buffer = new ArrayBuffer(44 + dataSize);
+            const view = new DataView(buffer);
+
+            const writeStr = (off, str) => { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); };
+            writeStr(0, 'RIFF');
+            view.setUint32(4, 36 + dataSize, true);
+            writeStr(8, 'WAVE');
+            writeStr(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numCh, true);
+            view.setUint32(24, sr, true);
+            view.setUint32(28, sr * blockAlign, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, 16, true);
+            writeStr(36, 'data');
+            view.setUint32(40, dataSize, true);
+
+            const channels = Array.from({ length: numCh }, (_, c) => audioBuffer.getChannelData(c));
+            let offset = 44;
+            for (let i = 0; i < numSamples; i++) {
+                for (let ch = 0; ch < numCh; ch++) {
+                    const s = Math.max(-1, Math.min(1, channels[ch][i]));
+                    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+                    offset += 2;
+                }
+            }
+            return new Uint8Array(buffer);
         }
 
         function floatTo16BitPCM(float32Array) {
@@ -2314,9 +2946,7 @@
         }
 
         async function exportAsMP3(audioBuffer, kbps, filename) {
-            if (typeof lamejs === 'undefined') {
-                throw new Error(t('errNoLame'));
-            }
+            if (typeof lamejs === 'undefined') throw new Error(t('errNoLame'));
             const channels = Math.min(2, audioBuffer.numberOfChannels);
             const mp3Encoder = new lamejs.Mp3Encoder(channels, audioBuffer.sampleRate, kbps);
             const leftPCM = floatTo16BitPCM(audioBuffer.getChannelData(0));
@@ -2358,40 +2988,183 @@
             });
         }
 
-        function exportAsWAV(audioBuffer, filename) {
-            const numCh = audioBuffer.numberOfChannels;
-            const sr = audioBuffer.sampleRate;
-            const numSamples = audioBuffer.length;
-            const blockAlign = numCh * 2;
-            const dataSize = numSamples * blockAlign;
-            const buffer = new ArrayBuffer(44 + dataSize);
-            const view = new DataView(buffer);
-
-            const writeStr = (off, str) => { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); };
-            writeStr(0, 'RIFF');
-            view.setUint32(4, 36 + dataSize, true);
-            writeStr(8, 'WAVE');
-            writeStr(12, 'fmt ');
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true);
-            view.setUint16(22, numCh, true);
-            view.setUint32(24, sr, true);
-            view.setUint32(28, sr * blockAlign, true);
-            view.setUint16(32, blockAlign, true);
-            view.setUint16(34, 16, true);
-            writeStr(36, 'data');
-            view.setUint32(40, dataSize, true);
-
-            const channels = Array.from({ length: numCh }, (_, c) => audioBuffer.getChannelData(c));
-            let offset = 44;
-            for (let i = 0; i < numSamples; i++) {
-                for (let ch = 0; ch < numCh; ch++) {
-                    const s = Math.max(-1, Math.min(1, channels[ch][i]));
-                    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-                    offset += 2;
+        /** 將時間軸上的影片軌道切分成不重疊的連續區段 (支援多軌覆蓋與空隙黑畫面) */
+        function buildFlattenedVideoSegments(totalDur) {
+            const pts = new Set([0, Number(totalDur.toFixed(4))]);
+            for (const c of state.clips) {
+                if (c.type === 'video') {
+                    pts.add(Number(Math.max(0, c.startTime).toFixed(4)));
+                    pts.add(Number(Math.min(totalDur, c.startTime + c.duration).toFixed(4)));
                 }
             }
-            triggerBlobDownload(new Blob([buffer], { type: 'audio/wav' }), `${filename}.wav`);
+            const sorted = Array.from(pts).sort((a, b) => a - b);
+            const rawSegs = [];
+
+            for (let i = 0; i < sorted.length - 1; i++) {
+                const t0 = sorted[i];
+                const t1 = sorted[i + 1];
+                const dur = t1 - t0;
+                if (dur < 0.02) continue;
+
+                const mid = (t0 + t1) / 2;
+                const activeClip = getActiveVideoClipAt(mid);
+                if (activeClip) {
+                    rawSegs.push({
+                        type: 'video',
+                        assetId: activeClip.assetId,
+                        offset: activeClip.offset + (t0 - activeClip.startTime),
+                        duration: dur,
+                    });
+                } else {
+                    rawSegs.push({ type: 'gap', duration: dur });
+                }
+            }
+
+            // 合併相鄰的相同空白區段
+            const merged = [];
+            for (const s of rawSegs) {
+                const last = merged[merged.length - 1];
+                if (last && last.type === 'gap' && s.type === 'gap') {
+                    last.duration += s.duration;
+                } else {
+                    merged.push(s);
+                }
+            }
+            return merged;
+        }
+
+        /** 使用本機 FFmpeg WASM 將時間軸合併匯出為 MP4 / MOV / MKV 影片 */
+        async function exportAsVideo(format, resKey, filename) {
+            const totalDur = getTotalDuration();
+            if (totalDur <= 0.05) throw new Error(t('errNoAudio'));
+
+            const resMap = {
+                '480': { w: 854, h: 480 },
+                '720': { w: 1280, h: 720 },
+                '1080': { w: 1920, h: 1080 },
+            };
+            const { w: W, h: H } = resMap[resKey] || resMap['720'];
+            const fps = 30;
+
+            dom.exportProgressText.textContent = t('progressVideoPrep');
+            dom.exportProgressBar.style.width = '10%';
+            dom.exportProgressPercent.textContent = '10%';
+
+            const [ffmpeg, mergedAudioBuf] = await Promise.all([
+                getFFmpegEngine(),
+                renderTimelineToBuffer(),
+            ]);
+
+            const segments = buildFlattenedVideoSegments(totalDur);
+            const createdFiles = [];
+            const assetInputMap = new Map();
+            const ffmpegArgs = [];
+
+            dom.exportProgressText.textContent = t('progressVideoWrite');
+            dom.exportProgressBar.style.width = '22%';
+            dom.exportProgressPercent.textContent = '22%';
+
+            // 1. 寫入所有使用到的影片原檔
+            let inputIdx = 0;
+            for (const seg of segments) {
+                if (seg.type === 'video' && !assetInputMap.has(seg.assetId)) {
+                    const asset = state.assets.get(seg.assetId);
+                    if (!asset || !asset.file) continue;
+                    const ext = (asset.ext || 'mp4').toLowerCase();
+                    const vName = `exp_in_${inputIdx}.${ext}`;
+                    const bytes = new Uint8Array(await asset.file.arrayBuffer());
+                    await ffmpeg.writeFile(vName, bytes);
+                    createdFiles.push(vName);
+                    assetInputMap.set(seg.assetId, inputIdx);
+                    ffmpegArgs.push('-i', vName);
+                    inputIdx++;
+                }
+            }
+
+            // 2. 寫入混音完成的音訊 WAV
+            const wavName = `exp_mix_${Date.now()}.wav`;
+            const wavBytes = audioBufferToWavBytes(mergedAudioBuf);
+            await ffmpeg.writeFile(wavName, wavBytes);
+            createdFiles.push(wavName);
+            const audioInputIdx = inputIdx;
+            ffmpegArgs.push('-i', wavName);
+
+            // 3. 建立 filter_complex 串接所有剪輯片段與黑畫面空隙
+            const filterParts = [];
+            const concatLabels = [];
+
+            segments.forEach((seg, idx) => {
+                const lbl = `v${idx}`;
+                if (seg.type === 'video' && assetInputMap.has(seg.assetId)) {
+                    const inI = assetInputMap.get(seg.assetId);
+                    filterParts.push(
+                        `[${inI}:v]trim=start=${seg.offset.toFixed(3)}:duration=${seg.duration.toFixed(3)},setpts=PTS-STARTPTS,fps=${fps},scale=${W}:${H}:force_original_aspect_ratio=decrease,pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=yuv420p[${lbl}]`
+                    );
+                } else {
+                    filterParts.push(
+                        `color=c=black:s=${W}x${H}:r=${fps}:d=${seg.duration.toFixed(3)},format=yuv420p[${lbl}]`
+                    );
+                }
+                concatLabels.push(`[${lbl}]`);
+            });
+
+            let finalVideoLabel = '[vout]';
+            if (concatLabels.length === 1) {
+                // 單一片段直接輸出，避免不必要的 concat 濾鏡
+                finalVideoLabel = concatLabels[0];
+            } else {
+                filterParts.push(`${concatLabels.join('')}concat=n=${concatLabels.length}:v=1:a=0[vout]`);
+            }
+
+            const outName = `exp_out_${Date.now()}.${format}`;
+            createdFiles.push(outName);
+
+            ffmpegArgs.push(
+                '-filter_complex', filterParts.join(';'),
+                '-map', finalVideoLabel,
+                '-map', `${audioInputIdx}:a`,
+                '-c:v', 'libx264',
+                '-preset', 'ultrafast',
+                '-crf', '23',
+                '-pix_fmt', 'yuv420p',
+                '-c:a', 'aac',
+                '-b:a', '192k',
+                '-t', totalDur.toFixed(3)
+            );
+
+            if (format === 'mp4' || format === 'mov') {
+                ffmpegArgs.push('-movflags', '+faststart');
+            }
+            ffmpegArgs.push(outName);
+
+            dom.exportProgressText.textContent = t('progressVideoEncode', { fmt: format.toUpperCase() });
+            activeProgressHandler = (p) => {
+                const pct = Math.min(99, 25 + Math.round(p * 74));
+                dom.exportProgressPercent.textContent = `${pct}%`;
+                dom.exportProgressBar.style.width = `${pct}%`;
+            };
+
+            try {
+                const exitCode = await ffmpeg.exec(ffmpegArgs);
+                if (exitCode !== 0) {
+                    throw new Error(`FFmpeg exited with code ${exitCode}`);
+                }
+
+                const outData = await ffmpeg.readFile(outName);
+                const mimeMap = {
+                    mp4: 'video/mp4',
+                    mov: 'video/quicktime',
+                    mkv: 'video/x-matroska',
+                };
+                dom.exportProgressPercent.textContent = '100%';
+                dom.exportProgressBar.style.width = '100%';
+                triggerBlobDownload(new Blob([outData.buffer], { type: mimeMap[format] || 'video/mp4' }), `${filename}.${format}`);
+            } finally {
+                activeProgressHandler = null;
+                for (const fname of createdFiles) {
+                    try { await ffmpeg.deleteFile(fname); } catch (_) {}
+                }
+            }
         }
 
         async function handleExport() {
@@ -2403,29 +3176,36 @@
 
             const format = dom.exportFormat.value;
             const kbps = parseInt(dom.exportBitrate.value, 10) || 192;
-            const cleanName = (dom.exportFilename.value.trim() || 'WaveCut_Merged').replace(/[\\/:*?"<>|]/g, '_');
+            const resKey = dom.exportVideoRes.value || '720';
+            const cleanName = (dom.exportFilename.value.trim() || 'WaveCut_Export').replace(/[\\/:*?"<>|]/g, '_');
 
             dom.exportProgressContainer.classList.remove('hidden');
             dom.exportProgressContainer.classList.add('flex');
-            dom.exportProgressText.textContent = t('progressMix');
-            dom.exportProgressBar.style.width = '15%';
-            dom.exportProgressPercent.textContent = '15%';
 
             try {
-                const mergedBuffer = await renderTimelineToBuffer();
-
-                if (format === 'mp3') {
-                    dom.exportProgressText.textContent = t('progressMp3', { kbps });
-                    dom.exportProgressBar.style.width = '25%';
-                    dom.exportProgressPercent.textContent = '25%';
-                    await exportAsMP3(mergedBuffer, kbps, cleanName);
-                    showToast(t('toastExportDone', { file: `${cleanName}.mp3` }), 'success');
+                if (format === 'mp4' || format === 'mov' || format === 'mkv') {
+                    await exportAsVideo(format, resKey, cleanName);
+                    showToast(t('toastExportDone', { file: `${cleanName}.${format}` }), 'success');
                 } else {
-                    dom.exportProgressText.textContent = t('progressWav');
-                    exportAsWAV(mergedBuffer, cleanName);
-                    dom.exportProgressBar.style.width = '100%';
-                    dom.exportProgressPercent.textContent = '100%';
-                    showToast(t('toastExportDone', { file: `${cleanName}.wav` }), 'success');
+                    dom.exportProgressText.textContent = t('progressMix');
+                    dom.exportProgressBar.style.width = '15%';
+                    dom.exportProgressPercent.textContent = '15%';
+
+                    const mergedBuffer = await renderTimelineToBuffer();
+                    if (format === 'mp3') {
+                        dom.exportProgressText.textContent = t('progressMp3', { kbps });
+                        dom.exportProgressBar.style.width = '25%';
+                        dom.exportProgressPercent.textContent = '25%';
+                        await exportAsMP3(mergedBuffer, kbps, cleanName);
+                        showToast(t('toastExportDone', { file: `${cleanName}.mp3` }), 'success');
+                    } else {
+                        dom.exportProgressText.textContent = t('progressWav');
+                        const wavBytes = audioBufferToWavBytes(mergedBuffer);
+                        triggerBlobDownload(new Blob([wavBytes.buffer], { type: 'audio/wav' }), `${cleanName}.wav`);
+                        dom.exportProgressBar.style.width = '100%';
+                        dom.exportProgressPercent.textContent = '100%';
+                        showToast(t('toastExportDone', { file: `${cleanName}.wav` }), 'success');
+                    }
                 }
             } catch (err) {
                 console.error('匯出錯誤:', err);
@@ -2437,15 +3217,14 @@
                 setTimeout(() => {
                     dom.exportProgressContainer.classList.add('hidden');
                     dom.exportProgressContainer.classList.remove('flex');
-                }, 1600);
+                }, 1800);
             }
         }
 
         // -----------------------------
-        // 11. 事件監聽器綁定
+        // 13. 事件監聽器綁定
         // -----------------------------
 
-        // 檔案選擇按鈕
         [dom.btnAddFilesTop, dom.btnSelectFiles, dom.btnAddMoreAssets].forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -2461,7 +3240,13 @@
             }
         });
 
-        // 全頁拖放多個 MP3 檔案支援
+        // 點擊影片預覽視窗切換播放/暫停
+        dom.videoPreviewBox.addEventListener('click', () => {
+            if (state.clips.length === 0) return;
+            dom.btnPlayPause.click();
+        });
+
+        // 全頁拖放多個影音檔案支援
         ['dragenter', 'dragover'].forEach(evt => {
             document.body.addEventListener(evt, (e) => {
                 e.preventDefault();
@@ -2490,7 +3275,6 @@
         window.addEventListener('touchmove', handlePointerMove, { passive: false });
         window.addEventListener('touchend', handlePointerUp);
 
-        // 滑鼠滾輪控制時間軸縮放 (Ctrl+滾輪) 或水平捲動
         dom.timelineCanvasContainer.addEventListener('wheel', (e) => {
             e.preventDefault();
             if (e.ctrlKey || e.metaKey) {
@@ -2506,7 +3290,10 @@
             }
         }, { passive: false });
 
-        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            syncVideoPreview(state.isPlaying);
+        });
 
         // 工具列按鈕
         dom.btnUndo.addEventListener('click', actionUndo);
@@ -2515,6 +3302,7 @@
         dom.btnTrimLeft.addEventListener('click', actionTrimLeft);
         dom.btnTrimRight.addEventListener('click', actionTrimRight);
         dom.btnDuplicate.addEventListener('click', actionDuplicateClip);
+        dom.btnDetachAudio.addEventListener('click', actionDetachAudio);
         dom.btnDeleteClip.addEventListener('click', actionDeleteClip);
         dom.btnCloseGaps.addEventListener('click', actionCloseGaps);
 
@@ -2530,6 +3318,7 @@
             updateTimeReadouts();
             updateScrollSliderBounds();
             drawTimeline();
+            syncVideoPreview(state.isPlaying);
         });
 
         // 磁吸、縮放與捲動條
@@ -2561,19 +3350,24 @@
             drawTimeline();
         });
 
-        // 新增音軌
-        dom.btnAddTrack.addEventListener('click', () => {
+        // 新增影片軌 / 音軌
+        dom.btnAddVideoTrack.addEventListener('click', () => {
             saveSnapshot();
-            state.tracks.push({
-                id: genId('track'),
-                name: `音軌 ${state.tracks.length + 1}`,
-                muted: false,
-                solo: false,
-            });
+            // 插在最上方（或所有影片軌之後）
+            const firstAudioIdx = state.tracks.findIndex(tr => tr.type === 'audio');
+            const newTrack = { id: genId('track-v'), type: 'video', muted: false, solo: false };
+            if (firstAudioIdx === -1) state.tracks.push(newTrack);
+            else state.tracks.splice(firstAudioIdx, 0, newTrack);
             refreshAllUI();
         });
 
-        // 選中片段屬性滑桿 (音量 / 淡入 / 淡出)
+        dom.btnAddAudioTrack.addEventListener('click', () => {
+            saveSnapshot();
+            state.tracks.push({ id: genId('track-a'), type: 'audio', muted: false, solo: false });
+            refreshAllUI();
+        });
+
+        // 選中片段屬性滑桿
         let inspectorSnapSaved = false;
         const bindClipSlider = (slider, handler) => {
             slider.addEventListener('pointerdown', () => { inspectorSnapSaved = false; });
@@ -2598,25 +3392,18 @@
         bindClipSlider(dom.clipFadeOutSlider, (clip, v) => { clip.fadeOut = v; });
 
         // 匯出設定
-        dom.exportFormat.addEventListener('change', () => {
-            const isMp3 = dom.exportFormat.value === 'mp3';
-            dom.bitrateWrapper.classList.toggle('opacity-40', !isMp3);
-            dom.exportBitrate.disabled = !isMp3;
-            dom.btnExport.querySelector('span').textContent = isMp3 ? t('btnExportMp3') : t('btnExportWav');
-        });
+        dom.exportFormat.addEventListener('change', syncExportFormatUI);
         dom.btnExport.addEventListener('click', handleExport);
 
-        // 語言切換事件與初始化讀取偏好
-        dom.langSelect.addEventListener('change', (e) => {
-            applyLanguage(e.target.value);
-        });
+        // 語言切換初始化
+        dom.langSelect.addEventListener('change', (e) => applyLanguage(e.target.value));
         (function initLanguage() {
             let saved = 'zh-TW';
             try { saved = localStorage.getItem('wavecut_lang') || 'zh-TW'; } catch (_) {}
             applyLanguage(saved);
         })();
 
-        // 全域快捷鍵 (Space 播放、Ctrl+B 分割、Ctrl+Z 還原、Ctrl+Y 重做、Ctrl+D 複製、Delete 刪除)
+        // 全域快捷鍵
         window.addEventListener('keydown', (e) => {
             if (state.clips.length === 0) return;
             const tag = document.activeElement?.tagName;
