@@ -443,9 +443,14 @@
 
                 <!-- 匯出進度條 -->
                 <div id="exportProgressContainer" class="hidden flex-col gap-1.5 pt-1">
-                    <div class="flex justify-between text-xs">
-                        <span id="exportProgressText" class="text-sky-300 font-medium">正在本機處理與編碼...</span>
-                        <span id="exportProgressPercent" class="font-mono text-emerald-300 font-semibold">0%</span>
+                    <div class="flex items-center justify-between gap-2 text-xs">
+                        <span id="exportProgressText" class="text-sky-300 font-medium truncate">正在本機處理與編碼...</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span id="exportProgressPercent" class="font-mono text-emerald-300 font-semibold">0%</span>
+                            <button id="btnCancelExport" type="button" data-i18n="btnCancelExport" class="hidden px-2 py-0.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 border border-rose-500/40 text-[11px] font-semibold transition">
+                                取消匯出
+                            </button>
+                        </div>
                     </div>
                     <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                         <div id="exportProgressBar" class="h-full bg-gradient-to-r from-sky-500 via-indigo-400 to-emerald-400 transition-all duration-150 rounded-full" style="width: 0%"></div>
@@ -597,8 +602,15 @@
                 progressMp3: '步驟 2/2：正在本機編碼 MP3 ({kbps} kbps)...',
                 progressWav: '步驟 2/2：正在封裝 WAV 無損音檔...',
                 progressVideoPrep: '步驟 1/3：正在準備本機影片引擎與音訊混音...',
+                progressVideoDownload: '步驟 1/3：正在下載本機影片引擎 ({mb} MB)...',
                 progressVideoWrite: '步驟 2/3：正在寫入影片素材至本機引擎...',
                 progressVideoEncode: '步驟 3/3：正在本機渲染並合併輸出 {fmt} 影片...',
+                progressVideoNative: '正在使用瀏覽器硬體加速引擎即時渲染 {res} 影片 ({cur} / {tot})...',
+                progressVideoWebCodecs: '逐格硬體渲染 {res} {fmt}（聲畫鎖定同步）：第 {cur} / {tot} 格...',
+                progressVideoAudioEncode: '正在封裝無損同步音軌與 {fmt} 影片檔...',
+                btnCancelExport: '取消匯出',
+                toastExportCancelled: '已取消影片匯出。',
+                toastNativeFallback: '本機轉碼核心受瀏覽器環境限制，已自動切換為硬體加速引擎渲染！',
                 toastExportDone: '合併匯出完成：{file}',
                 toastExportFail: '合併匯出失敗，請重試或降低輸出解析度。',
             },
@@ -725,8 +737,15 @@
                 progressMp3: '步骤 2/2：正在本机编码 MP3 ({kbps} kbps)...',
                 progressWav: '步骤 2/2：正在封装 WAV 无损音频...',
                 progressVideoPrep: '步骤 1/3：正在准备本机视频引擎与音频混音...',
+                progressVideoDownload: '步骤 1/3：正在下载本机视频引擎 ({mb} MB)...',
                 progressVideoWrite: '步骤 2/3：正在写入视频素材至本机引擎...',
                 progressVideoEncode: '步骤 3/3：正在本机渲染并合并输出 {fmt} 视频...',
+                progressVideoNative: '正在使用浏览器硬件加速引擎实时渲染 {res} 视频 ({cur} / {tot})...',
+                progressVideoWebCodecs: '逐帧硬件渲染 {res} {fmt}（音画锁定同步）：第 {cur} / {tot} 帧...',
+                progressVideoAudioEncode: '正在封装同步音轨与 {fmt} 视频文件...',
+                btnCancelExport: '取消导出',
+                toastExportCancelled: '已取消视频导出。',
+                toastNativeFallback: '本机转码核心受浏览器环境限制，已自动切换为硬件加速引擎渲染！',
                 toastExportDone: '合并导出完成：{file}',
                 toastExportFail: '合并导出失败，请重试或降低输出分辨率。',
             },
@@ -853,8 +872,15 @@
                 progressMp3: 'Step 2/2: Encoding MP3 locally ({kbps} kbps)...',
                 progressWav: 'Step 2/2: Packaging lossless WAV...',
                 progressVideoPrep: 'Step 1/3: Preparing local video engine & audio mix...',
+                progressVideoDownload: 'Step 1/3: Downloading local video engine ({mb} MB)...',
                 progressVideoWrite: 'Step 2/3: Loading video assets into local engine...',
                 progressVideoEncode: 'Step 3/3: Rendering & merging {fmt} video locally...',
+                progressVideoNative: 'Rendering {res} video via browser hardware engine ({cur} / {tot})...',
+                progressVideoWebCodecs: 'Frame-accurate {res} {fmt} hardware render: frame {cur} / {tot}...',
+                progressVideoAudioEncode: 'Muxing locked audio track & finalizing {fmt}...',
+                btnCancelExport: 'Cancel',
+                toastExportCancelled: 'Video export cancelled.',
+                toastNativeFallback: 'Switched to browser hardware-accelerated video renderer for compatibility.',
                 toastExportDone: 'Export complete: {file}',
                 toastExportFail: 'Export failed. Please try again or try a lower resolution.',
             }
@@ -918,6 +944,7 @@
             // 互動拖曳狀態
             drag: null,
             isExporting: false,
+            exportCancelled: false,
         };
 
         // DOM 參照
@@ -996,6 +1023,7 @@
             exportProgressText: document.getElementById('exportProgressText'),
             exportProgressPercent: document.getElementById('exportProgressPercent'),
             exportProgressBar: document.getElementById('exportProgressBar'),
+            btnCancelExport: document.getElementById('btnCancelExport'),
 
             toastContainer: document.getElementById('toastContainer'),
         };
@@ -1258,20 +1286,64 @@
             });
         }
 
-        async function fetchAsBlobURL(url, mimeType) {
-            const resp = await fetch(url);
-            if (!resp.ok) throw new Error(`Download failed (${resp.status})`);
-            const buf = await resp.arrayBuffer();
-            return URL.createObjectURL(new Blob([buf], { type: mimeType }));
+        /** 帶下載進度與逾時保護的 Blob URL 載入器，支援主/備用 CDN */
+        async function fetchAsBlobURL(urls, mimeType, onBytes = null) {
+            const urlList = Array.isArray(urls) ? urls : [urls];
+            let lastErr = null;
+            for (const url of urlList) {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 25000);
+                try {
+                    const resp = await fetch(url, { signal: controller.signal });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+                    if (resp.body && onBytes) {
+                        const reader = resp.body.getReader();
+                        const chunks = [];
+                        let received = 0;
+                        while (true) {
+                            const { done, value } = await reader.read();
+                            if (done) break;
+                            chunks.push(value);
+                            received += value.byteLength;
+                            onBytes(received);
+                        }
+                        clearTimeout(timer);
+                        return URL.createObjectURL(new Blob(chunks, { type: mimeType }));
+                    }
+
+                    const buf = await resp.arrayBuffer();
+                    clearTimeout(timer);
+                    if (onBytes) onBytes(buf.byteLength);
+                    return URL.createObjectURL(new Blob([buf], { type: mimeType }));
+                } catch (err) {
+                    clearTimeout(timer);
+                    lastErr = err;
+                }
+            }
+            throw lastErr || new Error('Download failed');
         }
 
-        async function getFFmpegEngine() {
+        async function getFFmpegEngine(onStatus = null) {
             if (ffmpegInstance) return ffmpegInstance;
             if (ffmpegLoadPromise) return ffmpegLoadPromise;
 
             ffmpegLoadPromise = (async () => {
-                dom.loadingText.textContent = t('loadingFFmpeg');
-                await loadExternalScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js');
+                const report = (text, pct) => {
+                    dom.loadingText.textContent = text;
+                    if (onStatus) onStatus(text, pct);
+                };
+                report(t('loadingFFmpeg'), 11);
+
+                try {
+                    await loadExternalScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js');
+                } catch (_) {
+                    await loadExternalScript('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js');
+                }
+
+                if (!window.FFmpegWASM || !window.FFmpegWASM.FFmpeg) {
+                    throw new Error('FFmpegWASM unavailable');
+                }
 
                 const { FFmpeg } = window.FFmpegWASM;
                 const ffmpeg = new FFmpeg();
@@ -1282,16 +1354,27 @@
                     }
                 });
 
-                const ffmpegBase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd';
-                const coreBase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                const jsdFF = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd';
+                const unpFF = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd';
+                const jsdCore = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                const unpCore = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
 
                 const [classWorkerURL, coreURL, wasmURL] = await Promise.all([
-                    fetchAsBlobURL(`${ffmpegBase}/814.ffmpeg.js`, 'text/javascript'),
-                    fetchAsBlobURL(`${coreBase}/ffmpeg-core.js`, 'text/javascript'),
-                    fetchAsBlobURL(`${coreBase}/ffmpeg-core.wasm`, 'application/wasm'),
+                    fetchAsBlobURL([`${jsdFF}/814.ffmpeg.js`, `${unpFF}/814.ffmpeg.js`], 'text/javascript'),
+                    fetchAsBlobURL([`${jsdCore}/ffmpeg-core.js`, `${unpCore}/ffmpeg-core.js`], 'text/javascript'),
+                    fetchAsBlobURL([`${jsdCore}/ffmpeg-core.wasm`, `${unpCore}/ffmpeg-core.wasm`], 'application/wasm', (bytes) => {
+                        const mb = (bytes / (1024 * 1024)).toFixed(1);
+                        const pct = Math.min(20, 11 + Math.round((bytes / (32 * 1024 * 1024)) * 9));
+                        report(t('progressVideoDownload', { mb }), pct);
+                    }),
                 ]);
 
-                await ffmpeg.load({ classWorkerURL, coreURL, wasmURL });
+                // 加上 15 秒啟動逾時保護，避免 sandboxed iframe 中 Worker 靜默卡死
+                await Promise.race([
+                    ffmpeg.load({ classWorkerURL, coreURL, wasmURL }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('FFmpeg worker load timeout')), 15000)),
+                ]);
+
                 ffmpegInstance = ffmpeg;
                 return ffmpeg;
             })();
@@ -1733,19 +1816,20 @@
 
         let lastSeekRequest = 0;
 
-        /** 根據目前 playhead 同步更新影片預覽視窗 */
+        /** 根據目前 playhead 同步更新影片預覽視窗 (防重複 seek 卡頓與平順微調倍速同步) */
         function syncVideoPreview(isPlayingNow) {
             const hasAnyVideo = state.clips.some(c => c.type === 'video');
             dom.previewEmptyHint.classList.toggle('hidden', hasAnyVideo);
 
             const activeClip = getActiveVideoClipAt(state.playhead);
 
-            // 暫停所有非作用中的影片元素
+            // 暫停所有非作用中的影片元素並恢復正常播放速率
             state.assets.forEach(asset => {
                 if (asset.type === 'video' && asset.videoEl) {
                     const isCurrent = activeClip && activeClip.assetId === asset.id;
                     if (!isCurrent || !isPlayingNow) {
                         if (!asset.videoEl.paused) asset.videoEl.pause();
+                        if (asset.videoEl.playbackRate !== 1) asset.videoEl.playbackRate = 1;
                     }
                 }
             });
@@ -1761,19 +1845,32 @@
 
             dom.previewMetaBadge.textContent = `${asset.width}×${asset.height} • ${asset.ext}`;
             const videoEl = asset.videoEl;
-            const expectedSrcTime = Math.max(0, Math.min(asset.duration - 0.01, activeClip.offset + (state.playhead - activeClip.startTime)));
+            const expectedSrcTime = Math.max(0, Math.min(asset.duration - 0.015, activeClip.offset + (state.playhead - activeClip.startTime)));
 
             if (isPlayingNow) {
-                if (Math.abs(videoEl.currentTime - expectedSrcTime) > 0.25) {
+                const drift = expectedSrcTime - videoEl.currentTime;
+                const absDrift = Math.abs(drift);
+                const nowMs = performance.now();
+
+                // 避免在 seeking 中重複觸發 seek 導致畫面卡頓；小誤差以微調倍速平滑追齊
+                if (absDrift > 0.42 && !videoEl.seeking && (nowMs - (videoEl._lastSeekMs || 0) > 350)) {
+                    videoEl._lastSeekMs = nowMs;
+                    videoEl.playbackRate = 1.0;
                     videoEl.currentTime = expectedSrcTime;
+                } else if (absDrift > 0.06 && !videoEl.seeking) {
+                    videoEl.playbackRate = Math.max(0.88, Math.min(1.12, 1.0 + drift * 0.6));
+                } else if (videoEl.playbackRate !== 1.0) {
+                    videoEl.playbackRate = 1.0;
                 }
-                if (videoEl.paused) {
+
+                if (videoEl.paused && !videoEl.seeking) {
                     videoEl.play().catch(() => {});
                 }
                 drawVideoFrameToPreview(videoEl, asset.width, asset.height);
             } else {
                 // 拖曳或暫停時精準跳轉影格並繪製
-                if (Math.abs(videoEl.currentTime - expectedSrcTime) > 0.03) {
+                if (videoEl.playbackRate !== 1.0) videoEl.playbackRate = 1.0;
+                if (Math.abs(videoEl.currentTime - expectedSrcTime) > 0.03 && !videoEl.seeking) {
                     const token = ++lastSeekRequest;
                     const onSeeked = () => {
                         videoEl.removeEventListener('seeked', onSeeked);
@@ -2838,11 +2935,11 @@
         // 12. 離線混音 & 本機 MP4 / MOV / MKV / MP3 / WAV 匯出引擎
         // -----------------------------
 
-        async function renderTimelineToBuffer() {
+        async function renderTimelineToBuffer(allowSilent = false, targetSampleRate = null) {
             const totalDur = getTotalDuration();
             if (totalDur <= 0.02) throw new Error(t('errNoAudio'));
 
-            const sampleRate = state.audioCtx ? state.audioCtx.sampleRate : 44100;
+            const sampleRate = targetSampleRate || (state.audioCtx ? state.audioCtx.sampleRate : 44100);
             const totalSamples = Math.ceil(totalDur * sampleRate);
             const offlineCtx = new OfflineAudioContext(2, totalSamples, sampleRate);
             const anyAudioSolo = state.tracks.some(tr => tr.type === 'audio' && tr.solo);
@@ -2886,7 +2983,10 @@
                 renderedClipCount++;
             }
 
-            if (renderedClipCount === 0) throw new Error(t('errAllMuted'));
+            if (renderedClipCount === 0) {
+                if (allowSilent) return offlineCtx.startRendering();
+                throw new Error(t('errAllMuted'));
+            }
             return await offlineCtx.startRendering();
         }
 
@@ -3037,125 +3137,306 @@
             return merged;
         }
 
-        /** 使用本機 FFmpeg WASM 將時間軸合併匯出為 MP4 / MOV / MKV 影片 */
-        async function exportAsVideo(format, resKey, filename) {
+        /** 精準定位 <video> 至指定秒數並等待解碼完成 (含逾時保護) */
+        function seekVideoToExact(videoEl, targetSec, timeoutMs = 1500) {
+            const safeMax = Math.max(0, (videoEl.duration || targetSec) - 0.012);
+            const clamped = Math.max(0, Math.min(safeMax, targetSec));
+            if (Math.abs(videoEl.currentTime - clamped) < 0.002 && videoEl.readyState >= 2 && !videoEl.seeking) {
+                return Promise.resolve();
+            }
+            return new Promise((resolve) => {
+                let done = false;
+                const finish = () => {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    videoEl.removeEventListener('seeked', finish);
+                    videoEl.removeEventListener('error', finish);
+                    resolve();
+                };
+                const timer = setTimeout(finish, timeoutMs);
+                videoEl.addEventListener('seeked', finish, { once: true });
+                videoEl.addEventListener('error', finish, { once: true });
+                try {
+                    videoEl.currentTime = clamped;
+                } catch (_) {
+                    finish();
+                }
+            });
+        }
+
+        /** 載入輕量純 JS 封裝器 (mp4-muxer / webm-muxer) */
+        async function ensureMuxerLoaded(format) {
+            if (format === 'mkv') {
+                if (window.WebMMuxer) return window.WebMMuxer;
+                try {
+                    await loadExternalScript('https://cdn.jsdelivr.net/npm/webm-muxer@5.0.2/build/webm-muxer.min.js');
+                } catch (_) {
+                    await loadExternalScript('https://unpkg.com/webm-muxer@5.0.2/build/webm-muxer.min.js');
+                }
+                if (!window.WebMMuxer) throw new Error('WebMMuxer unavailable');
+                return window.WebMMuxer;
+            } else {
+                if (window.Mp4Muxer) return window.Mp4Muxer;
+                try {
+                    await loadExternalScript('https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js');
+                } catch (_) {
+                    await loadExternalScript('https://unpkg.com/mp4-muxer@5.1.3/build/mp4-muxer.min.js');
+                }
+                if (!window.Mp4Muxer) throw new Error('Mp4Muxer unavailable');
+                return window.Mp4Muxer;
+            }
+        }
+
+        /**
+         * 逐格精準時間戳記 WebCodecs 硬體加速離線渲染引擎
+         * - 徹底解決 480p / 720p / 1080p 卡頓與聲畫不同步（每格畫面與音訊樣本皆帶精準微秒時間戳）
+         * - 嚴格佇列背壓控制與立即釋放 VideoFrame，讓 4K (3840×2160) 匯出穩定不崩潰
+         */
+        async function exportAsVideoWebCodecs(format, resKey, filename) {
+            if (
+                typeof VideoEncoder === 'undefined' ||
+                typeof AudioEncoder === 'undefined' ||
+                typeof VideoFrame === 'undefined' ||
+                typeof AudioData === 'undefined'
+            ) {
+                throw new Error('WebCodecs API not supported in this browser');
+            }
+
             const totalDur = getTotalDuration();
             if (totalDur <= 0.05) throw new Error(t('errNoAudio'));
 
             const resMap = {
-                '480': { w: 854, h: 480 },
-                '720': { w: 1280, h: 720 },
-                '1080': { w: 1920, h: 1080 },
-                '2160': { w: 3840, h: 2160 },
+                '480':  { w: 854,  h: 480,  bps: 2_500_000,  label: '480p' },
+                '720':  { w: 1280, h: 720,  bps: 5_000_000,  label: '720p' },
+                '1080': { w: 1920, h: 1080, bps: 9_000_000,  label: '1080p' },
+                '2160': { w: 3840, h: 2160, bps: 18_000_000, label: '4K' },
             };
-            const { w: W, h: H } = resMap[resKey] || resMap['720'];
+            const { w: rawW, h: rawH, bps, label: resLabel } = resMap[resKey] || resMap['720'];
+            // H.264 / VP9 要求長寬皆為偶數
+            const W = rawW % 2 === 0 ? rawW : rawW + 1;
+            const H = rawH % 2 === 0 ? rawH : rawH + 1;
             const fps = 30;
+            const sampleRate = 48000;
+            const isMkv = format === 'mkv';
 
             dom.exportProgressText.textContent = t('progressVideoPrep');
-            dom.exportProgressBar.style.width = '10%';
-            dom.exportProgressPercent.textContent = '10%';
+            dom.exportProgressBar.style.width = '5%';
+            dom.exportProgressPercent.textContent = '5%';
 
-            const [ffmpeg, mergedAudioBuf] = await Promise.all([
-                getFFmpegEngine(),
-                renderTimelineToBuffer(),
+            const [MuxerLib, mergedAudioBuf] = await Promise.all([
+                ensureMuxerLoaded(format),
+                renderTimelineToBuffer(true, sampleRate),
             ]);
 
-            const segments = buildFlattenedVideoSegments(totalDur);
-            const createdFiles = [];
-            const assetInputMap = new Map();
-            const ffmpegArgs = [];
+            if (state.exportCancelled) throw new Error('CANCELLED');
 
-            dom.exportProgressText.textContent = t('progressVideoWrite');
-            dom.exportProgressBar.style.width = '22%';
-            dom.exportProgressPercent.textContent = '22%';
+            // 1. 偵測此裝置與解析度支援的最佳硬體視訊編碼器 (4K 需使用 H.264 Level 5.1)
+            const videoCodecCandidates = isMkv
+                ? [
+                    { codec: 'vp09.00.51.08', muxCodec: 'V_VP9' },
+                    { codec: 'vp09.00.41.08', muxCodec: 'V_VP9' },
+                    { codec: 'vp8', muxCodec: 'V_VP8' },
+                ]
+                : [
+                    { codec: 'avc1.640033', muxCodec: 'avc' }, // High Profile L5.1 (支援 4K)
+                    { codec: 'avc1.4d0033', muxCodec: 'avc' }, // Main Profile L5.1 (支援 4K)
+                    { codec: 'avc1.420033', muxCodec: 'avc' }, // Baseline L5.1
+                    { codec: 'avc1.64002a', muxCodec: 'avc' }, // High L4.2 (1080p60)
+                    { codec: 'avc1.4d002a', muxCodec: 'avc' },
+                    { codec: 'avc1.640028', muxCodec: 'avc' }, // High L4.0 (1080p30)
+                    { codec: 'avc1.420028', muxCodec: 'avc' },
+                ];
 
-            // 1. 寫入所有使用到的影片原檔
-            let inputIdx = 0;
-            for (const seg of segments) {
-                if (seg.type === 'video' && !assetInputMap.has(seg.assetId)) {
-                    const asset = state.assets.get(seg.assetId);
-                    if (!asset || !asset.file) continue;
-                    const ext = (asset.ext || 'mp4').toLowerCase();
-                    const vName = `exp_in_${inputIdx}.${ext}`;
-                    const bytes = new Uint8Array(await asset.file.arrayBuffer());
-                    await ffmpeg.writeFile(vName, bytes);
-                    createdFiles.push(vName);
-                    assetInputMap.set(seg.assetId, inputIdx);
-                    ffmpegArgs.push('-i', vName);
-                    inputIdx++;
-                }
+            let chosenVideoCfg = null;
+            for (const cand of videoCodecCandidates) {
+                const cfg = {
+                    codec: cand.codec,
+                    width: W,
+                    height: H,
+                    bitrate: bps,
+                    framerate: fps,
+                    latencyMode: 'quality',
+                    hardwareAcceleration: 'prefer-hardware',
+                    ...(isMkv ? {} : { avc: { format: 'avc' } }),
+                };
+                try {
+                    const support = await VideoEncoder.isConfigSupported(cfg);
+                    if (support && support.supported) {
+                        chosenVideoCfg = { ...cfg, muxCodec: cand.muxCodec };
+                        break;
+                    }
+                    // 若硬體加速不支援該設定，嘗試讓瀏覽器自行挑選軟/硬體
+                    const cfgAuto = { ...cfg, hardwareAcceleration: 'no-preference' };
+                    const supportAuto = await VideoEncoder.isConfigSupported(cfgAuto);
+                    if (supportAuto && supportAuto.supported) {
+                        chosenVideoCfg = { ...cfgAuto, muxCodec: cand.muxCodec };
+                        break;
+                    }
+                } catch (_) {}
+            }
+            if (!chosenVideoCfg) throw new Error(`No supported WebCodecs video encoder for ${W}x${H}`);
+
+            // 2. 偵測音訊編碼器 (MP4/MOV 使用 AAC，MKV 使用 Opus)
+            const audioCodecStr = isMkv ? 'opus' : 'mp4a.40.2';
+            const audioCfg = {
+                codec: audioCodecStr,
+                sampleRate,
+                numberOfChannels: 2,
+                bitrate: 192_000,
+            };
+            const audioSupport = await AudioEncoder.isConfigSupported(audioCfg);
+            if (!audioSupport || !audioSupport.supported) {
+                throw new Error(`AudioEncoder does not support ${audioCodecStr}`);
             }
 
-            // 2. 寫入混音完成的音訊 WAV
-            const wavName = `exp_mix_${Date.now()}.wav`;
-            const wavBytes = audioBufferToWavBytes(mergedAudioBuf);
-            await ffmpeg.writeFile(wavName, wavBytes);
-            createdFiles.push(wavName);
-            const audioInputIdx = inputIdx;
-            ffmpegArgs.push('-i', wavName);
+            // 3. 初始化封裝器與編碼器
+            const target = new MuxerLib.ArrayBufferTarget();
+            const muxer = isMkv
+                ? new MuxerLib.Muxer({
+                    target,
+                    video: { codec: chosenVideoCfg.muxCodec, width: W, height: H, frameRate: fps },
+                    audio: { codec: 'A_OPUS', numberOfChannels: 2, sampleRate },
+                })
+                : new MuxerLib.Muxer({
+                    target,
+                    video: { codec: 'avc', width: W, height: H },
+                    audio: { codec: 'aac', numberOfChannels: 2, sampleRate },
+                    fastStart: 'in-memory',
+                    firstTimestampBehavior: 'offset',
+                });
 
-            // 3. 建立 filter_complex 串接所有剪輯片段與黑畫面空隙
-            const filterParts = [];
-            const concatLabels = [];
+            let encoderError = null;
+            const videoEncoder = new VideoEncoder({
+                output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+                error: (e) => { encoderError = e; },
+            });
+            videoEncoder.configure(chosenVideoCfg);
 
-            segments.forEach((seg, idx) => {
-                const lbl = `v${idx}`;
-                if (seg.type === 'video' && assetInputMap.has(seg.assetId)) {
-                    const inI = assetInputMap.get(seg.assetId);
-                    filterParts.push(
-                        `[${inI}:v]trim=start=${seg.offset.toFixed(3)}:duration=${seg.duration.toFixed(3)},setpts=PTS-STARTPTS,fps=${fps},scale=${W}:${H}:force_original_aspect_ratio=decrease,pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=yuv420p[${lbl}]`
-                    );
-                } else {
-                    filterParts.push(
-                        `color=c=black:s=${W}x${H}:r=${fps}:d=${seg.duration.toFixed(3)},format=yuv420p[${lbl}]`
-                    );
+            const audioEncoder = new AudioEncoder({
+                output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
+                error: (e) => { encoderError = e; },
+            });
+            audioEncoder.configure(audioCfg);
+
+            // 暫停所有預覽影片並準備離屏渲染畫布
+            state.assets.forEach(a => {
+                if (a.type === 'video' && a.videoEl) {
+                    if (!a.videoEl.paused) a.videoEl.pause();
+                    a.videoEl.playbackRate = 1.0;
                 }
-                concatLabels.push(`[${lbl}]`);
             });
 
-            let finalVideoLabel = '[vout]';
-            if (concatLabels.length === 1) {
-                // 單一片段直接輸出，避免不必要的 concat 濾鏡
-                finalVideoLabel = concatLabels[0];
-            } else {
-                filterParts.push(`${concatLabels.join('')}concat=n=${concatLabels.length}:v=1:a=0[vout]`);
-            }
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = W;
+            offCanvas.height = H;
+            const octx = offCanvas.getContext('2d', { alpha: false });
+            octx.imageSmoothingEnabled = true;
+            octx.imageSmoothingQuality = 'high';
 
-            const outName = `exp_out_${Date.now()}.${format}`;
-            createdFiles.push(outName);
-
-            ffmpegArgs.push(
-                '-filter_complex', filterParts.join(';'),
-                '-map', finalVideoLabel,
-                '-map', `${audioInputIdx}:a`,
-                '-c:v', 'libx264',
-                '-preset', 'ultrafast',
-                '-crf', '23',
-                '-pix_fmt', 'yuv420p',
-                '-c:a', 'aac',
-                '-b:a', '192k',
-                '-t', totalDur.toFixed(3)
-            );
-
-            if (format === 'mp4' || format === 'mov') {
-                ffmpegArgs.push('-movflags', '+faststart');
-            }
-            ffmpegArgs.push(outName);
-
-            dom.exportProgressText.textContent = t('progressVideoEncode', { fmt: format.toUpperCase() });
-            activeProgressHandler = (p) => {
-                const pct = Math.min(99, 25 + Math.round(p * 74));
-                dom.exportProgressPercent.textContent = `${pct}%`;
-                dom.exportProgressBar.style.width = `${pct}%`;
-            };
+            const totalFrames = Math.max(1, Math.ceil(totalDur * fps));
+            const frameDurUs = Math.round(1_000_000 / fps);
+            const maxQueue = resKey === '2160' ? 2 : 5; // 4K 嚴格限制佇列深度以防記憶體溢位
 
             try {
-                const exitCode = await ffmpeg.exec(ffmpegArgs);
-                if (exitCode !== 0) {
-                    throw new Error(`FFmpeg exited with code ${exitCode}`);
+                // 4. 逐格渲染並送入 VideoEncoder (精準微秒時間戳，絕不掉格、不卡頓)
+                for (let i = 0; i < totalFrames; i++) {
+                    if (state.exportCancelled) throw new Error('CANCELLED');
+                    if (encoderError) throw encoderError;
+
+                    const tSec = i / fps;
+                    const activeClip = getActiveVideoClipAt(tSec);
+
+                    octx.fillStyle = '#000000';
+                    octx.fillRect(0, 0, W, H);
+
+                    if (activeClip) {
+                        const asset = state.assets.get(activeClip.assetId);
+                        if (asset && asset.videoEl) {
+                            const vEl = asset.videoEl;
+                            const srcTime = activeClip.offset + (tSec - activeClip.startTime);
+                            await seekVideoToExact(vEl, srcTime);
+                            if (vEl.readyState >= 2) {
+                                const vw = vEl.videoWidth || asset.width || 16;
+                                const vh = vEl.videoHeight || asset.height || 9;
+                                const scale = Math.min(W / vw, H / vh);
+                                const dw = vw * scale;
+                                const dh = vh * scale;
+                                octx.drawImage(vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
+                            }
+                        }
+                    }
+
+                    // 佇列背壓等待，確保 GPU/CPU 不超載
+                    while (videoEncoder.encodeQueueSize >= maxQueue) {
+                        if (state.exportCancelled) throw new Error('CANCELLED');
+                        if (encoderError) throw encoderError;
+                        await new Promise(r => setTimeout(r, 8));
+                    }
+
+                    const timestampUs = Math.round(i * (1_000_000 / fps));
+                    const frame = new VideoFrame(offCanvas, {
+                        timestamp: timestampUs,
+                        duration: frameDurUs,
+                    });
+                    videoEncoder.encode(frame, { keyFrame: i % (fps * 2) === 0 });
+                    frame.close(); // 立即釋放影格記憶體
+
+                    if (i % 4 === 0 || i === totalFrames - 1) {
+                        const pct = Math.min(88, 6 + Math.round(((i + 1) / totalFrames) * 82));
+                        dom.exportProgressPercent.textContent = `${pct}%`;
+                        dom.exportProgressBar.style.width = `${pct}%`;
+                        dom.exportProgressText.textContent = t('progressVideoWebCodecs', {
+                            res: resLabel,
+                            fmt: format.toUpperCase(),
+                            cur: i + 1,
+                            tot: totalFrames,
+                        });
+                        // 讓出主執行緒刷新進度條並響應取消按鈕
+                        await new Promise(r => setTimeout(r, 0));
+                    }
                 }
 
-                const outData = await ffmpeg.readFile(outName);
+                // 5. 逐段送入精準混音音訊樣本至 AudioEncoder (與視訊時間軸 100% 鎖定同步)
+                dom.exportProgressText.textContent = t('progressVideoAudioEncode', { fmt: format.toUpperCase() });
+                dom.exportProgressPercent.textContent = '90%';
+                dom.exportProgressBar.style.width = '90%';
+
+                const ch0 = mergedAudioBuf.getChannelData(0);
+                const ch1 = mergedAudioBuf.numberOfChannels > 1 ? mergedAudioBuf.getChannelData(1) : ch0;
+                const totalSamples = mergedAudioBuf.length;
+                const chunkSamples = 4096;
+
+                for (let s = 0; s < totalSamples; s += chunkSamples) {
+                    if (state.exportCancelled) throw new Error('CANCELLED');
+                    if (encoderError) throw encoderError;
+
+                    const len = Math.min(chunkSamples, totalSamples - s);
+                    const planar = new Float32Array(len * 2);
+                    planar.set(ch0.subarray(s, s + len), 0);
+                    planar.set(ch1.subarray(s, s + len), len);
+
+                    while (audioEncoder.encodeQueueSize >= 8) {
+                        await new Promise(r => setTimeout(r, 5));
+                    }
+
+                    const audioData = new AudioData({
+                        format: 'f32-planar',
+                        sampleRate,
+                        numberOfChannels: 2,
+                        numberOfFrames: len,
+                        timestamp: Math.round((s / sampleRate) * 1_000_000),
+                        data: planar,
+                    });
+                    audioEncoder.encode(audioData);
+                    audioData.close();
+                }
+
+                await Promise.all([videoEncoder.flush(), audioEncoder.flush()]);
+                if (encoderError) throw encoderError;
+
+                muxer.finalize();
+                const outBuf = target.buffer;
                 const mimeMap = {
                     mp4: 'video/mp4',
                     mov: 'video/quicktime',
@@ -3163,12 +3444,209 @@
                 };
                 dom.exportProgressPercent.textContent = '100%';
                 dom.exportProgressBar.style.width = '100%';
-                triggerBlobDownload(new Blob([outData.buffer], { type: mimeMap[format] || 'video/mp4' }), `${filename}.${format}`);
+                triggerBlobDownload(new Blob([outBuf], { type: mimeMap[format] || 'video/mp4' }), `${filename}.${format}`);
+                return `${filename}.${format}`;
             } finally {
-                activeProgressHandler = null;
-                for (const fname of createdFiles) {
-                    try { await ffmpeg.deleteFile(fname); } catch (_) {}
+                try { if (videoEncoder.state !== 'closed') videoEncoder.close(); } catch (_) {}
+                try { if (audioEncoder.state !== 'closed') audioEncoder.close(); } catch (_) {}
+            }
+        }
+
+        /**
+         * 瀏覽器原生 MediaRecorder 備援引擎 (僅在瀏覽器不支援 WebCodecs 時啟用)
+         * 改用 audioCtx.currentTime 為主時鐘 + requestAnimationFrame，降低卡頓與漂移
+         */
+        async function exportAsVideoNative(format, resKey, filename) {
+            const totalDur = getTotalDuration();
+            if (totalDur <= 0.05) throw new Error(t('errNoAudio'));
+            if (typeof MediaRecorder === 'undefined') {
+                throw new Error('此瀏覽器不支援 MediaRecorder 影片錄製輸出');
+            }
+
+            const resMap = {
+                '480': { w: 854, h: 480, bps: 2_500_000, label: '480p' },
+                '720': { w: 1280, h: 720, bps: 5_000_000, label: '720p' },
+                '1080': { w: 1920, h: 1080, bps: 9_000_000, label: '1080p' },
+                '2160': { w: 3840, h: 2160, bps: 16_000_000, label: '4K' },
+            };
+            const { w: W, h: H, bps, label: resLabel } = resMap[resKey] || resMap['720'];
+
+            const mergedAudioBuf = await renderTimelineToBuffer(true, 48000);
+            const audioCtx = getAudioContext();
+            const audioDest = audioCtx.createMediaStreamDestination();
+
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = W;
+            offCanvas.height = H;
+            const octx = offCanvas.getContext('2d', { alpha: false });
+            octx.fillStyle = '#000000';
+            octx.fillRect(0, 0, W, H);
+
+            // 預先精準定位第 0 秒的影片影格
+            const firstClip = getActiveVideoClipAt(0);
+            if (firstClip) {
+                const firstAsset = state.assets.get(firstClip.assetId);
+                if (firstAsset && firstAsset.videoEl) {
+                    await seekVideoToExact(firstAsset.videoEl, firstClip.offset);
                 }
+            }
+
+            const canvasStream = offCanvas.captureStream(30);
+            const combinedStream = new MediaStream([
+                ...canvasStream.getVideoTracks(),
+                ...audioDest.stream.getAudioTracks(),
+            ]);
+
+            const candidates = format === 'mkv'
+                ? ['video/x-matroska;codecs=avc1,opus', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+                : ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+
+            let chosenMime = '';
+            for (const m of candidates) {
+                if (MediaRecorder.isTypeSupported(m)) {
+                    chosenMime = m;
+                    break;
+                }
+            }
+
+            const recOpts = { videoBitsPerSecond: bps };
+            if (chosenMime) recOpts.mimeType = chosenMime;
+            const recorder = new MediaRecorder(combinedStream, recOpts);
+            const chunks = [];
+            recorder.ondataavailable = (e) => {
+                if (e.data && e.data.size > 0) chunks.push(e.data);
+            };
+
+            const outExt = chosenMime.includes('mp4')
+                ? (format === 'mov' ? 'mov' : 'mp4')
+                : (format === 'mkv' ? 'mkv' : 'webm');
+
+            return new Promise((resolve, reject) => {
+                let rafId = null;
+                const audioSrc = audioCtx.createBufferSource();
+                audioSrc.buffer = mergedAudioBuf;
+                audioSrc.connect(audioDest);
+
+                const cleanup = () => {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    try { audioSrc.stop(); } catch (_) {}
+                    try { audioSrc.disconnect(); } catch (_) {}
+                    state.assets.forEach(a => {
+                        if (a.type === 'video' && a.videoEl) {
+                            if (!a.videoEl.paused) a.videoEl.pause();
+                            a.videoEl.playbackRate = 1.0;
+                        }
+                    });
+                    combinedStream.getTracks().forEach(tr => tr.stop());
+                };
+
+                recorder.onerror = (err) => {
+                    cleanup();
+                    reject(err?.error || new Error('MediaRecorder error'));
+                };
+
+                recorder.onstop = () => {
+                    cleanup();
+                    if (state.exportCancelled) {
+                        reject(new Error('CANCELLED'));
+                        return;
+                    }
+                    const finalMime = chosenMime || 'video/webm';
+                    const blob = new Blob(chunks, { type: finalMime });
+                    dom.exportProgressPercent.textContent = '100%';
+                    dom.exportProgressBar.style.width = '100%';
+                    triggerBlobDownload(blob, `${filename}.${outExt}`);
+                    resolve(`${filename}.${outExt}`);
+                };
+
+                // 以 Web Audio 硬體時鐘作為主時鐘，對齊音訊與畫面
+                const startAudioTime = audioCtx.currentTime + 0.05;
+                recorder.start(250);
+                audioSrc.start(startAudioTime);
+
+                const drawStep = () => {
+                    if (state.exportCancelled) {
+                        if (recorder.state === 'recording') recorder.stop();
+                        return;
+                    }
+                    const elapsed = Math.max(0, audioCtx.currentTime - startAudioTime);
+                    if (elapsed >= totalDur) {
+                        if (recorder.state === 'recording') recorder.stop();
+                        return;
+                    }
+
+                    const activeClip = getActiveVideoClipAt(elapsed);
+                    state.assets.forEach(a => {
+                        if (a.type === 'video' && a.videoEl) {
+                            const isCur = activeClip && activeClip.assetId === a.id;
+                            if (!isCur && !a.videoEl.paused) {
+                                a.videoEl.pause();
+                                a.videoEl.playbackRate = 1.0;
+                            }
+                        }
+                    });
+
+                    octx.fillStyle = '#000000';
+                    octx.fillRect(0, 0, W, H);
+
+                    if (activeClip) {
+                        const asset = state.assets.get(activeClip.assetId);
+                        if (asset && asset.videoEl) {
+                            const vEl = asset.videoEl;
+                            const targetT = Math.max(0, Math.min(asset.duration - 0.015, activeClip.offset + (elapsed - activeClip.startTime)));
+                            const drift = targetT - vEl.currentTime;
+                            const nowMs = performance.now();
+
+                            if (Math.abs(drift) > 0.42 && !vEl.seeking && (nowMs - (vEl._lastSeekMs || 0) > 350)) {
+                                vEl._lastSeekMs = nowMs;
+                                vEl.playbackRate = 1.0;
+                                vEl.currentTime = targetT;
+                            } else if (Math.abs(drift) > 0.06 && !vEl.seeking) {
+                                vEl.playbackRate = Math.max(0.88, Math.min(1.12, 1.0 + drift * 0.6));
+                            } else if (vEl.playbackRate !== 1.0) {
+                                vEl.playbackRate = 1.0;
+                            }
+
+                            if (vEl.paused && !vEl.seeking) vEl.play().catch(() => {});
+                            if (vEl.readyState >= 2) {
+                                const vw = vEl.videoWidth || asset.width || 16;
+                                const vh = vEl.videoHeight || asset.height || 9;
+                                const scale = Math.min(W / vw, H / vh);
+                                const dw = vw * scale;
+                                const dh = vh * scale;
+                                octx.drawImage(vEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
+                            }
+                        }
+                    }
+
+                    const pct = Math.min(99, Math.max(5, Math.round((elapsed / totalDur) * 99)));
+                    dom.exportProgressPercent.textContent = `${pct}%`;
+                    dom.exportProgressBar.style.width = `${pct}%`;
+                    dom.exportProgressText.textContent = t('progressVideoNative', {
+                        res: resLabel,
+                        cur: formatTime(elapsed, false),
+                        tot: formatTime(totalDur, false),
+                    });
+
+                    rafId = requestAnimationFrame(drawStep);
+                };
+
+                rafId = requestAnimationFrame(drawStep);
+            });
+        }
+
+        /** 影片匯出主入口：優先使用逐格精準同步 WebCodecs 引擎，不支援時自動切換備援 */
+        async function exportAsVideo(format, resKey, filename) {
+            const totalDur = getTotalDuration();
+            if (totalDur <= 0.05) throw new Error(t('errNoAudio'));
+
+            try {
+                return await exportAsVideoWebCodecs(format, resKey, filename);
+            } catch (wcErr) {
+                if (wcErr && wcErr.message === 'CANCELLED') throw wcErr;
+                console.warn('WebCodecs 離線渲染不可用，改用 MediaRecorder 備援引擎:', wcErr);
+                showToast(t('toastNativeFallback'), 'info');
+                return await exportAsVideoNative(format, resKey, filename);
             }
         }
 
@@ -3176,6 +3654,7 @@
             if (state.isExporting || state.clips.length === 0) return;
             stopPlayback();
             state.isExporting = true;
+            state.exportCancelled = false;
             dom.btnExport.disabled = true;
             dom.btnExport.classList.add('opacity-60', 'cursor-not-allowed');
 
@@ -3186,11 +3665,13 @@
 
             dom.exportProgressContainer.classList.remove('hidden');
             dom.exportProgressContainer.classList.add('flex');
+            const isVideo = format === 'mp4' || format === 'mov' || format === 'mkv';
+            dom.btnCancelExport.classList.toggle('hidden', !isVideo);
 
             try {
-                if (format === 'mp4' || format === 'mov' || format === 'mkv') {
-                    await exportAsVideo(format, resKey, cleanName);
-                    showToast(t('toastExportDone', { file: `${cleanName}.${format}` }), 'success');
+                if (isVideo) {
+                    const savedFile = await exportAsVideo(format, resKey, cleanName);
+                    showToast(t('toastExportDone', { file: savedFile || `${cleanName}.${format}` }), 'success');
                 } else {
                     dom.exportProgressText.textContent = t('progressMix');
                     dom.exportProgressBar.style.width = '15%';
@@ -3213,12 +3694,18 @@
                     }
                 }
             } catch (err) {
-                console.error('匯出錯誤:', err);
-                showToast(err.message || t('toastExportFail'), 'error');
+                if (err && err.message === 'CANCELLED') {
+                    showToast(t('toastExportCancelled'), 'info');
+                } else {
+                    console.error('匯出錯誤:', err);
+                    showToast(err.message || t('toastExportFail'), 'error');
+                }
             } finally {
                 state.isExporting = false;
+                state.exportCancelled = false;
                 dom.btnExport.disabled = false;
                 dom.btnExport.classList.remove('opacity-60', 'cursor-not-allowed');
+                dom.btnCancelExport.classList.add('hidden');
                 setTimeout(() => {
                     dom.exportProgressContainer.classList.add('hidden');
                     dom.exportProgressContainer.classList.remove('flex');
@@ -3399,6 +3886,9 @@
         // 匯出設定
         dom.exportFormat.addEventListener('change', syncExportFormatUI);
         dom.btnExport.addEventListener('click', handleExport);
+        dom.btnCancelExport.addEventListener('click', () => {
+            if (state.isExporting) state.exportCancelled = true;
+        });
 
         // 語言切換初始化
         dom.langSelect.addEventListener('change', (e) => applyLanguage(e.target.value));
